@@ -125,7 +125,7 @@ else:
             'NAME': 'onlinevotingdb',
             'USER': 'postgres',
             'PASSWORD': 'remarc@15',
-            'HOST': '127.0.0.1',
+            'HOST': 'localhost',
             'PORT': '5432',
         }
     }

@@ -1,0 +1,90 @@
+{% extends "system/index.html" %}
+{% load staticfiles %}
+
+{% block title %}
+<title>Online Voting | Register</title>
+{% endblock title %}
+
+{% block content %}
+<div class="container">
+  <div class="jumbotron">
+    <h2>Register</h2>
+    <form method="POST" class="form-inline" role="form">
+        {% csrf_token %}
+      <div class="form-group">
+        <input name="id_number" type="text" class="form-control" placeholder=" id number" required>
+      </div><br>
+      <div class="form-group">
+        <input name="first_name" type="text" class="form-control" placeholder=" first name" required>
+      </div>
+      <div class="form-group">
+        <input name="last_name" type="text" class="form-control" placeholder=" last name" required>
+      </div><br><br>
+      <div class="form-group">
+        <input name="contact_number" type="text" class="form-control" placeholder=" contact number" required>
+      </div><br>
+      <div class="form-group">
+        <input name="email" type="email" class="form-control" placeholder=" email" id="mail" onkeyup="checkMail(); return false;" required>
+      </div><br>
+      <span id="confirmMail" class="confirmMessage"></span><br>
+      <div class="form-group">
+        <input name="password" type="password" class="form-control" placeholder=" password" id="pass1" required>
+      </div><br>
+      <div class="form-group">
+        <input name="password" type="password" class="form-control" placeholder=" re-enter password" id="pass2" onkeyup="checkPass(); return false;" required>
+      </div><br>
+      <span id="confirmMessage" class="confirmMessage"></span><br>
+      <button type="submit" class="btn btn-default" id="submit_button">Register</button>
+    </form>
+  </div>
+
+
+  <script type="text/javascript">
+    function checkPass(){
+      var pass1 = document.getElementById('pass1');
+      var pass2 = document.getElementById('pass2');
+      var message = document.getElementById('confirmMessage');
+      var goodColor = "#b6ffc7";
+      var goodColor_font = "#66cc66"
+      var badColor = "#ffdada";
+      var badColor_font = "#ff3f3f";
+      if(pass1.value == pass2.value){
+          pass2.style.backgroundColor = goodColor;
+          message.style.color = goodColor_font;
+          message.innerHTML = "Passwords Match!"
+          document.getElementById("submit_button").disabled = false;
+      }
+
+      else{
+          pass2.style.backgroundColor = badColor;
+          message.style.color = badColor_font;
+          message.innerHTML = "Passwords Do Not Match!"
+          document.getElementById("submit_button").disabled = true;
+      }
+    }
+
+    function checkMail(){
+      var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+      var mail = document.getElementById('mail');
+      var message_mail = document.getElementById('confirmMail');
+
+      var goodColor = "#b6ffc7";
+      var goodColor_font = "#66cc66"
+      var badColor = "#ffdada";
+      var badColor_font = "#ff3f3f";
+
+      if(mail.value.match(mailformat)){
+        message_mail.innerHTML = "valid mail!"
+        mail.style.backgroundColor = goodColor;
+        message_mail.style.color = goodColor_font;
+      }  
+      else{
+        message_mail.innerHTML = "Invalid mail (valid mail: mymail@example.com)"
+        mail.style.backgroundColor = badColor;
+        message_mail.style.color = badColor_font;
+      }
+    }
+
+  </script>
+</div>
+{% endblock content %}

@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect, HttpResponse
 from django.utils import timezone
 from django.contrib.auth import authenticate, login, logout
-from .forms import UserForm
+from .forms import UserForm, ElectionForm
 from .models import User
 from django.http import Http404
 
@@ -75,4 +75,26 @@ def user_logout(request):
         return redirect('system.views.user_login')
 
     else:
+        return redirect('system.views.user_login')
+
+def election_add(request):
+
+    if request.user.is_authenticated:
+        try:
+            if request.method == 'POST':
+                form = ElectionForm(request.POST)
+
+                election = form.save()
+                election.save()
+                return redirect('system.views.user_home')
+
+            else:
+                form = ElectionForm()
+                return render(request,'system/election_add.html', {'form':form})
+
+        except:
+            form = ElectionForm()
+            return render(request,'system/election_add.html', {'form':form})
+
+    elif not request.user.is_authenticated:
         return redirect('system.views.user_login')

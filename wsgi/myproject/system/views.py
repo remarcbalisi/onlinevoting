@@ -6,11 +6,7 @@ from .models import User
 from django.http import Http404
 
 def index(request):
-<<<<<<< HEAD
-    return render(request, 'system/index.html')
-=======
 	return render(request, 'system/index2.html')
->>>>>>> 32530d2e25f2da8698c59cce1654372ca9d8c725
 
 def user_add(request):
     try:
@@ -33,13 +29,9 @@ def user_add(request):
         else:
             form = UserForm()
 
-<<<<<<< HEAD
     except:
-        form = UserForm()
-        return render(request, 'system/user_add.html', {'form': form})
-=======
-			return redirect('system.views.index')
->>>>>>> 32530d2e25f2da8698c59cce1654372ca9d8c725
+		form = UserForm()
+		return redirect('system.views.index')
 
     return render(request, 'system/user_add.html', {'form': form})
 
@@ -75,11 +67,3 @@ def user_home(request):
 
     else:
         return redirect(request, 'system.views.user_login')	
-
-def user_logout(request):
-    if request.user.is_authenticated():
-        logout(request)
-        return redirect('system.views.user_login')
-
-    else:
-        return redirect('system.views.user_login')

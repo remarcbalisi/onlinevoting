@@ -67,3 +67,12 @@ def user_home(request):
 
     else:
         return redirect(request, 'system.views.user_login')	
+
+def user_logout(request):
+
+    if request.user.is_authenticated():
+        logout(request)
+        return redirect('system.views.user_login')
+
+    else:
+        return redirect('system.views.user_login')

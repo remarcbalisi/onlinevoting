@@ -20,7 +20,7 @@
                 <li><a href="#about" class="scroll">about</a></li>
                 <li><a href="#team" class="scroll">team</a></li>
                 <li class="page-scroll"><a href="#contact" class="scroll">contact</a></li>
-                <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">{{ user.first_name }}<span class="caret"></span></a>
+                <li><a href="{% url "user_logout" %}" >Logout<span class="caret"></span></a></li>
               </ul>
               <a href="#" id="pull"><img src="web/images/nav-icon.png" title="menu" /></a>
             </nav>

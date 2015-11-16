@@ -2,7 +2,7 @@
 {% load staticfiles %}
 
 {% block title %}
-<title>Online Voting | Register</title>
+<title>Online Voting | Add Position</title>
 {% endblock title %}
 
     {% block navbar %}
@@ -20,7 +20,7 @@
                 <li><a href="#about" class="scroll">about</a></li>
                 <li><a href="#team" class="scroll">team</a></li>
                 <li class="page-scroll"><a href="#contact" class="scroll">contact</a></li>
-                <li class="active-join" ><a href="{% url "user_add" %}">Add user</a></li>
+                <li><a href="{% url "user_logout" %}">Logout<span class="caret"></span></a></li>
               </ul>
               <a href="#" id="pull"><img src="web/images/nav-icon.png" title="menu" /></a>
             </nav>
@@ -36,35 +36,18 @@
 <!--sign up form-->
 <div class="container">
   <div class="jumbotron">
-    <h2>Add user</h2>
+    <h2>Add position</h2>
     <form method="POST" class="form-inline" role="form">
         {% csrf_token %}
+
       <div class="form-group">
-        <input name="id_number" type="text" class="form-control" placeholder=" id number" required>
-      </div><br>
-      <div class="form-group">
-        <input name="first_name" type="text" class="form-control" placeholder=" first name" required>
+        <input name="position_name" type="text" class="form-control" placeholder=" position" required>
       </div>
-      <div class="form-group">
-        <input name="last_name" type="text" class="form-control" placeholder=" last name" required>
-      </div><br><br>
-      <div class="form-group">
-        <input name="contact_number" type="text" class="form-control" placeholder=" contact number" required>
-      </div><br>
-      <div class="form-group">
-        <input name="email" type="email" class="form-control" placeholder=" email" id="mail" onkeyup="checkMail(); return false;" required>
-      </div><br>
-      <span id="confirmMail" class="confirmMessage"></span><br>
-      <div class="form-group">
-        <input name="password" type="password" class="form-control" placeholder=" password" id="pass1" required>
-      </div><br>
-      <div class="form-group">
-        <input name="password" type="password" class="form-control" placeholder=" re-enter password" id="pass2" onkeyup="checkPass(); return false;" required>
-      </div><br>
-      <span id="confirmMessage" class="confirmMessage"></span><br>
-      <button type="submit" class="btn btn-default" id="submit_button">Add User</button>
+
+      <button type="submit" class="btn btn-default" id="submit_button">Add position</button>
     </form>
   </div>
+</div>
 
 
   <script type="text/javascript">

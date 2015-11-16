@@ -17,10 +17,10 @@
              <nav class="top-nav">
               <ul class="top-nav">
                 <li><a href="{% url "index" %}">home</a></li>
-                <li><a href="#about" class="scroll">about</a></li>
-                <li><a href="#team" class="scroll">team</a></li>
                 <li class="page-scroll"><a href="#contact" class="scroll">contact</a></li>
-                <li><a href="{% url "user_logout" %}" >Logout<span class="caret"></span></a></li>
+                <li><a href="#team" class="scroll">team</a></li>
+                <li><a href="{% url "user_add" %}">Add user</a></li>
+                <li><a href="{% url "user_logout" %}">Logout<span class="caret"></span></a></li>
               </ul>
               <a href="#" id="pull"><img src="web/images/nav-icon.png" title="menu" /></a>
             </nav>
@@ -37,6 +37,12 @@
 	<div class="jumbotron">
 		<h1>Welcome {{ user.first_name }} {{ user.last_name }}</h1>
 		<h5>{{ user.id_number }}</h5>
+
+    <div class="col-sm-4">
+        <ul class="list-group">
+        <a href="{% url "position_add" %}" class="list-group-item">Add Position</a>
+        </ul>
+    </div><!-- /.col-sm-4 -->
 	</div>
 </div>
 

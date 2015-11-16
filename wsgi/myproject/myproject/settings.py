@@ -17,6 +17,12 @@ REPO_DIR = os.path.dirname(WSGI_DIR)
 DATA_DIR = os.environ.get('OPENSHIFT_DATA_DIR', BASE_DIR)
 
 
+<<<<<<< HEAD
+=======
+
+
+
+>>>>>>> 32530d2e25f2da8698c59cce1654372ca9d8c725
 import sys
 sys.path.append(os.path.join(REPO_DIR, 'libs'))
 import secrets
@@ -29,7 +35,7 @@ SECRETS = secrets.getter(os.path.join(DATA_DIR, 'secrets.json'))
 SECRET_KEY = SECRETS['secret_key']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG') == 'True'
+DEBUG = True
 
 from socket import gethostname
 ALLOWED_HOSTS = [
@@ -89,12 +95,21 @@ WSGI_APPLICATION = 'myproject.wsgi.application'
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 DATABASES = {
     'default': {
+<<<<<<< HEAD
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'onlinevotingdb',
         'USER': 'postgres',
         'PASSWORD': 'kristel110496',
         'HOST': 'localhost',
         'PORT': '5432',
+=======
+    'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    'NAME': 'onlinevotingdb',
+    'USER': 'postgres',
+    'PASSWORD': 'remarc@15',
+    'HOST': 'localhost',
+    'PORT': '5432',
+>>>>>>> 32530d2e25f2da8698c59cce1654372ca9d8c725
     }
 }
 

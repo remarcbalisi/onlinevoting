@@ -6,7 +6,7 @@ from .models import User
 from django.http import Http404
 
 def index(request):
-	return render(request, 'system/index.html')
+	return render(request, 'system/index2.html')
 
 def user_add(request):
 
@@ -26,7 +26,7 @@ def user_add(request):
 			user.last_name = lname
 			user.contact_number = contact_number
 
-			return redirect('system.views.user_login')
+			return redirect('system.views.index')
 
 		else:
 			form = UserForm()

@@ -75,17 +75,17 @@ class Candidate(models.Model):
         return "%s %s %s" % (firstname, middle_name, last_name)
 
 class Party(models.Model):
-    party_name = models.CharField(max_length=30, null=True)
+    party_name = models.CharField(max_length=30, null=True, unique=True)
     election_id = models.ForeignKey('Election', blank=True, null=True)
 
 class Position(models.Model):
-    position_name = models.CharField(max_length=20, null=True)
+    position_name = models.CharField(max_length=20, null=True, unique=True)
 
     def __str__(self):
         return self.position_name
 
 class Election(models.Model):
-    year = models.IntegerField(null=True)
+    year = models.IntegerField(null=True, unique=True)
     is_active = models.BooleanField(default=False)
 
     def __str__(self):
@@ -98,7 +98,7 @@ class Election(models.Model):
         self.is_active = False
 
 class College(models.Model):
-    college_name = models.CharField(max_length=50, null=True)
+    college_name = models.CharField(max_length=50, null=True, unique=True)
 
     def __str__(self):
         return self.college_name

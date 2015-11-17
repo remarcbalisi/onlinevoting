@@ -2,10 +2,10 @@
 {% load staticfiles %}
 
 {% block title %}
-	<title>Online Voting | Home</title>
+<title>Online Voting | Add Election Year</title>
 {% endblock title %}
 
-{% block navbar %}
+    {% block navbar %}
     <!--- start-header-->
     <div class="container">
       <div id="home" class="header wow bounceInDown" data-wow-delay="0.4s">
@@ -17,11 +17,10 @@
              <nav class="top-nav">
               <ul class="top-nav">
                 <li><a href="{% url "index" %}">home</a></li>
-                <li class="page-scroll"><a href="#contact" class="scroll">contact</a></li>
+                <li><a href="#about" class="scroll">about</a></li>
                 <li><a href="#team" class="scroll">team</a></li>
-                <li><a href="{% url "user_add" %}">Add user</a></li>
-                <li><a href="{% url "election_add" %}">Add election year</a></li>
-                <li><a href="{% url "user_logout" %}">Logout<span class="caret"></span></a></li>
+                <li class="page-scroll"><a href="#contact" class="scroll">contact</a></li>
+                <li class="active-join" ><a href="{% url "user_add" %}">Add Election Year</a></li>
               </ul>
               <a href="#" id="pull"><img src="web/images/nav-icon.png" title="menu" /></a>
             </nav>
@@ -31,21 +30,76 @@
       </div>
       <!-- //End-header-->
       <div class="clearfix"> </div>
-{% endblock navbar %}
+    {% endblock navbar %}
 
 {% block content %}
+<!--sign up form-->
 <div class="container">
-	<div class="jumbotron">
-		<h1>Welcome {{ user.first_name }} {{ user.last_name }}</h1>
-		<h5>{{ user.id_number }}</h5>
+  <div class="jumbotron">
+    <h2>Add Election Year</h2>
+    <form method="POST" class="form-inline" role="form">
+        {% csrf_token %}
+      <div class="form-group">
+       <input name="year" type="integer" class="form-control" placeholder=" election year" required>
+      </div>
 
-    <div class="col-sm-4">
-        <ul class="list-group">
-        <a href="{% url "position_add" %}" class="list-group-item">Add Position</a>
-        </ul>
-    </div><!-- /.col-sm-4 -->
-	</div>
+      <button type="submit" class="btn btn-default" id="submit_button">Add election year</button>
+    </form>
+  </div>
 </div>
+
+
+  <script type="text/javascript">
+    function checkPass(){
+      var pass1 = document.getElementById('pass1');
+      var pass2 = document.getElementById('pass2');
+      var message = document.getElementById('confirmMessage');
+      var goodColor = "#b6ffc7";
+      var goodColor_font = "#66cc66"
+      var badColor = "#ffdada";
+      var badColor_font = "#ff3f3f";
+      if(pass1.value == pass2.value){
+          pass2.style.backgroundColor = goodColor;
+          message.style.color = goodColor_font;
+          message.innerHTML = "Passwords Match!"
+          document.getElementById("submit_button").disabled = false;
+      }
+
+      else{
+          pass2.style.backgroundColor = badColor;
+          message.style.color = badColor_font;
+          message.innerHTML = "Passwords Do Not Match!"
+          document.getElementById("submit_button").disabled = true;
+      }
+    }
+
+    function checkMail(){
+      var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+      var mail = document.getElementById('mail');
+      var message_mail = document.getElementById('confirmMail');
+
+      var goodColor = "#b6ffc7";
+      var goodColor_font = "#66cc66"
+      var badColor = "#ffdada";
+      var badColor_font = "#ff3f3f";
+
+      if(mail.value.match(mailformat)){
+        message_mail.innerHTML = "valid mail!"
+        mail.style.backgroundColor = goodColor;
+        message_mail.style.color = goodColor_font;
+      }  
+      else{
+        message_mail.innerHTML = "Invalid mail (valid mail: mymail@example.com)"
+        mail.style.backgroundColor = badColor;
+        message_mail.style.color = badColor_font;
+      }
+    }
+
+  </script>
+</div>
+
+<!--sign up form-->
+
 
 <!--SCROLL FOR ABOUT etc.-->
 

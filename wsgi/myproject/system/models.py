@@ -89,7 +89,7 @@ class Election(models.Model):
     is_active = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.year
+        return "%s" % (self.year)
 
     def election_init(self):
         self.is_active = True

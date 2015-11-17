@@ -8,4 +8,5 @@ urlpatterns = [
     url(r'^onlinevoting/home/$', views.user_home, name='user_home'),
     url(r'^onlinevoting/logout/$', views.user_logout, name='user_logout'),
     url(r'^onlinevoting/addposition/$', views.position_add, name='position_add'),
+    url(r'^onlinevoting/addcollege/$', views.college_add, name='college_add'),
 ]

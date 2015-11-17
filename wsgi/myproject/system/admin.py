@@ -4,7 +4,7 @@ from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 
-from .models import User, Position
+from .models import User, Position, College
 
 # DISPLAYING IN DJANGO ADMIN
 ##########################################################################
@@ -91,3 +91,4 @@ admin.site.unregister(Group)
 ##########################################################################
 
 admin.site.register(Position)
+admin.site.register(College)

@@ -1,5 +1,5 @@
 from django import forms
-from .models import User, Position
+from .models import User, Position, College
 
 class UserForm(forms.ModelForm):
 
@@ -12,3 +12,9 @@ class PositionForm(forms.ModelForm):
 	class Meta:
 		model = Position
 		fields = ['position_name']
+
+class CollegeForm(forms.ModelForm):
+
+	class Meta:
+		model = College
+		fields = ['college_name']

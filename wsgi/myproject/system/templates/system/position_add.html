@@ -1,246 +1,86 @@
-{% extends "system/index2.html" %}
+{% extends "system/index3.html" %}
 {% load staticfiles %}
+<!DOCTYPE html>
 
-{% block title %}
-<title>Online Voting | Add Position</title>
-{% endblock title %}
-
-    {% block navbar %}
-    <!--- start-header-->
-    <div class="container">
-      <div id="home" class="header wow bounceInDown" data-wow-delay="0.4s">
-          <div class="top-header">
-            <div class="logo">
-              <a href="#">Online Voting</a>
-            </div>
-            <!--start-top-nav-->
-             <nav class="top-nav">
-              <ul class="top-nav">
-                <li><a href="{% url "index" %}">home</a></li>
-                <li><a href="#about" class="scroll">about</a></li>
-                <li><a href="#team" class="scroll">team</a></li>
-                <li class="page-scroll"><a href="#contact" class="scroll">contact</a></li>
-                <li><a href="{% url "user_logout" %}">Logout<span class="caret"></span></a></li>
-              </ul>
-              <a href="#" id="pull"><img src="web/images/nav-icon.png" title="menu" /></a>
-            </nav>
-            <div class="clearfix"> </div>
-          </div>
-        </div>
-      </div>
-      <!-- //End-header-->
-      <div class="clearfix"> </div>
-    {% endblock navbar %}
+{% block title %}<title>Online voting | Add User</title>{% endblock title %}
 
 {% block content %}
-<!--sign up form-->
-<div class="container">
-  <div class="jumbotron">
-    <h2>Add position</h2>
-    <form method="POST" class="form-inline" role="form">
-        {% csrf_token %}
-
-      <div class="form-group">
-        <input name="position_name" type="text" class="form-control" placeholder=" position" required>
-      </div>
-
-      <button type="submit" class="btn btn-default" id="submit_button">Add position</button>
-    </form>
-  </div>
-</div>
-
-
-  <script type="text/javascript">
-    function checkPass(){
-      var pass1 = document.getElementById('pass1');
-      var pass2 = document.getElementById('pass2');
-      var message = document.getElementById('confirmMessage');
-      var goodColor = "#b6ffc7";
-      var goodColor_font = "#66cc66"
-      var badColor = "#ffdada";
-      var badColor_font = "#ff3f3f";
-      if(pass1.value == pass2.value){
-          pass2.style.backgroundColor = goodColor;
-          message.style.color = goodColor_font;
-          message.innerHTML = "Passwords Match!"
-          document.getElementById("submit_button").disabled = false;
-      }
-
-      else{
-          pass2.style.backgroundColor = badColor;
-          message.style.color = badColor_font;
-          message.innerHTML = "Passwords Do Not Match!"
-          document.getElementById("submit_button").disabled = true;
-      }
-    }
-
-    function checkMail(){
-      var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-      var mail = document.getElementById('mail');
-      var message_mail = document.getElementById('confirmMail');
-
-      var goodColor = "#b6ffc7";
-      var goodColor_font = "#66cc66"
-      var badColor = "#ffdada";
-      var badColor_font = "#ff3f3f";
-
-      if(mail.value.match(mailformat)){
-        message_mail.innerHTML = "valid mail!"
-        mail.style.backgroundColor = goodColor;
-        message_mail.style.color = goodColor_font;
-      }  
-      else{
-        message_mail.innerHTML = "Invalid mail (valid mail: mymail@example.com)"
-        mail.style.backgroundColor = badColor;
-        message_mail.style.color = badColor_font;
-      }
-    }
-
-  </script>
-</div>
-
-<!--sign up form-->
-
-
-<!--SCROLL FOR ABOUT etc.-->
-
-      <!-- about -->
-      <div id="about" class="about">
-        <div class="head-section">
-          <div class="container">
-            <h3><span>about</span><label>onlinevoting</label></h3>
-          </div>
-        </div>
-          <!--- about-grids -->
-          <div class="about-grids">
-            <div class="col-md-4 about-grid about-grid1 wow fadeInLeft" data-wow-delay="0.4s">
-              <div class="about-grid-info">
-                <h4><a href="#">this is a point about the company</a></h4>
-                <p>This is Photoshop's version  of Lorem Ipsum. Proin gravida nibh vel velit auctor aliquet. Aenean sollicitudin, lorem quis bibendum auctor, nisi elit consequat ipsum, nec sagittis sem nibh id elit. Duis sed odio sit amet nibh vulputate cursus a sit amet mauris. Morbi accumsan ipsum velit. Nam nec tellus a odio tincidunt auctor a ornare odio. Sed </p>
-              </div>
-              <div class="about-grid-pic">
-              <img src="web/images/about-pic1.jpg" title="name" />
-              </div>
-            </div>
-            <div class="col-md-4 about-grid about-grid2 wow fadeInUp" data-wow-delay="0.4s">
-              <div class="about-grid-pic">
-              <img src="web/images/about-pic2.jpg" title="name" />
-              </div>
-              <div class="about-grid-info">
-                <h4><a href="#">this is a point about the company</a></h4>
-                <p>This is Photoshop's version  of Lorem Ipsum. Proin gravida nibh vel velit auctor aliquet. Aenean sollicitudin, lorem quis bibendum auctor, nisi elit consequat ipsum, nec sagittis sem nibh id elit. Duis sed odio sit amet nibh vulputate cursus a sit amet mauris. Morbi accumsan ipsum velit. Nam nec tellus a odio tincidunt auctor a ornare odio. Sed </p>
-              </div>
-            </div>
-            <div class="col-md-4 about-grid about-grid1 wow fadeInRight" data-wow-delay="0.4s">
-              <div class="about-grid-info">
-                <h4><a href="#">this is a point about the company</a></h4>
-                <p>This is Photoshop's version  of Lorem Ipsum. Proin gravida nibh vel velit auctor aliquet. Aenean sollicitudin, lorem quis bibendum auctor, nisi elit consequat ipsum, nec sagittis sem nibh id elit. Duis sed odio sit amet nibh vulputate cursus a sit amet mauris. Morbi accumsan ipsum velit. Nam nec tellus a odio tincidunt auctor a ornare odio. Sed </p>
-              </div>
-              <div class="about-grid-pic">
-              <img src="web/images/about-pic3.jpg" title="name" />
-              </div>
-            </div>
-            <div class="clearfix"> </div>
-          </div>
-          <!--- /about-grids -->
+      <!--main content start-->
+      <section id="main-content">
+          <section class="wrapper">
+      <div class="row">
+        <div class="col-lg-12">
+          <h3 class="page-header"><i class="fa fa-files-o"></i> Add Election Year</h3>
+          <ol class="breadcrumb">
+            <li><i class="fa fa-home"></i><a href="{% url "user_home" %}">Home</a></li>
+            <li><i class="icon_document_alt"></i>Manage Data</li>
+            <li><i class="fa fa-files-o"></i>Election Form</li>
+          </ol>
         </div>
       </div>
-      <!-- about --> 
-      
+              <!-- Form validations -->              
+              <div class="row">
+                  <div class="col-lg-12">
+                      <section class="panel">
+                          <header class="panel-heading">
+                              Form validations
+                          </header>
+                          <div class="panel-body">
+                              <div class="form">
+                                  <form method="POST" class="form-horizontal" role="form">
 
-      <!-- Team -->
-      <div id="team" class="team">
-        <div class="head-section">
-          <div class="container">
-            <h3><span></span><label>online voting team</label></h3>
-          </div>
-        </div>
-        <!--sreen-gallery-cursual-->
-            <div class="sreen-gallery-cursual">
-               <!-- requried-jsfiles-for owl -->
-              <link href="web/css/owl.carousel.css" rel="stylesheet">
-                  <script src="web/js/owl.carousel.js"></script>
-                      <script>
-                  $(document).ready(function() {
-                    $("#owl-demo").owlCarousel({
-                      items : 3,
-                      lazyLoad : true,
-                      autoPlay : true,
-                      navigation : true,
-                      navigationText :  false,
-                      pagination : false,
-                    });
-                  });
-                  </script>
-               <!-- //requried-jsfiles-for owl -->
-               <!-- start content_slider -->
-                   <div id="owl-demo" class="owl-carousel text-center">
-                          <div class="item wow zoomIn" data-wow-delay="0.3s">
-                            <h5><span>Leprechaun</span> Espinobals</h5>
-                            <label>Scrum Master/CEO/Model/Janitor</label>
+                                  {% if success %}
+                                    <div class="alert alert-success">
+                                      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                      <strong>Success!</strong> {{ success }}
+                                    </div>
+                                  {% endif %}
+
+                                  {% if exist %}
+                                  <div class="alert alert-warning">
+                                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                    <strong>Warning!</strong> {{ exist }}
+                                  </div>
+                                  {% endif %}
+
+                                  {% csrf_token %}
+                                      <div class="form-group ">
+                                          <label for="cname" class="control-label col-lg-2">Position <span class="required">*</span></label>
+                                          <div class="col-lg-3">
+                                              <input class="form-control" name="position_name" type="text" required />
+                                          </div>
+                                      </div>
+                                              <button class="btn btn-primary" type="submit">Save</button>
+                                              <button class="btn btn-default" type="button">Cancel</button>
+                                          </div>
+                                      </div>
+                                  </form>
+                              </div>
+
                           </div>
-                          <div class="item wow zoomIn" data-wow-delay="0.3s">
-                            <h5><span>Marjorie</span> Buctolan</h5>
-                            <label>Programmer</label>
-                          </div>
-                          <div class="item wow zoomIn" data-wow-delay="0.3s">
-                            <h5><span>Kristel </span> Pabillaran</h5>
-                            <label>Designer</label>
-                          </div>
-                          <div class="item wow zoomIn" data-wow-delay="0.3s">
-                            <h5><span>Chezl</span> Salomon</h5>
-                            <label>Marketing</label>
-                          </div>
-                          <div class="item wow zoomIn" data-wow-delay="0.3s">
-                            <h5><span>Shannon </span> Teves</h5>
-                            <label>Designer</label>
-                          </div>
-                      </div>
-            <!--//sreen-gallery-cursual-->
-      </div>
-      </div>
-      <!-- Team -->
-      <!-- map -->
-      <div id="contact" class="map">
-        <div class="map-location">
-          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1667809.5405374563!2d-98.19684021195167!3d35.27017247326614!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x87ac3911b1ac4f9d%3A0x5d1ccf33400aea48!2sOklahoma%2C+USA!5e0!3m2!1sen!2sin!4v1405178655430"> </iframe>
-        </div>
-        <div class="contact-info text-center wow fadeInLeft" data-wow-delay="0.3s">
-          <h4><span>MSU-IIT</span>Online Voting System</h4>
-          <p><span class="map-icon1"> </span>A. Bonifacio Avenue, Tibanga,</p>
-          <p><span class="map-icon2"> </span>9200 Iligan City, Philippines</p>
-          <p><span class="map-icon2"> </span>www.msuiit.edu.ph</p>
-          <p><span class="map-icon3"> </span+63.63.221.4056</p>
-        </div>
-      </div>
-      <!-- map -->
-      <div class="clearfix"> </div>
-      <!-- footer -->
-      <div class="footer text-center">
-        <div class="container">
-          <div class="footer-inner wow zoomIn" data-wow-delay="0.3s">
-            <ul>
-              <li><a href="#"><img src="web/images/footer-logo.png" title="ruddy" /></a></li>
-              <li><a class="contact-me" href="#">contact us</a></li>
-            </ul>
-          </div>
-          <script type="text/javascript">
-                  $(document).ready(function() {
-                    /*
-                    var defaults = {
-                        containerID: 'toTop', // fading element id
-                      containerHoverID: 'toTopHover', // fading element hover id
-                      scrollSpeed: 1200,
-                      easingType: 'linear' 
-                    };
-                    */
-                    
-                    $().UItoTop({ easingType: 'easeOutQuart' });
-                    
-                  });
-                </script>
-        <a href="#" id="toTop" style="display: block;"> <span id="toTopHover" style="opacity: 1;"> </span></a>
-        </div>
-      </div>
-      <!-- footer -->
+                      </section>
+                  </div>
+              </div>
+              <!-- page end-->
+          </section>
+      </section>
+      <!--main content end-->
 {% endblock content %}
+  </section>
+  <!-- container section end -->
+
+    <!-- javascripts -->
+    <script src="{% static "UIver3/js/jquery.js" }"></script>
+    <script src="{% static "UIver3/js/bootstrap.min.js" }"></script>
+    <!-- nice scroll -->
+    <script src="{% static "UIver3/js/jquery.scrollTo.min.js" }"></script>
+    <script src="{% static "UIver3/js/jquery.nicescroll.js" }" type="text/javascript"></script>
+    <!-- jquery validate js -->
+    <script type="text/javascript" src="{% static "UIver3/js/jquery.validate.min.js" }"></script>
+
+    <!-- custom form validation script for this page-->
+    <script src="{% static "UIver3/js/form-validation-script.js" }"></script>
+    <!--custome script for all page-->
+    <script src="{% static "UIver3/js/scripts.js" }"></script>
+
+</html>

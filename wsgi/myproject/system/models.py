@@ -105,3 +105,10 @@ class College(models.Model):
 
     def __str__(self):
         return self.college_name
+
+class ForgotPassword(models.Model):
+        password = 
+    """docstring for ForgotPassword"""
+    def __init__(self, arg):
+        super(ForgotPassword, self).__init__()
+        self.arg = arg

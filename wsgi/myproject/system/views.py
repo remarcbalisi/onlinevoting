@@ -1,8 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect, HttpResponse
 from django.utils import timezone
 from django.contrib.auth import authenticate, login, logout
-from .forms import UserForm, PositionForm, ElectionForm
-from .models import User, Election, Position
+from .forms import UserForm, PositionForm, ElectionForm, PartyForm, CandidateForm
+from .models import User, Election, Position, Party, Candidate
 from django.http import Http404
 
 def user_add(request):
@@ -134,6 +134,64 @@ def election_add(request):
             exist = "Election year already exist"
             form = ElectionForm()
             return render(request,'system/election_add.html', {'form':form, 'exist': exist})
+
+    elif not request.user.is_authenticated:
+        return redirect('system.views.user_login')
+
+def party_add(request):
+
+    if request.user.is_authenticated and request.user.is_admin:
+        try:
+            if request.method == 'POST':
+                form = PartyForm(request.POST)
+
+                party = form.save()
+                party.save()
+
+                form = PartyForm()
+                success = "Party successfully added!"
+                return render(request,'system/party_add.html', {'form': form, 'success': success})
+
+            else:
+                elections = Election.objects.all()
+                form = PartyForm()
+                return render(request,'system/party_add.html', {'form':form, 'elections' :elections})
+
+        except:
+            exist = "Party already exist"
+            form = PartyForm()
+            return render(request,'system/party_add.html', {'form':form, 'exist': exist})
+
+    elif not request.user.is_authenticated:
+        return redirect('system.views.user_login')
+
+def candidate_add(request):
+
+    if request.user.is_authenticated and request.user.is_admin:
+        try:
+            if request.method == 'POST':
+                form = CandidateForm(request.POST)
+
+                candidate = form.save()
+                candidate.save()
+
+                form = CandidateForm()
+                success = "Candidate successfully added!"
+                return render(request,'system/candidate_add.html', {'form': form, 'success': success})
+
+            else:
+                elections = Election.objects.all()
+                positions = Position.objects.all()
+                colleges = College.objects.all()
+                parties = Party.objects.all()
+                form = CandidateForm()
+                return render(request,'system/candidate_add.html', {'form':form, 'elections' :elections,
+                	                                            'positions': positions, 'colleges':colleges, 'parties':parties})
+
+        except:
+            exist = "Brain not found!"
+            form = CandidateForm()
+            return render(request,'system/candidate_add.html', {'form':form, 'exist': exist})
 
     elif not request.user.is_authenticated:
         return redirect('system.views.user_login')

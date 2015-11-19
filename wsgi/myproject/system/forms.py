@@ -1,5 +1,5 @@
 from django import forms
-from .models import User, Position, Election, Party, Candidate
+from .models import User, Position, Election, Party, Candidate, College
 
 class UserForm(forms.ModelForm):
 
@@ -26,8 +26,8 @@ class PartyForm(forms.ModelForm):
 		model = Party
 		fields = ['party_name', 'election_id']
 
-class CandidateForm(forms.ModelForm):
+class CollegeForm(forms.ModelForm):
 
 	class Meta:
-		model = Candidate
-		fields =['first_name', 'middle_name', 'last_name', 'election_id']
+		model = College
+		fields = ['college_name']

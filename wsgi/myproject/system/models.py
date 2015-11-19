@@ -78,6 +78,9 @@ class Party(models.Model):
     party_name = models.CharField(max_length=30, null=True, unique=True)
     election_id = models.ForeignKey('Election', blank=True, null=True)
 
+    def __str__(self):
+        return self.party_name
+
 class Position(models.Model):
     position_name = models.CharField(max_length=20, null=True, unique=True)
 

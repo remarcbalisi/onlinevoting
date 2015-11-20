@@ -1,8 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect, HttpResponse
 from django.utils import timezone
 from django.contrib.auth import authenticate, login, logout
-from .forms import UserForm, PositionForm, ElectionForm, PartyForm
-from .models import User, Election, Position, Party
+from .forms import UserForm, PositionForm, ElectionForm, PartyForm, CollegeForm
+from .models import User, Election, Position, Party, College
 from django.http import Http404
 
 def user_add(request):
@@ -150,7 +150,8 @@ def party_add(request):
 
                 form = PartyForm()
                 success = "Party successfully added!"
-                return render(request,'system/party_add.html', {'form': form, 'success': success})
+                elections = Election.objects.all()
+                return render(request,'system/party_add.html', {'form': form, 'success': success, 'elections': elections})
 
             else:
                 elections = Election.objects.all()
@@ -160,7 +161,34 @@ def party_add(request):
         except:
             exist = "Party already exist"
             form = PartyForm()
-            return render(request,'system/party_add.html', {'form':form, 'exist': exist})
+            elections = Election.objects.all()
+            return render(request,'system/party_add.html', {'form':form, 'exist': exist, 'elections': elections})
+
+    elif not request.user.is_authenticated:
+        return redirect('system.views.user_login')
+
+def college_add(request):
+
+    if request.user.is_authenticated and request.user.is_admin:
+        try:
+            if request.method == 'POST':
+                form = CollegeForm(request.POST)
+
+                college = form.save()
+                college.save()
+
+                form = CollegeForm()
+                success = "College successfully added!"
+                return render(request,'system/college_add.html', {'form': form, 'success': success})
+
+            else:
+                form = CollegeForm()
+                return render(request,'system/college_add.html', {'form':form})
+
+        except:
+            exist = "College already exist"
+            form = CollegeForm()
+            return render(request,'system/college_add.html', {'form':form, 'exist': exist})
 
     elif not request.user.is_authenticated:
         return redirect('system.views.user_login')

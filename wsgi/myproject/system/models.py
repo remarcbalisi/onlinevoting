@@ -63,7 +63,7 @@ class Vote(models.Model):
     election_id = models.ForeignKey('Election', blank=True, null=True)
 
 class Candidate(models.Model):
-    firstname = models.CharField(max_length=45, null=True)
+    first_name = models.CharField(max_length=45, null=True)
     middle_name = models.CharField(max_length=45, null=True)
     last_name = models.CharField(max_length=45, null=True)
     position_id = models.ForeignKey('Position', blank=True, null=True)
@@ -72,7 +72,7 @@ class Candidate(models.Model):
     party_id = models.ForeignKey('Party', blank=True, null=True)
 
     def __str__(self):
-        return "%s %s %s" % (firstname, middle_name, last_name)
+        return "%s %s %s" % (first_name, middle_name, last_name)
 
 class Party(models.Model):
     party_name = models.CharField(max_length=30, null=True, unique=True)

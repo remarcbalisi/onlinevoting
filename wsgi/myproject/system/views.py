@@ -1,8 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect, HttpResponse
 from django.utils import timezone
 from django.contrib.auth import authenticate, login, logout
-from .forms import UserForm, PositionForm, ElectionForm, PartyForm, CollegeForm
-from .models import User, Election, Position, Party, College
+from .forms import UserForm, PositionForm, ElectionForm, PartyForm, CollegeForm, BulletinForm
+from .models import User, Election, Position, Party, College, Bulletin
 from django.http import Http404
 
 def user_add(request):
@@ -189,6 +189,32 @@ def college_add(request):
             exist = "College already exist"
             form = CollegeForm()
             return render(request,'system/college_add.html', {'form':form, 'exist': exist})
+
+    elif not request.user.is_authenticated:
+        return redirect('system.views.user_login')
+
+def bulletin_update(request):
+
+    if request.user.is_authenticated and request.user.is_admin:
+        try:
+            if request.method == 'POST':
+                form = BulletinForm(request.POST)
+
+                bulletin = form.save()
+                bulletin.save()
+
+                form = BulletinForm()
+                success = "Bulletin successfully updated!"
+                return render(request,'system/bulletin_update.html', {'form': form, 'success': success})
+
+            else:
+                form = BulletinForm()
+                return render(request,'system/bulletin_update.html', {'form':form})
+
+        except:
+            exist = "Already exist"
+            form = BulletinForm()
+            return render(request,'system/bulletin_update.html', {'form':form, 'exist': exist})
 
     elif not request.user.is_authenticated:
         return redirect('system.views.user_login')

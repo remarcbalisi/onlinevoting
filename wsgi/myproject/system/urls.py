@@ -10,4 +10,6 @@ urlpatterns = [
     url(r'^onlinevoting/addelection/$', views.election_add, name='election_add'),
     url(r'^onlinevoting/addparty/$', views.party_add, name='party_add'),
     url(r'^onlinevoting/addcollege/$', views.college_add, name='college_add'),
+    url(r'^onlinevoting/updatebulletin/$', views.bulletin_update, name='bulletin_update'),
+
 ]

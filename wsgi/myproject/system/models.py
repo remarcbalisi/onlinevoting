@@ -105,3 +105,9 @@ class College(models.Model):
 
     def __str__(self):
         return self.college_name
+
+class Bulletin(models.Model):
+    bulletin_info = models.CharField(max_length=300, null=True, unique=True)
+
+    def __str__(self):
+        return self.bulletin_info

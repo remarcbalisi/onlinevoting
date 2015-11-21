@@ -1,5 +1,5 @@
 from django import forms
-from .models import User, Position, Election, Party, Candidate, College
+from .models import User, Position, Election, Party, College
 
 class UserForm(forms.ModelForm):
 

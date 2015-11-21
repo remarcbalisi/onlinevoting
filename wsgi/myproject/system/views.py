@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect, HttpResponse
 from django.utils import timezone
 from django.contrib.auth import authenticate, login, logout
 from .forms import UserForm, PositionForm, ElectionForm, PartyForm, CollegeForm
-from .models import User, Election, Position, Party, College
+from .models import User, Election, Position, Party, College, Candidate
 from django.http import Http404
 
 def user_add(request):
@@ -73,8 +73,7 @@ def user_home(request):
             return render(request, 'system/index3.html', {'user': user})
 
         else:
-            return HttpResponse("NOt admin!")
-
+            return HttpResponse("NOT ADMIN!")
     else:
         return redirect(request, 'system.views.user_login')	
 
@@ -109,6 +108,24 @@ def position_add(request):
             exist = "Position already exist"
             form = PositionForm()
             return render(request,'system/position_add.html', {'form':form, 'exist': exist})
+
+    elif not request.user.is_authenticated:
+        return redirect('system.views.user_login')
+
+def position_view(request):
+
+    if request.user.is_authenticated() and request.user.is_admin:
+        try:
+            positions = Position.objects.all()
+            colleges = College.objects.all()
+            candidates = Candidate.objects.all()
+            parties = Party.objects.all()
+            return render(request, 'system/view_position.html', {'positions': positions, 'colleges': colleges,
+                                                                 'candidates': candidates, 'parties': parties})
+
+        except:
+            error = "No existing position!"
+            return render(request, 'system/view_position.html', {'positions': positions})
 
     elif not request.user.is_authenticated:
         return redirect('system.views.user_login')
@@ -179,15 +196,18 @@ def college_add(request):
 
                 form = CollegeForm()
                 success = "College successfully added!"
+                colleges = College.objects.all()
                 return render(request,'system/college_add.html', {'form': form, 'success': success})
 
             else:
+                colleges = College.objects.all()
                 form = CollegeForm()
                 return render(request,'system/college_add.html', {'form':form})
 
         except:
             exist = "College already exist"
             form = CollegeForm()
+            colleges = College.objects.all()
             return render(request,'system/college_add.html', {'form':form, 'exist': exist})
 
     elif not request.user.is_authenticated:

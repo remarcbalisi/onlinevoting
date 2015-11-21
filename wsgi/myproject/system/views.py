@@ -1,8 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect, HttpResponse
 from django.utils import timezone
 from django.contrib.auth import authenticate, login, logout
-from .forms import UserForm, PositionForm, ElectionForm, PartyForm
-from .models import User, Election, Position, Party
+from .forms import UserForm, PositionForm, ElectionForm, PartyForm, CollegeForm, CandidateForm
+from .models import User, Election, Position, Party, College, Candidate
+
 from django.http import Http404
 
 def user_add(request):
@@ -166,41 +167,63 @@ def party_add(request):
         return redirect('system.views.user_login')
 
 
-def forgot_password(request):
-    if request.method == 'POST':
-        password_form = ForgotPasswordEmailForm(request.POST)
-        if password_form.is_valid():
-            user = User.objects.get(email__iexact=password_form.cleaned_data['email'])
-            try:
-                secret = user.secret_question
-                secret_encoded = zlib.compress(pickle.dumps(str(secret.id), 0)).encode('base64').replace('\n', '')
-                request.session['secret'] = secret_encoded
-                return HttpResponseRedirect('password/secret/')
-    else:
-        password_form = ForgotPasswordEmailForm()
-    return render_to_response('forgot_password.html', {'password_form': password_form}, context_instance=RequestContext(request))
 
-def secret_answer(request):
-    if not request.session.has_key('secret') and request.session['secret']:
-        return HttpResponseRedirect('/login/')
-    text = request.session['secret']
-    data = int(pickle.loads(zlib.decompress(text.decode('base64'))))
-    secret_object = get_object_or_404(SecretQuestion, pk=data)
-    user = secret_object.user
-    question = secret_object.question
-    message = ''
-    if request.method == 'POST':
-        answer_form = SecretAnswerForm(request.POST)
-        if answer_form.is_valid():
-            answer = answer_form.cleaned_data['answer']
-            if secret_object.response == answer:
-                from django.contrib.auth.tokens import default_token_generator as token_generator
-                from django.utils.http import int_to_base36
-                notification.send([user], "change_password", {"user": user, 'uid': int_to_base36(user.id), 'token': token_generator.make_token(user), 'site': Site.objects.get_current().domain})
-                del request.session['secret']
-                return render_to_response('password_reset_successful.html', context_instance=RequestContext(request))
+def college_add(request):
+
+    if request.user.is_authenticated:
+        try:
+            if request.method == 'POST':
+                form = CollegeForm(request.POST)
+
+                college = form.save()
+                college.save()
+                return redirect('system.views.user_home')
+
             else:
-                message = 'The Answer does not match with our records'
-    else:
-        answer_form = SecretAnswerForm()
-    return render_to_response('secret_answer.html', {'question': question, 'answer_form': answer_form, 'message': message}, context_instance=RequestContext(request))
+                form = CollegeForm()
+                return render(request, 'system/college_add.html', {'form':form})
+
+        except:
+            form = CollegeForm()
+            return render(request, 'system/college_add.html', {'form':form})
+
+    elif not request.user.is_authenticated:
+        return redirect('system.views.user_login')
+
+def candidate_add(request):
+
+    if request.user.is_authenticated and request.user.is_admin:
+        try:
+            if request.method == 'POST':
+                form = CandidateForm(request.POST)
+                
+                candidate = form.save()
+                candidate.save()
+
+                success = "Candidate successfully added!"
+                elections = Election.objects.all()
+                positions = Position.objects.all()
+                colleges = College.objects.all()
+                parties = Party.objects.all()
+                form = CandidateForm()
+                return render(request,'system/candidate_add.html', {'form':form, 'elections' :elections,
+                                                                'positions': positions, 'colleges':colleges, 'parties':parties})
+
+            else:
+                elections = Election.objects.all()
+                positions = Position.objects.all()
+                colleges = College.objects.all()
+                parties = Party.objects.all()
+                form = CandidateForm()
+                return render(request,'system/candidate_add.html', {'form':form, 'elections' :elections,
+                                                                'positions': positions, 'colleges':colleges, 'parties':parties})
+
+        except:
+            exist = "Please Try Again!"
+            form = CandidateForm()
+            return render(request,'system/candidate_add.html', {'form':form, 'exist': exist})
+
+    elif not request.user.is_authenticated:
+        return redirect('system.views.user_login')
+
+

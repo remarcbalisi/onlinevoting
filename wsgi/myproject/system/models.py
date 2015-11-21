@@ -61,6 +61,10 @@ class User(AbstractBaseUser, PermissionsMixin):
 class Vote(models.Model):
     candidate_id = models.ForeignKey('Candidate', blank=True, null=True)
     election_id = models.ForeignKey('Election', blank=True, null=True)
+    user_id = models.ForeignKey('User', blank=True, null=True)
+
+    def __str__(self):
+        return "%s %s %s" % (self.user_id, self.election_id, self.candidate_id)
 
 class Candidate(models.Model):
     first_name = models.CharField(max_length=45, null=True)

@@ -11,4 +11,5 @@ urlpatterns = [
     url(r'^onlinevoting/addparty/$', views.party_add, name='party_add'),
     url(r'^onlinevoting/addcollege/$', views.college_add, name='college_add'),
     url(r'^onlinevoting/viewposition/$', views.position_view, name='position_view'),
+    url(r'^onlinevoting/vote/$', views.vote, name='vote'),
 ]

@@ -206,7 +206,7 @@ def candidate_add(request):
                 colleges = College.objects.all()
                 parties = Party.objects.all()
                 form = CandidateForm()
-                return render(request,'system/candidate_add.html', {'form':form, 'elections' :elections,
+                return render(request,'system/candidate_add.html', {'form':form, 'success': success, 'elections' :elections,
                                                                 'positions': positions, 'colleges':colleges, 'parties':parties})
 
             else:
@@ -225,5 +225,26 @@ def candidate_add(request):
 
     elif not request.user.is_authenticated:
         return redirect('system.views.user_login')
+
+def candidate_view(request):
+    if request.user.is_authenticated():
+        try:
+            candidate = Candidate.objects.all()
+            elections = Election.objects.all()
+            positions = Position.objects.all()
+            colleges = College.objects.all()
+            parties = Party.objects.all()
+            return render(request, 'system/candidate_view.html', {'candidate':candidate, 'elections' :elections,
+                                                                'positions': positions, 'colleges':colleges, 'parties':parties})
+         
+        except:                                                       
+            error = " No candidates to display"
+            return render(request,'system/candidate_view.html', {'candidate':candidate, 'elections' :elections,
+                                                                'positions': positions, 'colleges':colleges, 'parties':parties})
+
+    elif not request.user.is_authenticated:
+        return redirect('system.views.user_login')
+
+
 
 

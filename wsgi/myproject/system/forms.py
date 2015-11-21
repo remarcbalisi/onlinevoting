@@ -13,6 +13,7 @@ class UserForm(forms.ModelForm):
 class PositionForm(forms.ModelForm):
 
 	class Meta:
+		model = Position
 		fields = ['position_name']
 
 

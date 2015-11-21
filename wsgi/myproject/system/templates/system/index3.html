@@ -141,18 +141,21 @@
                           <li><a class="" href="{% url "party_add" %}">Add Party</a></li>
                           <li><a class="" href="{% url "college_add" %}">Add College</a></li>
                           <li><a class="" href="{% url "candidate_add" %}">Add Candidate</a></li>
+                          
                       </ul>
                   </li>       
                   <li class="sub-menu">
                       <a href="javascript:;" class="">
                           <i class="icon_desktop"></i>
-                          <span>UI Features</span>
+                          <span>Views</span>
                           <span class="menu-arrow arrow_carrot-right"></span>
                       </a>
                       <ul class="sub">
-                          <li><a class="" href="general.html">Elements</a></li>
-                          <li><a class="" href="buttons.html">Buttons</a></li>
-                          <li><a class="" href="grids.html">Grids</a></li>
+                          <li><a class="" href="{% url "candidate_view" %}">View Candidate</a></li>
+                          <li><a class="" href="#">View College</a></li>
+                          <li><a class="" href="#">View Party</a></li>
+                          <li><a class="" href="#">View Position</a></li>
+                          <li><a class="" href="#">View Tally</a></li>
                       </ul>
                   </li>
                   <li>

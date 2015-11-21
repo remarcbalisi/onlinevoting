@@ -1,8 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect, HttpResponse
 from django.utils import timezone
 from django.contrib.auth import authenticate, login, logout
-from .forms import UserForm, PositionForm, ElectionForm, PartyForm, CollegeForm
-from .models import User, Election, Position, Party, College
+from .forms import UserForm, PositionForm, ElectionForm, PartyForm, CollegeForm, VoteForm
+from .models import User, Election, Position, Party, College, Vote, Candidate
 from django.http import Http404
 
 def user_add(request):
@@ -189,6 +189,52 @@ def college_add(request):
             exist = "College already exist"
             form = CollegeForm()
             return render(request,'system/college_add.html', {'form':form, 'exist': exist})
+
+    elif not request.user.is_authenticated:
+        return redirect('system.views.user_login')
+
+def vote(request):
+
+    if request.user.is_authenticated and request.user.is_admin:
+        candidates = Candidate.objects.all()
+        election = Election.objects.all().filter(is_active=True)
+        positions = Position.objects.all()
+        user = get_object_or_404(User, pk=request.user.pk)
+
+        try:
+            if request.method == 'POST':
+                candidate_id_list = request.POST.getlist('candidate_id')
+                counter = 0
+
+                for candidate_list in candidate_id_list:
+                    candidate_pk = candidate_id_list[counter]
+                    print candidate_id_list
+                    print candidate_pk
+                    print election
+                    candidate = get_object_or_404(Candidate, pk=candidate_pk)
+                    print candidate
+                    print user
+                    vote = Vote.objects.create(candidate_id=candidate)
+                    vote.save()
+                    print "1"
+                    vote.election_id = election
+                    vote.save()
+                    vote.user_id = user
+                    vote.save()
+                    counter = counter+1
+
+                return HttpResponse("added!")
+
+            else:
+                form = VoteForm()
+                return render(request,'system/vote.html', {'form':form, 'candidates': candidates,
+                                                            'election': election, 'user': user,
+                                                            'positions': positions})
+
+        except:
+            exist = "ERROR!"
+            form = VoteForm()
+            return render(request,'system/vote.html', {'form':form, 'exist': exist})
 
     elif not request.user.is_authenticated:
         return redirect('system.views.user_login')

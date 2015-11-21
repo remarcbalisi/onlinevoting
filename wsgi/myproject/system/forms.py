@@ -14,6 +14,13 @@ class PositionForm(forms.ModelForm):
 		model = Position
 		fields = ['position_name', 'slot']
 
+
+class CollegeForm(forms.ModelForm):
+
+	class Meta:
+		model = College
+		fields = ['college_name']
+
 class ElectionForm(forms.ModelForm):
 
 	class Meta:
@@ -25,6 +32,12 @@ class PartyForm(forms.ModelForm):
 	class Meta:
 		model = Party
 		fields = ['party_name', 'election_id']
+
+class CandidateForm(forms.ModelForm):
+
+	class Meta:
+		model = Candidate
+		fields = ['first_name', 'middle_name', 'last_name', 'college_id', 'election_id', 'party_id', 'position_id' ]
 
 class CollegeForm(forms.ModelForm):
 

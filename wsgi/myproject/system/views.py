@@ -130,6 +130,21 @@ def position_view(request):
     elif not request.user.is_authenticated:
         return redirect('system.views.user_login')
 
+def position(request, pk):
+
+    if request.user.is_authenticated() and request.user.is_admin:
+        try:
+            positions = Position.objects.all()
+            candidates = Candidate.objects.filter(position_id=pk).all()
+            return render(request, 'system/position.html', {'positions': positions, 'candidates': candidates})
+
+        except:
+            error = "No existing position!"
+            return render(request, 'system/position.html', {'positions': positions})
+
+    elif not request.user.is_authenticated:
+        return redirect('system.views.user_login')
+
 def election_add(request):
 
     if request.user.is_authenticated() and request.user.is_admin:

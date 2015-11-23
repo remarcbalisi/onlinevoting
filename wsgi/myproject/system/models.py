@@ -59,7 +59,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 ###############################################################################
 
 class Vote(models.Model):
-    candidate_id = models.ForeignKey('Candidate', blank=True, null=True)
+    candidate_id = models.ManyToManyField('Candidate')
     election_id = models.ForeignKey('Election', blank=True, null=True)
     user_id = models.ForeignKey('User', blank=True, null=True)
 

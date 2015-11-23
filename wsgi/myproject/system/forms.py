@@ -32,8 +32,6 @@ class CollegeForm(forms.ModelForm):
 		model = College
 		fields = ['college_name']
 
-class VoteForm(forms.ModelForm):
+class VoteForm(forms.Form):
 
-	class Meta:
-		model = Vote
-		fields = ['candidate_id', 'election_id', 'user_id']
+	subjects = forms.ModelMultipleChoiceField(queryset=Vote.objects.all(), widget=forms.CheckboxSelectMultiple)

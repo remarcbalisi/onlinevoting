@@ -245,6 +245,22 @@ def candidate_view(request):
     elif not request.user.is_authenticated:
         return redirect('system.views.user_login')
 
+def party_view(request):
+    if request.user.is_authenticated():
+        try:
+            candidate = Candidate.objects.all()
+            elections = Election.objects.all()
+            parties = Party.objects.all()
+            return render(request, 'system/party_view.html', {'candidate':candidate, 'elections' :elections, 'parties':parties})
+
+        except:
+            error = "No party to display"
+            return render(request, 'system/party_view.html',{'candidate':candidate, 'elections' :elections, 'parties':parties})
+
+    elif not request.user.is_authenticated:
+        return redirect('system.views.user_login')
+
+
 
 
 

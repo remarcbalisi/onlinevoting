@@ -2,7 +2,7 @@
 {% load staticfiles %}
 <!DOCTYPE html>
 
-{% block title %}<title>Online voting | View Candidate</title>{% endblock title %}
+{% block title %}<title>Online voting | View Party</title>{% endblock title %}
 
 {% block content %}
 <section id="main-content">
@@ -22,24 +22,22 @@
                   <div class="col-sm-12">
                       <section class="panel">
                           <header class="panel-heading">
-                              Election Candidates
+                              Election Parties
                           </header>
                           <table class="table">
                               <thead>
                               <tr>
-                                  <th>First Name</th>
-                                  <th>Middle Name</th>
-                                  <th>Last Name</th>
+                                  <th>Party</th>
+                                  
                                  
                               </tr>
                               </thead>
                               <tbody>
-                              {% for candidate in candidate %}
+                              {% for party in parties %}
                              
                               <tr>
-                                  <td>{{ candidate.first_name }}</td>
-                                  <td>{{ candidate.middle_name }}</td>
-                                  <td>{{  candidate.last_name }}</td>
+                                  <td>{{ party.party_name }}</td>
+                                
                                   
                               {% endfor %}
                               </tbody>

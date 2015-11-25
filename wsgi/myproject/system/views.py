@@ -218,75 +218,59 @@ def college_add(request):
     elif not request.user.is_authenticated:
         return redirect('system.views.user_login')
 
-# def vote(request):
-
-#     if request.user.is_authenticated and request.user.is_admin:
-#         candidates = Candidate.objects.all()
-#         election = Election.objects.all().filter(is_active=True)
-#         positions = Position.objects.all()
-#         user = get_object_or_404(User, pk=request.user.pk)
-
-#         try:
-#             if request.method == 'POST':
-#                 candidate_id_list = request.POST.getlist('candidate_id')
-#                 counter = 0
-
-#                 for candidate_list in candidate_id_list:
-#                     candidate_pk = candidate_id_list[counter]
-#                     print candidate_id_list
-#                     print candidate_pk
-#                     print election
-#                     candidate = get_object_or_404(Candidate, pk=candidate_pk)
-#                     print candidate
-#                     print user
-#                     vote = Vote.objects.create(candidate_id=candidate)
-#                     vote.save()
-#                     print "1"
-#                     vote.election_id = election
-#                     vote.save()
-#                     vote.user_id = user
-#                     vote.save()
-#                     counter = counter+1
-
-#                 return HttpResponse("added!")
-
-#             else:
-#                 form = VoteForm()
-#                 return render(request,'system/vote.html', {'form':form, 'candidates': candidates,
-#                                                             'election': election, 'user': user,
-#                                                             'positions': positions})
-
-#         except:
-#             exist = "ERROR!"
-#             form = VoteForm()
-#             return render(request,'system/vote.html', {'form':form, 'exist': exist})
-
-#     elif not request.user.is_authenticated:
-#         return redirect('system.views.user_login')
 
 @login_required
 def vote(request):
     candidates = Candidate.objects.all()
-    election = get_object_or_404(Election, is_active=True)
+
+    # select election that is active if no election found select false
+    try:
+        election = get_object_or_404(Election, is_active=True)
+    except:
+        election = get_object_or_404(Election, is_active=False)
+
     positions = Position.objects.all()
     user = get_object_or_404(User, pk=request.user.pk)
+    button = True
 
-    if request.method == 'POST':
-        vote_formset = VoteForm(request.POST)
+    try:
+        if election.is_active == True:
+            if user.is_voted == False:
+                if request.method == 'POST':
+                    vote_formset = VoteForm(request.POST)
 
-        if vote_formset.is_valid():
-            vote = vote_formset.save()
-            vote.save()
-            vote.election_id = election
-            vote.user_id = user
-            vote.save()
+                    if vote_formset.is_valid():
+                        vote = vote_formset.save()
+                        vote.save()
+                        vote.election_id = election
+                        vote.user_id = user
+                        vote.vote_init()
+                        vote.save()
+                        user.is_voted=True
+                        user.save()
 
-            return HttpResponse("vote added!")
+                        success = "successfully voted!"
+                        button = False
+                        return render(request,'system/vote.html', {'success': success})
 
-    else:
-        form = VoteForm()
-        return render(request,'system/vote.html', {'form':form, 'candidates': candidates,
-                                                   'election': election, 'user': user,
-                                                   'positions': positions})
+                else:
+                    form = VoteForm()
+                    return render(request,'system/vote.html', {'form':form, 'candidates': candidates,
+                                                               'election': election, 'user': user,
+                                                               'positions': positions,
+                                                               'button': button})
 
-    return HttpResponse("failed!")
+            elif user.is_voted == True:
+                exist = "You already voted!"
+                button = False
+                return render(request,'system/vote.html', {'exist': exist})
+
+        elif election.is_active == False:
+            exist = "Eleciton is not active!"
+            return render(request,'system/vote.html', {'exist': exist})
+
+    except:
+        return render(request,'system/vote.html', {'candidates': candidates,
+                                                       'election': election, 'user': user,
+                                                       'positions': positions,
+                                                       'button': button})

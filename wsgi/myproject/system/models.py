@@ -45,6 +45,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
+    is_voted = models.BooleanField(default=False)
 
     def get_full_name(self):
         return self.id_number
@@ -62,9 +63,13 @@ class Vote(models.Model):
     candidate_id = models.ManyToManyField('Candidate')
     election_id = models.ForeignKey('Election', blank=True, null=True)
     user_id = models.ForeignKey('User', blank=True, null=True)
+    date_time_voted = models.DateTimeField(blank=True, null=True)
 
     def __str__(self):
         return "%s %s" % (self.user_id, self.election_id)
+
+    def vote_init(self):
+        date_time_voted = time.now()
 
 class Candidate(models.Model):
     first_name = models.CharField(max_length=45, null=False)

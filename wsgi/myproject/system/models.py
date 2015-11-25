@@ -69,7 +69,9 @@ class Vote(models.Model):
         return "%s %s" % (self.user_id, self.election_id)
 
     def vote_init(self):
-        date_time_voted = time.now()
+        self.date_time_voted = timezone.now()
+
+        # expiry = models.DateTimeField(default=datetime.now + timedelta(days=30))
 
 class Candidate(models.Model):
     first_name = models.CharField(max_length=45, null=False)
@@ -92,6 +94,7 @@ class Party(models.Model):
 
 class Position(models.Model):
     position_name = models.CharField(max_length=20, unique=True)
+    slot = models.IntegerField()
 
     def __str__(self):
         return self.position_name

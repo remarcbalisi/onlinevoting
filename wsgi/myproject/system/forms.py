@@ -12,7 +12,7 @@ class PositionForm(forms.ModelForm):
 
 	class Meta:
 		model = Position
-		fields = ['position_name']
+		fields = ['position_name', 'slot']
 
 class ElectionForm(forms.ModelForm):
 

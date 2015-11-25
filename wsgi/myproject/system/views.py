@@ -5,6 +5,11 @@ from .forms import UserForm, PositionForm, ElectionForm, PartyForm, CollegeForm,
 from .models import User, Election, Position, Party, College, Vote, Candidate
 from django.http import Http404
 
+from django.contrib.auth.decorators import login_required
+from django.db import IntegrityError, transaction
+from django.forms.formsets import formset_factory
+from django.contrib import messages
+
 def user_add(request):
     if request.user.is_authenticated() and request.user.is_admin:
         try:
@@ -259,27 +264,22 @@ def college_add(request):
 #     elif not request.user.is_authenticated:
 #         return redirect('system.views.user_login')
 
-
+@login_required
 def vote(request):
     candidates = Candidate.objects.all()
-    election = Election.objects.all().filter(is_active=True)
+    election = get_object_or_404(Election, is_active=True)
     positions = Position.objects.all()
     user = get_object_or_404(User, pk=request.user.pk)
 
     if request.method == 'POST':
-        form = VoteForm(request.POST)
+        vote_formset = VoteForm(request.POST)
 
-        if form.is_valid():
-
-            vote_list = request.POST.getlist('candidate_id')
-            counter = 0
-
-            for votes in vote_list:
-                vote_pk = vote_list.__getitem__(counter)
-                candidate_entity = Candidate.objects.get(pk=vote_pk) #The model to which we are related
-                my_vote = Vote.objects.create(candidate_id=candidate_entity)
-                vote.save()
-                counter = counter+1
+        if vote_formset.is_valid():
+            vote = vote_formset.save()
+            vote.save()
+            vote.election_id = election
+            vote.user_id = user
+            vote.save()
 
             return HttpResponse("vote added!")
 

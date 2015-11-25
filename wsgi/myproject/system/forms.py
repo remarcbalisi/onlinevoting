@@ -1,5 +1,5 @@
 from django import forms
-from .models import User, Position, Election, Party, College, Vote
+from .models import User, Position, Election, Party, College, Vote, Candidate
 
 class UserForm(forms.ModelForm):
 
@@ -32,6 +32,12 @@ class CollegeForm(forms.ModelForm):
 		model = College
 		fields = ['college_name']
 
-class VoteForm(forms.Form):
+# class VoteForm(forms.Form):
 
-	subjects = forms.ModelMultipleChoiceField(queryset=Vote.objects.all(), widget=forms.CheckboxSelectMultiple)
+# 	subjects = forms.ModelMultipleChoiceField(queryset=Vote.objects.all(), widget=forms.CheckboxSelectMultiple)
+
+class VoteForm(forms.ModelForm):
+
+	class Meta:
+		model = Vote
+		fields = ['candidate_id', 'election_id', 'user_id']

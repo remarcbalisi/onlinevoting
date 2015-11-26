@@ -270,18 +270,14 @@ def candidate_view(request):
 def vote(request):
     candidates = Candidate.objects.all()
 
-    # select election that is active if no election found select false
-    try:
-        election = get_object_or_404(Election, is_active=True)
-    except:
-        election = get_object_or_404(Election, is_active=False)
-
+    # select 1 election that is active
+    election = Election.objects.all().filter(is_active=True)
     positions = Position.objects.all()
     user = get_object_or_404(User, pk=request.user.pk)
     button = True
 
     try:
-        if election.is_active == True:
+        if len(election) == 1:
             if user.is_voted == False:
                 if request.method == 'POST':
                     vote_formset = VoteForm(request.POST)
@@ -312,7 +308,7 @@ def vote(request):
                 button = False
                 return render(request,'system/vote.html', {'exist': exist})
 
-        elif election.is_active == False:
+        elif len(election) == 0:
             exist = "Eleciton is not active!"
             return render(request,'system/vote.html', {'exist': exist})
 

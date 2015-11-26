@@ -1,8 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect, HttpResponse
 from django.utils import timezone
 from django.contrib.auth import authenticate, login, logout
-from .forms import UserForm, PositionForm, ElectionForm, PartyForm, CollegeForm, CandidateForm, VoteForm
-from .models import User, Election, Position, Party, College, Candidate, Vote
+from .forms import UserForm, PositionForm, ElectionForm, PartyForm, CollegeForm, CandidateForm, VoteForm, BulletinForm
+from .models import User, Election, Position, Party, College, Candidate, Vote, Bulletin
 from django.http import Http404
 
 from django.contrib.auth.decorators import login_required
@@ -321,3 +321,30 @@ def vote(request):
                                                        'election': election, 'user': user,
                                                        'positions': positions,
                                                        'button': button})
+
+def bulletin_update(request):
+
+    if request.user.is_authenticated and request.user.is_admin:
+        try:
+            if request.method == 'POST':
+
+                form = BulletinForm(request.POST)
+
+                bulletin = form.save()
+                bulletin.save()
+
+                form = BulletinForm()
+                success = "Bulletin successfully updated!"
+                return render(request,'system/bulletin_update.html', {'form': form, 'success': success})
+
+            else:
+                form = BulletinForm()
+                return render(request,'system/bulletin_update.html', {'form':form})
+
+        except:
+            exist = "Already exist"
+            form = BulletinForm()
+            return render(request,'system/bulletin_update.html', {'form':form, 'exist': exist})
+
+    elif not request.user.is_authenticated:
+        return redirect('system.views.user_login')

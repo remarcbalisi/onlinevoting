@@ -348,3 +348,17 @@ def bulletin_update(request):
 
     elif not request.user.is_authenticated:
         return redirect('system.views.user_login')
+
+def bulletin_view(request):
+
+    if request.user.is_authenticated() and request.user.is_admin:
+        try:
+            bulletin = Bulletin.objects.all()
+            return render(request, 'system/view_bulletin.html', {'bulletin': bulletin})
+
+        except:
+            error = "No existing announcement!"
+            return render(request, 'system/view_bulletin.html', {'bulletin': bulletin})
+
+    elif not request.user.is_authenticated:
+        return redirect('system.views.user_login')

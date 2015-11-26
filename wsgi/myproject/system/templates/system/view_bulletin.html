@@ -1,0 +1,58 @@
+{% extends "system/index3.html" %}
+{% load staticfiles %}
+<!DOCTYPE html>
+
+{% block title %}<title>Online voting | View Bulletin</title>{% endblock title %}
+
+{% block content %}
+<section id="main-content">
+          <section class="wrapper">
+      <div class="row">
+        <div class="col-lg-12">
+          <h3 class="page-header"><i class="fa fa-table"></i> View Bulletin</h3>
+          <ol class="breadcrumb">
+            <li><i class="fa fa-home"></i><a href="{% url "user_home" %}">Home</a></li>
+            <li><i class="fa fa-th-list"></i>Bulletin</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="row">
+                  <div class="col-sm-12">
+                      <section class="panel">
+                          <header class="panel-heading">
+                              Bulletin
+                          </header>
+                          <table class="table">
+                              <thead>
+                              <tr>
+                                  <th><center>Announcement</center></th>
+                              </tr>
+                              </thead>
+                              <tbody>
+                              </tbody>
+                          </table>
+                      </section>
+                  </div>
+              <!-- page end-->
+          </section>
+      </section>
+{% endblock content %}
+  </section>
+  <!-- container section end -->
+
+    <!-- javascripts -->
+    <script src="{% static "UIver3/js/jquery.js" }"></script>
+    <script src="{% static "UIver3/js/bootstrap.min.js" }"></script>
+    <!-- nice scroll -->
+    <script src="{% static "UIver3/js/jquery.scrollTo.min.js" }"></script>
+    <script src="{% static "UIver3/js/jquery.nicescroll.js" }" type="text/javascript"></script>
+    <!-- jquery validate js -->
+    <script type="text/javascript" src="{% static "UIver3/js/jquery.validate.min.js" }"></script>
+
+    <!-- custom form validation script for this page-->
+    <script src="{% static "UIver3/js/form-validation-script.js" }"></script>
+    <!--custome script for all page-->
+    <script src="{% static "UIver3/js/scripts.js" }"></script>
+
+</html>

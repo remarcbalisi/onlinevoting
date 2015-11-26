@@ -13,4 +13,5 @@ urlpatterns = [
     url(r'^onlinevoting/addcandidate/$', views.candidate_add, name='candidate_add'),
     url(r'^onlinevoting/viewcandidate/$', views.candidate_view, name='candidate_view'),
     url(r'^onlinevoting/viewparty/$', views.party_view, name='party_view'),
+    url(r'^onlinevoting/party/(?P<pk>[0-9]+)$', views.party, name='party'),
 ]

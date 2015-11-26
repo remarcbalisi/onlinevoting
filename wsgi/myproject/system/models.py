@@ -64,18 +64,19 @@ class Vote(models.Model):
 
 class Candidate(models.Model):
     first_name = models.CharField(max_length=50, null=True)
-    middle_name = models.CharField(max_length=50, null=True)
+    middle_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50, null=True)
     position_id = models.ForeignKey('Position', blank=True, null=True)
     election_id = models.ForeignKey('Election', blank=True, null=True)
     college_id = models.ForeignKey('College', blank=True, null=True)
     party_id = models.ForeignKey('Party', blank=True, null=True)
 
+
     def __str__(self):
         return "%s %s %s" % (self.first_name, self.middle_name, self.last_name)
 
 class Party(models.Model):
-    party_name = models.CharField(max_length=30, null=True, unique=True)
+    party_name = models.CharField(max_length=50, null=True, unique=True)
     election_id = models.ForeignKey('Election', blank=True, null=True)
 
     def __str__(self):

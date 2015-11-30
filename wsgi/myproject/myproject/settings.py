@@ -92,7 +92,7 @@ DATABASES = {
     'ENGINE': 'django.db.backends.postgresql_psycopg2',
     'NAME': 'onlinevotingdb',
     'USER': 'postgres',
-    'PASSWORD': 'remarc@15',
+    'PASSWORD': 'kristel110496',
     'HOST': 'localhost',
     'PORT': '5432',
     }

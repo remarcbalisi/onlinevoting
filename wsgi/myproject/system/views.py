@@ -135,6 +135,21 @@ def position_view(request):
     elif not request.user.is_authenticated:
         return redirect('system.views.user_login')
 
+def position(request, pk):
+
+    if request.user.is_authenticated() and request.user.is_admin:
+        try:
+            positions = Position.objects.all()
+            candidates = Candidate.objects.filter(position_id=pk).all()
+            return render(request, 'system/position.html', {'positions': positions, 'candidates': candidates})
+
+        except:
+            error = "No existing position!"
+            return render(request, 'system/position.html', {'positions': positions})
+
+    elif not request.user.is_authenticated:
+        return redirect('system.views.user_login')
+
 def election_add(request):
 
     if request.user.is_authenticated() and request.user.is_admin:
@@ -239,6 +254,39 @@ def college_add(request):
         except:
             form = CollegeForm()
             return render(request, 'system/college_add.html', {'form':form})
+
+    elif not request.user.is_authenticated:
+        return redirect('system.views.user_login')
+
+def college_view(request):
+
+    if request.user.is_authenticated() and request.user.is_admin:
+        try:
+            positions = Position.objects.all()
+            colleges = College.objects.all()
+            candidates = Candidate.objects.all()
+            parties = Party.objects.all()
+            return render(request, 'system/view_college.html', {'positions': positions, 'colleges': colleges,
+                                                                 'candidates': candidates, 'parties': parties})
+
+        except:
+            error = "No existing college!"
+            return render(request, 'system/view_college.html', {'positions': positions})
+
+    elif not request.user.is_authenticated:
+        return redirect('system.views.user_login')
+
+def college(request, pk):
+
+    if request.user.is_authenticated() and request.user.is_admin:
+        try:
+            positions = Position.objects.all()
+            candidates = Candidate.objects.filter(college_id=pk).all()
+            return render(request, 'system/college.html', {'positions': positions, 'candidates': candidates})
+
+        except:
+            error = "No existing position!"
+            return render(request, 'system/college.html', {'positions': positions})
 
     elif not request.user.is_authenticated:
         return redirect('system.views.user_login')

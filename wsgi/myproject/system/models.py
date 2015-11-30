@@ -76,7 +76,7 @@ class Vote(models.Model):
 class Candidate(models.Model):
 
     first_name = models.CharField(max_length=50, null=True)
-    middle_name = models.CharField(max_length=50)
+    middle_name = models.CharField(max_length=50, null=True)
     last_name = models.CharField(max_length=50, null=True)
     position_id = models.ForeignKey('Position', blank=True, null=True)
     election_id = models.ForeignKey('Election', blank=True, null=True)

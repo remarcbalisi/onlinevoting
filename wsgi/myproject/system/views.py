@@ -189,6 +189,37 @@ def party_add(request):
     elif not request.user.is_authenticated:
         return redirect('system.views.user_login')
 
+def party_view(request):
+
+    if request.user.is_authenticated() and request.user.is_admin:
+        try:
+            candidate = Candidate.objects.all()
+            elections = Election.objects.all()
+            parties = Party.objects.all()
+            return render(request, 'system/party_view.html', {'candidate':candidate, 'elections' :elections, 'parties':parties})
+
+        except:
+            error = "No party to display"
+            return render(request, 'system/party_view.html',{'parties':parties})
+
+    elif not request.user.is_authenticated:
+        return redirect('system.views.user_login')
+
+def party(request, pk):
+
+    if request.user.is_authenticated() and request.user.is_admin:
+        try:
+            parties = Party.objects.all()
+            candidate = Candidate.objects.filter(party_id=pk).all()
+            return render(request, 'system/party.html', {'parties': parties, 'candidate': candidate})
+
+        except:
+            error = "No party to display!"
+            return render(request, 'system/party.html', {'parties': parties})
+
+    elif not request.user.is_authenticated:
+        return redirect('system.views.user_login')
+
 def college_add(request):
 
     if request.user.is_authenticated:
@@ -198,7 +229,8 @@ def college_add(request):
 
                 college = form.save()
                 college.save()
-                return redirect('system.views.user_home')
+
+                return redirect('system.views.college_add')
 
             else:
                 form = CollegeForm()

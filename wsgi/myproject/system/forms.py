@@ -21,6 +21,13 @@ class CollegeForm(forms.ModelForm):
 		model = College
 		fields = ['college_name']
 
+
+class CollegeForm(forms.ModelForm):
+
+	class Meta:
+		model = College
+		fields = ['college_name']
+
 class ElectionForm(forms.ModelForm):
 
 	class Meta:

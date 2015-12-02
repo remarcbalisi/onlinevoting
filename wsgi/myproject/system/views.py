@@ -285,7 +285,7 @@ def vote(request):
                     if vote_formset.is_valid():
                         vote = vote_formset.save()
                         vote.save()
-                        vote.election_id = election
+                        vote.election_id = election[0]
                         vote.user_id = user
                         vote.vote_init()
                         vote.save()

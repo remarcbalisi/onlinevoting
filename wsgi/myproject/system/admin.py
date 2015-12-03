@@ -43,7 +43,7 @@ class UserChangeForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('id_number', 'email', 'password', 'first_name', 'last_name', 'contact_number', 
+        fields = ('id_number', 'email', 'password', 'first_name', 'middle_name', 'last_name', 'age', 'course', 'year', 'contact_number', 
                   'is_active', 'is_staff', 'is_admin', 'is_voted')
 
     def clean_password(self):
@@ -61,12 +61,12 @@ class MyUserAdmin(UserAdmin):
     # The fields to be used in displaying the User model.
     # These override the definitions on the base UserAdmin
     # that reference specific fields on auth.User.
-    list_display = ('id_number', 'email', 'first_name', 'last_name', 'contact_number', 
+    list_display = ('id_number', 'email', 'first_name', 'middle_name', 'last_name', 'age', 'course', 'year', 'contact_number', 
                     'is_active','is_staff', 'is_admin', 'is_voted')
     list_filter = ('is_admin',)
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
-        ('Personal info', {'fields': ('id_number', 'first_name', 'last_name', 'contact_number')}),
+        ('Personal info', {'fields': ('id_number', 'first_name', 'middle_name', 'last_name', 'age', 'course', 'year', 'contact_number')}),
         ('Permissions', {'fields': ('is_admin','is_staff', 'is_voted')}),
     )
     # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
@@ -74,7 +74,7 @@ class MyUserAdmin(UserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('id_number', 'email', 'first_name', 'last_name', 'contact_number', 'password1', 'password2')}
+            'fields': ('id_number', 'email', 'first_name', 'middle_name', 'last_name', 'age', 'course', 'year', 'contact_number', 'password1', 'password2')}
         ),
     )
     search_fields = ('id_number',)

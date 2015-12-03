@@ -39,7 +39,11 @@ class User(AbstractBaseUser, PermissionsMixin):
     id_number = models.CharField(max_length=10, unique=True)
     email = models.EmailField()
     first_name = models.CharField(max_length=30, null=True, blank=True)
+    middle_name = models.CharField(max_length=30, null=True, blank=True)
     last_name = models.CharField(max_length=30, null=True, blank=True)
+    age = models.IntegerField(null=True, blank=True)
+    course = models.CharField(max_length=30, null=True, blank=True)
+    year = models.IntegerField(null=True, blank=True)
     contact_number = models.CharField(max_length=30, null=True, blank=True)
 
     is_active = models.BooleanField(default=False)

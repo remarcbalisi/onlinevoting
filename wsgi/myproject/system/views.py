@@ -16,7 +16,11 @@ def user_add(request):
             if request.method == 'POST':
                 idnum = request.POST['id_number']
                 fname = request.POST['first_name']
+                mname = request.POST['middle_name']
                 lname = request.POST['last_name']
+                age = request.POST['age']
+                course = request.POST['course']
+                year = request.POST['year']
                 contact_number = request.POST['contact_number']
                 email = request.POST['email']
                 password = request.POST['password']
@@ -24,7 +28,11 @@ def user_add(request):
                 user2 = User.objects.create_user(id_number=idnum, password=password)
                 user2.email = email
                 user2.first_name = fname
+                user2.middle_name = mname
                 user2.last_name = lname
+                user2.age = age
+                user2.course = course
+                user2.year = year
                 user2.contact_number = contact_number
                 user2.save()
 

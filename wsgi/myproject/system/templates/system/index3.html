@@ -123,6 +123,7 @@
                           <li><a class="" href="{% url "party_add" %}">Add Party</a></li>
                           <li><a class="" href="{% url "college_add" %}">Add College</a></li>
                           <li><a class="" href="{% url "candidate_add" %}">Add Candidate</a></li>
+                          <li><a class="" href="{% url "bulletin_update" %}">Update Bulletin</a></li>
                       </ul>
                   </li>       
                   <li class="sub-menu">
@@ -133,20 +134,18 @@
                       </a>
                       <ul class="sub">
                           <li><a class="" href="{% url "candidate_view" %}">View Candidate</a></li>
-                          <li><a class="" href="#">View College</a></li>
-                          <li><a class="" href="#">View Party</a></li>
-                          <li><a class="" href="{% url "position_view" %}">View Position</a></li>
                           <li><a class="" href="#">View Tally</a></li>
-                          <li><a class="" href="{% url "bulletin_update" %}">Update Bulletin</a></li>
+                          <li><a class="" href="{% url "party_view" %}">View Party</a></li>
+                          <li><a class="" href="{% url "position_view" %}">View Position</a></li>
+                          <li><a class="" href="{% url "college_view" %}">View College</a></li>
+                          <li><a class="" href="{% url "bulletin_view" %}">View Bulletin</a></li>
                       </ul>
                   </li>
-                  <li>                     
-                      <a class="" href="chart-chartjs.html">
-                          <i class="icon_piechart"></i>
-                          <span>Charts</span>
-                          
+                  <li>
+                      <a class="" href="{% url "vote" %}">
+                          <i class="icon_check"></i>
+                          <span>Vote</span>
                       </a>
-                                         
                   </li>
               </ul>
               <!-- sidebar menu end-->

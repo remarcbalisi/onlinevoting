@@ -2,7 +2,7 @@
 {% load staticfiles %}
 <!DOCTYPE html>
 
-{% block title %}<title>Online voting | View Position</title>{% endblock title %}
+{% block title %}<title>Online voting | View Party</title>{% endblock title %}
 
 {% block content %}
 <section id="main-content">
@@ -13,27 +13,31 @@
           <ol class="breadcrumb">
             <li><i class="fa fa-home"></i><a href="{% url "user_home" %}">Home</a></li>
             <li><i class="fa fa-table"></i>Table</li>
-            <li><i class="fa fa-th-list"></i>Position</li>
+            <li><i class="fa fa-th-list"></i><a href="{% url "party_view" %}">Party</a></li>
           </ol>
         </div>
       </div>
 
       <div class="row">
-                  <div class="col-sm-12">
+                  <div class="col-sm-6">
                       <section class="panel">
                           <header class="panel-heading">
-                              Position
+                              Party
                           </header>
                           <table class="table">
                               <thead>
                               <tr>
-                                  <th><center>Position</center></th>
+                                  <th><center>
+                                    Candidates
+                                  </center></th>
                               </tr>
                               </thead>
                               <tbody>
-                              {% for position in positions %}
+                              {% for candidate in candidate %}
                               <tr>
-                                  <td><center><li><a href="{% url "position" pk=position.pk %}">{{ position.position_name }}</a></li></center></td>
+                                  <td><center>
+                                      {{ candidate.first_name }} {{ candidate.last_name }}
+                                  </center></td>
                               </tr>
                               {% endfor %}
                               </tbody>

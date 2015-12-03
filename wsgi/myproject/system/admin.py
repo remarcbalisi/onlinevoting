@@ -90,9 +90,9 @@ admin.site.unregister(Group)
 ##########################################################################
 
 admin.site.register(Position)
+admin.site.register(College)
 admin.site.register(Election)
 admin.site.register(Party)
-admin.site.register(College)
 admin.site.register(Candidate)
 admin.site.register(Vote)
 admin.site.register(Bulletin)

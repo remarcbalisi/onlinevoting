@@ -21,6 +21,13 @@ class CollegeForm(forms.ModelForm):
 		model = College
 		fields = ['college_name']
 
+
+class CollegeForm(forms.ModelForm):
+
+	class Meta:
+		model = College
+		fields = ['college_name']
+
 class ElectionForm(forms.ModelForm):
 
 	class Meta:
@@ -54,6 +61,12 @@ class VoteForm(forms.ModelForm):
 	class Meta:
 		model = Vote
 		fields = ['candidate_id', 'election_id', 'user_id']
+
+class CandidateForm(forms.ModelForm):
+
+	class Meta:
+		model = Candidate
+		fields = ['first_name', 'middle_name', 'last_name', 'college_id', 'election_id', 'party_id', 'position_id' ]
 
 class BulletinForm(forms.ModelForm):
 

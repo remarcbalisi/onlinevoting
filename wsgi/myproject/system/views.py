@@ -135,6 +135,21 @@ def position_view(request):
     elif not request.user.is_authenticated:
         return redirect('system.views.user_login')
 
+def position(request, pk):
+
+    if request.user.is_authenticated() and request.user.is_admin:
+        try:
+            positions = Position.objects.all()
+            candidates = Candidate.objects.filter(position_id=pk).all()
+            return render(request, 'system/position.html', {'positions': positions, 'candidates': candidates})
+
+        except:
+            error = "No existing position!"
+            return render(request, 'system/position.html', {'positions': positions})
+
+    elif not request.user.is_authenticated:
+        return redirect('system.views.user_login')
+
 def election_add(request):
 
     if request.user.is_authenticated() and request.user.is_admin:
@@ -189,24 +204,95 @@ def party_add(request):
     elif not request.user.is_authenticated:
         return redirect('system.views.user_login')
 
+def party_view(request):
+
+    if request.user.is_authenticated() and request.user.is_admin:
+        try:
+            candidate = Candidate.objects.all()
+            elections = Election.objects.all()
+            parties = Party.objects.all()
+            return render(request, 'system/party_view.html', {'candidate':candidate, 'elections' :elections, 'parties':parties})
+
+        except:
+            error = "No party to display"
+            return render(request, 'system/party_view.html',{'parties':parties})
+
+    elif not request.user.is_authenticated:
+        return redirect('system.views.user_login')
+
+def party(request, pk):
+
+    if request.user.is_authenticated() and request.user.is_admin:
+        try:
+            parties = Party.objects.all()
+            candidate = Candidate.objects.filter(party_id=pk).all()
+            return render(request, 'system/party.html', {'parties': parties, 'candidate': candidate})
+
+        except:
+            error = "No party to display!"
+            return render(request, 'system/party.html', {'parties': parties})
+
+    elif not request.user.is_authenticated:
+        return redirect('system.views.user_login')
+
 def college_add(request):
 
-    if request.user.is_authenticated:
+    if request.user.is_authenticated and request.user.is_admin:
         try:
             if request.method == 'POST':
                 form = CollegeForm(request.POST)
 
                 college = form.save()
                 college.save()
-                return redirect('system.views.user_home')
+
+                form = CollegeForm()
+                success = "College successfully added!"
+                colleges = College.objects.all()
+                return render(request,'system/college_add.html', {'form': form, 'success': success})
 
             else:
+                colleges = College.objects.all()
                 form = CollegeForm()
-                return render(request, 'system/college_add.html', {'form':form})
+                return render(request,'system/college_add.html', {'form':form})
 
         except:
+            exist = "College already exist"
             form = CollegeForm()
-            return render(request, 'system/college_add.html', {'form':form})
+            colleges = College.objects.all()
+            return render(request,'system/college_add.html', {'form':form, 'exist': exist})
+
+    elif not request.user.is_authenticated:
+        return redirect('system.views.user_login')
+
+def college_view(request):
+
+    if request.user.is_authenticated():
+        try:
+            positions = Position.objects.all()
+            colleges = College.objects.all()
+            candidates = Candidate.objects.all()
+            parties = Party.objects.all()
+            return render(request, 'system/view_college.html', {'positions': positions, 'colleges': colleges,
+                                                                 'candidates': candidates, 'parties': parties})
+
+        except:
+            error = "No existing college!"
+            return render(request, 'system/view_college.html', {'positions': positions})
+
+    elif not request.user.is_authenticated:
+        return redirect('system.views.user_login')
+
+def college(request, pk):
+
+    if request.user.is_authenticated() and request.user.is_admin:
+        try:
+            positions = Position.objects.all()
+            candidates = Candidate.objects.filter(college_id=pk).all()
+            return render(request, 'system/college.html', {'positions': positions, 'candidates': candidates})
+
+        except:
+            error = "No existing position!"
+            return render(request, 'system/college.html', {'positions': positions})
 
     elif not request.user.is_authenticated:
         return redirect('system.views.user_login')
@@ -341,6 +427,20 @@ def bulletin_update(request):
             exist = "Already exist"
             form = BulletinForm()
             return render(request,'system/bulletin_update.html', {'form':form, 'exist': exist})
+
+    elif not request.user.is_authenticated:
+        return redirect('system.views.user_login')
+
+def bulletin_view(request):
+
+    if request.user.is_authenticated() and request.user.is_admin:
+        try:
+            bulletin = Bulletin.objects.all()
+            return render(request, 'system/view_bulletin.html', {'bulletin': bulletin})
+
+        except:
+            error = "No existing announcement!"
+            return render(request, 'system/view_bulletin.html', {'bulletin': bulletin})
 
     elif not request.user.is_authenticated:
         return redirect('system.views.user_login')

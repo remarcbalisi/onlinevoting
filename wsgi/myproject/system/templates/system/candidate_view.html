@@ -13,7 +13,7 @@
           <ol class="breadcrumb">
             <li><i class="fa fa-home"></i><a href="index.html">Home</a></li>
             <li><i class="fa fa-table"></i>Table</li>
-            <li><i class="fa fa-th-list"></i>Basic Table</li>
+            <li><i class="fa fa-th-list"></i>Candidates</li>
           </ol>
         </div>
       </div>
@@ -30,7 +30,6 @@
                                   <th>First Name</th>
                                   <th>Middle Name</th>
                                   <th>Last Name</th>
-                                 
                               </tr>
                               </thead>
                               <tbody>
@@ -39,14 +38,13 @@
                               <tr>
                                   <td>{{ candidate.first_name }}</td>
                                   <td>{{ candidate.middle_name }}</td>
-                                  <td>{{ candidate.last_name }}</td>
+                                  <td>{{  candidate.last_name }}</td>
                                   
                               {% endfor %}
                               </tbody>
                           </table>
                       </section>
                   </div>
-                  
 {% endblock content %}
   </section>
   <!-- container section end -->

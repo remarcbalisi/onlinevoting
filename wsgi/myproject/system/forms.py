@@ -1,5 +1,5 @@
 from django import forms
-from .models import User, Position, Election, Party, College, Vote, Candidate
+from .models import User, Position, Election, Party, College, Vote, Candidate, Bulletin
 
 class UserForm(forms.ModelForm):
 
@@ -12,7 +12,14 @@ class PositionForm(forms.ModelForm):
 
 	class Meta:
 		model = Position
-		fields = ['position_name']
+		fields = ['position_name', 'slot']
+
+
+class CollegeForm(forms.ModelForm):
+
+	class Meta:
+		model = College
+		fields = ['college_name']
 
 
 class CollegeForm(forms.ModelForm):
@@ -33,11 +40,21 @@ class PartyForm(forms.ModelForm):
 		model = Party
 		fields = ['party_name', 'election_id']
 
+class CandidateForm(forms.ModelForm):
+
+	class Meta:
+		model = Candidate
+		fields = ['first_name', 'middle_name', 'last_name', 'college_id', 'election_id', 'party_id', 'position_id' ]
+
 class CollegeForm(forms.ModelForm):
 
 	class Meta:
 		model = College
 		fields = ['college_name']
+
+# class VoteForm(forms.Form):
+
+# 	subjects = forms.ModelMultipleChoiceField(queryset=Vote.objects.all(), widget=forms.CheckboxSelectMultiple)
 
 class VoteForm(forms.ModelForm):
 
@@ -50,3 +67,9 @@ class CandidateForm(forms.ModelForm):
 	class Meta:
 		model = Candidate
 		fields = ['first_name', 'middle_name', 'last_name', 'college_id', 'election_id', 'party_id', 'position_id' ]
+
+class BulletinForm(forms.ModelForm):
+
+	class Meta:
+		model = Bulletin
+		fields = ['bulletin_info']

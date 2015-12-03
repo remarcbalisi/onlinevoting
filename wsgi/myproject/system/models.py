@@ -45,6 +45,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
+    is_voted = models.BooleanField(default=False)
 
     def get_full_name(self):
         return self.id_number
@@ -59,17 +60,23 @@ class User(AbstractBaseUser, PermissionsMixin):
 ###############################################################################
 
 class Vote(models.Model):
-    candidate_id = models.ForeignKey('Candidate', blank=True, null=True)
+    candidate_id = models.ManyToManyField('Candidate')
     election_id = models.ForeignKey('Election', blank=True, null=True)
     user_id = models.ForeignKey('User', blank=True, null=True)
+    date_time_voted = models.DateTimeField(blank=True, null=True)
 
     def __str__(self):
-        return "%s %s %s" % (self.user_id, self.election_id, self.candidate_id)
+        return "%s %s" % (self.user_id, self.election_id)
+
+    def vote_init(self):
+        self.date_time_voted = timezone.now()
+
+        # expiry = models.DateTimeField(default=datetime.now + timedelta(days=30))
 
 class Candidate(models.Model):
-    first_name = models.CharField(max_length=45, null=True)
-    middle_name = models.CharField(max_length=45, null=True)
-    last_name = models.CharField(max_length=45, null=True)
+    first_name = models.CharField(max_length=50, null=True)
+    middle_name = models.CharField(max_length=50, null=True)
+    last_name = models.CharField(max_length=50, null=True)
     position_id = models.ForeignKey('Position', blank=True, null=True)
     election_id = models.ForeignKey('Election', blank=True, null=True)
     college_id = models.ForeignKey('College', blank=True, null=True)
@@ -80,6 +87,7 @@ class Candidate(models.Model):
         return "%s %s %s" % (self.first_name, self.middle_name, self.last_name)
 
 class Party(models.Model):
+
     party_name = models.CharField(max_length=50, null=True, unique=True)
     election_id = models.ForeignKey('Election', blank=True, null=True)
 
@@ -87,13 +95,14 @@ class Party(models.Model):
         return self.party_name
 
 class Position(models.Model):
-    position_name = models.CharField(max_length=20, null=True, unique=True)
+    position_name = models.CharField(max_length=20, unique=True)
+    slot = models.IntegerField()
 
     def __str__(self):
         return self.position_name
 
 class Election(models.Model):
-    year = models.IntegerField(null=True, unique=True)
+    year = models.IntegerField(unique=True)
     is_active = models.BooleanField(default=False)
 
     def __str__(self):
@@ -110,3 +119,9 @@ class College(models.Model):
 
     def __str__(self):
         return self.college_name
+
+class Bulletin(models.Model):
+    bulletin_info = models.CharField(max_length=300, null=True, unique=True)
+
+    def __str__(self):
+        return self.bulletin_info

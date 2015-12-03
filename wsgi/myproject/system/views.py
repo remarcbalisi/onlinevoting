@@ -1,9 +1,14 @@
 from django.shortcuts import render, get_object_or_404, redirect, HttpResponse
 from django.utils import timezone
 from django.contrib.auth import authenticate, login, logout
-from .forms import UserForm, PositionForm, ElectionForm, PartyForm, CollegeForm, VoteForm, CandidateForm
-from .models import User, Election, Position, Party, College, Vote, Candidate
+from .forms import UserForm, PositionForm, ElectionForm, PartyForm, CollegeForm, CandidateForm, VoteForm, BulletinForm
+from .models import User, Election, Position, Party, College, Candidate, Vote, Bulletin
 from django.http import Http404
+
+from django.contrib.auth.decorators import login_required
+from django.db import IntegrityError, transaction
+from django.forms.formsets import formset_factory
+from django.contrib import messages
 
 def user_add(request):
     if request.user.is_authenticated() and request.user.is_admin:
@@ -130,6 +135,21 @@ def position_view(request):
     elif not request.user.is_authenticated:
         return redirect('system.views.user_login')
 
+def position(request, pk):
+
+    if request.user.is_authenticated() and request.user.is_admin:
+        try:
+            positions = Position.objects.all()
+            candidates = Candidate.objects.filter(position_id=pk).all()
+            return render(request, 'system/position.html', {'positions': positions, 'candidates': candidates})
+
+        except:
+            error = "No existing position!"
+            return render(request, 'system/position.html', {'positions': positions})
+
+    elif not request.user.is_authenticated:
+        return redirect('system.views.user_login')
+
 def election_add(request):
 
     if request.user.is_authenticated() and request.user.is_admin:
@@ -244,48 +264,35 @@ def college_add(request):
     elif not request.user.is_authenticated:
         return redirect('system.views.user_login')
 
-def vote(request):
+def college_view(request):
 
-    if request.user.is_authenticated and request.user.is_admin:
-        candidates = Candidate.objects.all()
-        election = Election.objects.all().filter(is_active=True)
-        positions = Position.objects.all()
-        user = get_object_or_404(User, pk=request.user.pk)
-
+    if request.user.is_authenticated():
         try:
-            if request.method == 'POST':
-                candidate_id_list = request.POST.getlist('candidate_id')
-                counter = 0
-
-                for candidate_list in candidate_id_list:
-                    candidate_pk = candidate_id_list[counter]
-                    print candidate_id_list
-                    print candidate_pk
-                    print election
-                    candidate = get_object_or_404(Candidate, pk=candidate_pk)
-                    print candidate
-                    print user
-                    vote = Vote.objects.create(candidate_id=candidate)
-                    vote.save()
-                    print "1"
-                    vote.election_id = election
-                    vote.save()
-                    vote.user_id = user
-                    vote.save()
-                    counter = counter+1
-
-                return HttpResponse("added!")
-
-            else:
-                form = VoteForm()
-                return render(request,'system/vote.html', {'form':form, 'candidates': candidates,
-                                                            'election': election, 'user': user,
-                                                            'positions': positions})
+            positions = Position.objects.all()
+            colleges = College.objects.all()
+            candidates = Candidate.objects.all()
+            parties = Party.objects.all()
+            return render(request, 'system/view_college.html', {'positions': positions, 'colleges': colleges,
+                                                                 'candidates': candidates, 'parties': parties})
 
         except:
-            exist = "ERROR!"
-            form = VoteForm()
-            return render(request,'system/vote.html', {'form':form, 'exist': exist})
+            error = "No existing college!"
+            return render(request, 'system/view_college.html', {'positions': positions})
+
+    elif not request.user.is_authenticated:
+        return redirect('system.views.user_login')
+
+def college(request, pk):
+
+    if request.user.is_authenticated() and request.user.is_admin:
+        try:
+            positions = Position.objects.all()
+            candidates = Candidate.objects.filter(college_id=pk).all()
+            return render(request, 'system/college.html', {'positions': positions, 'candidates': candidates})
+
+        except:
+            error = "No existing position!"
+            return render(request, 'system/college.html', {'positions': positions})
 
     elif not request.user.is_authenticated:
         return redirect('system.views.user_login')
@@ -341,6 +348,85 @@ def candidate_view(request):
             error = " No candidates to display"
             return render(request,'system/candidate_view.html', {'candidate':candidate, 'elections' :elections,
                                                                 'positions': positions, 'colleges':colleges, 'parties':parties})
+
+    elif not request.user.is_authenticated:
+        return redirect('system.views.user_login')
+
+@login_required
+def vote(request):
+    candidates = Candidate.objects.all()
+
+    # select 1 election that is active
+    election = Election.objects.all().filter(is_active=True)
+    positions = Position.objects.all()
+    user = get_object_or_404(User, pk=request.user.pk)
+    button = True
+
+    try:
+        if len(election) == 1:
+            if user.is_voted == False:
+                if request.method == 'POST':
+                    vote_formset = VoteForm(request.POST)
+
+                    if vote_formset.is_valid():
+                        vote = vote_formset.save()
+                        vote.save()
+                        vote.election_id = election[0]
+                        vote.user_id = user
+                        vote.vote_init()
+                        vote.save()
+                        user.is_voted=True
+                        user.save()
+
+                        success = "successfully voted!"
+                        button = False
+                        return render(request,'system/vote.html', {'success': success})
+
+                else:
+                    form = VoteForm()
+                    return render(request,'system/vote.html', {'form':form, 'candidates': candidates,
+                                                               'election': election, 'user': user,
+                                                               'positions': positions,
+                                                               'button': button})
+
+            elif user.is_voted == True:
+                exist = "You already voted!"
+                button = False
+                return render(request,'system/vote.html', {'exist': exist})
+
+        elif len(election) == 0:
+            exist = "Eleciton is not active!"
+            return render(request,'system/vote.html', {'exist': exist})
+
+    except:
+        return render(request,'system/vote.html', {'candidates': candidates,
+                                                       'election': election, 'user': user,
+                                                       'positions': positions,
+                                                       'button': button})
+
+def bulletin_update(request):
+
+    if request.user.is_authenticated and request.user.is_admin:
+        try:
+            if request.method == 'POST':
+
+                form = BulletinForm(request.POST)
+
+                bulletin = form.save()
+                bulletin.save()
+
+                form = BulletinForm()
+                success = "Bulletin successfully updated!"
+                return render(request,'system/bulletin_update.html', {'form': form, 'success': success})
+
+            else:
+                form = BulletinForm()
+                return render(request,'system/bulletin_update.html', {'form':form})
+
+        except:
+            exist = "Already exist"
+            form = BulletinForm()
+            return render(request,'system/bulletin_update.html', {'form':form, 'exist': exist})
 
     elif not request.user.is_authenticated:
         return redirect('system.views.user_login')

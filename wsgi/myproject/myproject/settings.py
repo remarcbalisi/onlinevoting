@@ -118,3 +118,4 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(WSGI_DIR, 'static')
 AUTH_USER_MODEL = "system.User"
+LOGIN_URL='system.views.user_login'

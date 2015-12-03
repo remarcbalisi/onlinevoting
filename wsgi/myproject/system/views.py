@@ -361,6 +361,9 @@ def vote(request):
     positions = Position.objects.all()
     user = get_object_or_404(User, pk=request.user.pk)
     button = True
+    candidate = get_object_or_404(Candidate, pk=13)
+    vote = Vote.objects.filter(candidate_id=candidate).count()
+    print "count: %s" %(vote)
 
     try:
         if len(election) == 1:

@@ -1,0 +1,143 @@
+{% extends "system/index3.html" %}
+{% load staticfiles %}
+<!DOCTYPE html>
+
+{% block title %}<title>Online voting | Add Candidate</title>{% endblock title %}
+
+{% block content %}
+      <!--main content start-->
+      <section id="main-content">
+          <section class="wrapper">
+      <div class="row">
+        <div class="col-lg-12">
+          <h3 class="page-header"><i class="fa fa-files-o"></i> Manage Data</h3>
+          <ol class="breadcrumb">
+            <li><i class="fa fa-home"></i><a href="{% url "user_home" %}">Home</a></li>
+            <li><i class="icon_document_alt"></i>Manage Data</li>
+            <li><i class="fa fa-files-o"></i>Election Form</li>
+            <li><i class="fa fa-files-o"></i>Candidate Form</li>
+          </ol>
+        </div>
+      </div>
+              <!-- Form validations -->              
+              <div class="row">
+                  <div class="col-lg-12">
+                      <section class="panel">
+                          <header class="panel-heading">
+                              Candidate Form
+                          </header>
+                          <div class="panel-body">
+                              <div class="form">
+                                  <form method="POST" class="form-horizontal" role="form">
+
+                                  {% if success %}
+                                    <div class="alert alert-success">
+                                      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                      <strong>Success!</strong> {{ success }}
+                                    </div>
+                                  {% endif %}
+
+                                  {% if exist %}
+                                  <div class="alert alert-warning">
+                                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                    <strong>Warning!</strong> {{ exist }}
+                                  </div>
+                                  {% endif %}
+
+                                  {% csrf_token %}
+                                      <div class="form-group ">
+                                          <label for="cname" class="control-label col-lg-2"> First Name<span class="required">*</span></label>
+                                          <div class="col-lg-3">
+                                              <input class="form-control" name="first_name" type="text" required />
+                                          </div>
+                                      </div>
+                                       <div class="form-group ">
+                                          <label for="cname" class="control-label col-lg-2">Middle Name<span class="required">*</span></label>
+                                          <div class="col-lg-3">
+                                              <input class="form-control" name="middle_name" type="text" required />
+                                          </div>
+                                      </div>
+                                       <div class="form-group ">
+                                          <label for="cname" class="control-label col-lg-2">Last Name<span class="required">*</span></label>
+                                          <div class="col-lg-3">
+                                              <input class="form-control" name="last_name" type="text" required />
+                                          </div>
+                                      </div>
+                                      <div class="form-group ">
+                                          <label for="cname" class="control-label col-lg-2"> College <span class="required">*</span></label>
+                                          <div class="col-lg-3">
+                                              <select name="college_id">
+                                              {% for college in colleges %}
+
+                                                  <option value = "{{ college.pk }}">{{college.college_name}}</option>
+                                              {% endfor %}
+                                              </select>
+                                          </div>
+                                      </div>
+                                      <div class="form-group ">
+                                          <label for="cname" class="control-label col-lg-2">Election year<span class="required">*</span></label>
+                                          <div class="col-lg-3">
+                                              <select name="election_id">
+                                              {% for election in elections %}
+
+                                                  <option value = "{{ election.pk }}">{{election.year}}</option>
+                                              {% endfor %}
+                                              </select>
+                                          </div>
+                                      </div>
+                                      <div class="form-group ">
+                                          <label for="cname" class="control-label col-lg-2">Party<span class="required">*</span></label>
+                                          <div class="col-lg-3">
+                                              <select name="party_id">
+                                              {% for party in parties %}
+
+                                                  <option value = "{{ party.pk }}">{{party.party_name}}</option>
+                                              {% endfor %}
+                                              </select>
+                                          </div>
+                                      </div>
+                                      <div class="form-group ">
+                                          <label for="cname" class="control-label col-lg-2"> Position <span class="required">*</span></label>
+                                          <div class="col-lg-3">
+                                              <select name="position_id">
+                                              {% for position in positions %}
+
+                                                  <option value = "{{ position.pk }}">{{position.position_name}}</option>
+                                              {% endfor %}
+                                              </select>
+                                          </div>
+                                      </div>
+                                              <button class="btn btn-primary" type="submit">Save</button>
+                                              <button class="btn btn-default" type="button">Cancel</button>
+                                          </div>
+                                      </div>
+                                  </form>
+                              </div>
+
+                          </div>
+                      </section>
+                  </div>
+              </div>
+              <!-- page end-->
+          </section>
+      </section>
+      <!--main content end-->
+{% endblock content %}
+  </section>
+  <!-- container section end -->
+
+    <!-- javascripts -->
+    <script src="{% static "UIver3/js/jquery.js" }"></script>
+    <script src="{% static "UIver3/js/bootstrap.min.js" }"></script>
+    <!-- nice scroll -->
+    <script src="{% static "UIver3/js/jquery.scrollTo.min.js" }"></script>
+    <script src="{% static "UIver3/js/jquery.nicescroll.js" }" type="text/javascript"></script>
+    <!-- jquery validate js -->
+    <script type="text/javascript" src="{% static "UIver3/js/jquery.validate.min.js" }"></script>
+
+    <!-- custom form validation script for this page-->
+    <script src="{% static "UIver3/js/form-validation-script.js" }"></script>
+    <!--custome script for all page-->
+    <script src="{% static "UIver3/js/scripts.js" }"></script>
+
+</html>

@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect, HttpResponse
 from django.utils import timezone
 from django.contrib.auth import authenticate, login, logout
-from .forms import UserForm, PositionForm, ElectionForm, PartyForm, CollegeForm, VoteForm
+from .forms import UserForm, PositionForm, ElectionForm, PartyForm, CollegeForm, VoteForm, CandidateForm
 from .models import User, Election, Position, Party, College, Vote, Candidate
 from django.http import Http404
 
@@ -184,6 +184,37 @@ def party_add(request):
     elif not request.user.is_authenticated:
         return redirect('system.views.user_login')
 
+def party_view(request):
+
+    if request.user.is_authenticated() and request.user.is_admin:
+        try:
+            candidate = Candidate.objects.all()
+            elections = Election.objects.all()
+            parties = Party.objects.all()
+            return render(request, 'system/party_view.html', {'candidate':candidate, 'elections' :elections, 'parties':parties})
+
+        except:
+            error = "No party to display"
+            return render(request, 'system/party_view.html',{'parties':parties})
+
+    elif not request.user.is_authenticated:
+        return redirect('system.views.user_login')
+
+def party(request, pk):
+
+    if request.user.is_authenticated() and request.user.is_admin:
+        try:
+            parties = Party.objects.all()
+            candidate = Candidate.objects.filter(party_id=pk).all()
+            return render(request, 'system/party.html', {'parties': parties, 'candidate': candidate})
+
+        except:
+            error = "No party to display!"
+            return render(request, 'system/party.html', {'parties': parties})
+
+    elif not request.user.is_authenticated:
+        return redirect('system.views.user_login')
+
 def college_add(request):
 
     if request.user.is_authenticated and request.user.is_admin:
@@ -255,6 +286,61 @@ def vote(request):
             exist = "ERROR!"
             form = VoteForm()
             return render(request,'system/vote.html', {'form':form, 'exist': exist})
+
+    elif not request.user.is_authenticated:
+        return redirect('system.views.user_login')
+
+def candidate_add(request):
+
+    if request.user.is_authenticated and request.user.is_admin:
+        try:
+            if request.method == 'POST':
+                form = CandidateForm(request.POST)
+                
+                candidate = form.save()
+                candidate.save()
+
+                success = "Candidate successfully added!"
+                elections = Election.objects.all()
+                positions = Position.objects.all()
+                colleges = College.objects.all()
+                parties = Party.objects.all()
+                form = CandidateForm()
+                return render(request,'system/candidate_add.html', {'form':form, 'success': success, 'elections' :elections,
+                                                                'positions': positions, 'colleges':colleges, 'parties':parties})
+
+            else:
+                elections = Election.objects.all()
+                positions = Position.objects.all()
+                colleges = College.objects.all()
+                parties = Party.objects.all()
+                form = CandidateForm()
+                return render(request,'system/candidate_add.html', {'form':form, 'elections' :elections,
+                                                                'positions': positions, 'colleges':colleges, 'parties':parties})
+
+        except:
+            exist = "Please Try Again!"
+            form = CandidateForm()
+            return render(request,'system/candidate_add.html', {'form':form, 'exist': exist})
+
+    elif not request.user.is_authenticated:
+        return redirect('system.views.user_login')
+
+def candidate_view(request):
+    if request.user.is_authenticated():
+        try:
+            candidate = Candidate.objects.all()
+            elections = Election.objects.all()
+            positions = Position.objects.all()
+            colleges = College.objects.all()
+            parties = Party.objects.all()
+            return render(request, 'system/candidate_view.html', {'candidate':candidate, 'elections' :elections,
+                                                                'positions': positions, 'colleges':colleges, 'parties':parties})
+         
+        except:                                                       
+            error = " No candidates to display"
+            return render(request,'system/candidate_view.html', {'candidate':candidate, 'elections' :elections,
+                                                                'positions': positions, 'colleges':colleges, 'parties':parties})
 
     elif not request.user.is_authenticated:
         return redirect('system.views.user_login')

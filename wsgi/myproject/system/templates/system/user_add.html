@@ -29,6 +29,12 @@
                               <div class="form">
                                   <form method="POST" class="form-horizontal" role="form">
                                   {% csrf_token %}
+                                  {% if success %}
+                                    <div class="alert alert-success">
+                                      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                      <strong>Success!</strong> {{ success }}
+                                    </div>
+                                  {% endif %}
 
                                   {% if exist %}
                                   <div class="alert alert-warning">
@@ -36,11 +42,28 @@
                                     <strong>Warning!</strong> {{ exist }}
                                   </div>
                                   {% endif %}
-                                  
+                                      <div class="form-group ">
+                                          <label for="cname" class="control-label col-lg-2">ID number <span class="required">*</span></label>
+                                          <div class="col-lg-3">
+                                              <input class="form-control" name="id_number" minlength="5" type="text" required />
+                                          </div>
+                                      </div>
+                                      <div class="form-group ">
+                                          <label for="cemail" class="control-label col-lg-2">E-Mail <span class="required">*</span></label>
+                                          <div class="col-lg-5">
+                                            <input name="email" type="email" class="form-control" placeholder=" email" id="mail" onkeyup="checkMail(); return false;" required><span id="confirmMail" class="confirmMessage"></span>
+                                          </div>
+                                      </div>
                                       <div class="form-group ">
                                           <label class="control-label col-lg-2">First Name <span class="required">*</span></label>
                                           <div class="col-lg-3">
                                               <input class="form-control" name="first_name" type="text" required />
+                                          </div>
+                                      </div>
+                                      <div class="form-group ">
+                                          <label for="cname" class="control-label col-lg-2">Middle Name <span class="required">*</span></label>
+                                          <div class="col-lg-3">
+                                              <input class="form-control" name="middle_name" type="text" required />
                                           </div>
                                       </div>
                                       <div class="form-group ">
@@ -50,9 +73,21 @@
                                           </div>
                                       </div>
                                       <div class="form-group ">
-                                          <label for="cname" class="control-label col-lg-2">ID number <span class="required">*</span></label>
+                                          <label for="cname" class="control-label col-lg-2">Age<span class="required">*</span></label>
                                           <div class="col-lg-3">
-                                              <input class="form-control" name="id_number" minlength="5" type="text" required />
+                                              <input class="form-control" name="age" type="number" required />
+                                          </div>
+                                      </div>
+                                      <div class="form-group ">
+                                          <label for="cname" class="control-label col-lg-2">Course<span class="required">*</span></label>
+                                          <div class="col-lg-3">
+                                              <input class="form-control" name="course" type="text" required />
+                                          </div>
+                                      </div>
+                                      <div class="form-group ">
+                                          <label for="cname" class="control-label col-lg-2">Year<span class="required">*</span></label>
+                                          <div class="col-lg-3">
+                                              <input class="form-control" name="year" type="number" required />
                                           </div>
                                       </div>
                                       <div class="form-group ">
@@ -67,12 +102,7 @@
                                               <input name="password" type="password" class="form-control" placeholder=" re-enter password" id="pass2" onkeyup="checkPass(); return false;" required><span id="confirmMessage" class="confirmMessage"></span>
                                           </div>
                                       </div>
-                                      <div class="form-group ">
-                                          <label for="cemail" class="control-label col-lg-2">E-Mail <span class="required">*</span></label>
-                                          <div class="col-lg-5">
-                                            <input name="email" type="email" class="form-control" placeholder=" email" id="mail" onkeyup="checkMail(); return false;" required><span id="confirmMail" class="confirmMessage"></span>
-                                          </div>
-                                      </div>
+                                      
                                       <div class="form-group ">
                                           <label class="control-label col-lg-2">Contact Number <span class="required">*</span></label>
                                           <div class="col-lg-3">

@@ -30,6 +30,8 @@
                                   <th>First Name</th>
                                   <th>Middle Name</th>
                                   <th>Last Name</th>
+                                  <th>Position</th>
+                                  <th>Election Year</th>
                               </tr>
                               </thead>
                               <tbody>
@@ -39,7 +41,8 @@
                                   <td>{{ candidate.first_name }}</td>
                                   <td>{{ candidate.middle_name }}</td>
                                   <td>{{  candidate.last_name }}</td>
-                                  
+                                  <td>{{ candidate.position_id }}</td>
+                                  <td>{{ candidate.election_id }}</td>
                               {% endfor %}
                               </tbody>
                           </table>

@@ -62,6 +62,12 @@ class VoteForm(forms.ModelForm):
 		model = Vote
 		fields = ['candidate_id', 'election_id', 'user_id']
 
+class CandidateForm(forms.ModelForm):
+
+	class Meta:
+		model = Candidate
+		fields = ['first_name', 'middle_name', 'last_name', 'college_id', 'election_id', 'party_id', 'position_id' ]
+
 class BulletinForm(forms.ModelForm):
 
 	class Meta:

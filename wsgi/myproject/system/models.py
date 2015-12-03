@@ -74,7 +74,6 @@ class Vote(models.Model):
         # expiry = models.DateTimeField(default=datetime.now + timedelta(days=30))
 
 class Candidate(models.Model):
-
     first_name = models.CharField(max_length=50, null=True)
     middle_name = models.CharField(max_length=50, null=True)
     last_name = models.CharField(max_length=50, null=True)

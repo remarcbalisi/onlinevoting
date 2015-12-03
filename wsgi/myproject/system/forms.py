@@ -5,7 +5,7 @@ class UserForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['id_number', 'email', 'first_name', 'last_name', 'password', 'contact_number']
+        fields = ['id_number', 'email', 'first_name', 'middle_name', 'last_name', 'age', 'course', 'year', 'password', 'contact_number']
 
 
 class PositionForm(forms.ModelForm):

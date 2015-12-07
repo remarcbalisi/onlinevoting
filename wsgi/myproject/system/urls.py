@@ -21,5 +21,5 @@ urlpatterns = [
     url(r'^onlinevoting/viewcollege/$', views.college_view, name='college_view'),
     url(r'^onlinevoting/college/(?P<pk>[0-9]+)', views.college, name='college'),
     url(r'^onlinevoting/viewbulletin/$', views.bulletin_view, name='bulletin_view'),
-
+    url(r'^onlinevoting/voterhome/$', views.voters_view, name='voters_view'),
 ]

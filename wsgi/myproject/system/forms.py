@@ -5,7 +5,7 @@ class UserForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['id_number', 'email', 'first_name', 'middle_name', 'last_name', 'age', 'course', 'year', 'password', 'contact_number']
+        fields = ['id_number', 'email', 'first_name', 'middle_name', 'last_name', 'age', 'course', 'year', 'college', 'password', 'contact_number']
 
 
 class PositionForm(forms.ModelForm):
@@ -44,7 +44,7 @@ class CandidateForm(forms.ModelForm):
 
 	class Meta:
 		model = Candidate
-		fields = ['first_name', 'middle_name', 'last_name', 'college_id', 'election_id', 'party_id', 'position_id' ]
+		fields = ['user_id', 'platform', 'achievements', 'life_quote', 'election_id', 'party_id', 'position_id' ]
 
 class CollegeForm(forms.ModelForm):
 
@@ -61,12 +61,6 @@ class VoteForm(forms.ModelForm):
 	class Meta:
 		model = Vote
 		fields = ['candidate_id', 'election_id', 'user_id']
-
-class CandidateForm(forms.ModelForm):
-
-	class Meta:
-		model = Candidate
-		fields = ['first_name', 'middle_name', 'last_name', 'college_id', 'election_id', 'party_id', 'position_id' ]
 
 class BulletinForm(forms.ModelForm):
 

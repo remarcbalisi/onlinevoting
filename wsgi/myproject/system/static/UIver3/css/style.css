@@ -933,9 +933,14 @@ div[data-role="editor-toolbar"] {
   font-weight: 700;
 }
 .info-box .title {
-  font-size: 12px;
+  font-size: 15px;
   text-transform: uppercase;
-  font-weight: 600;
+  font-weight: 800;
+  padding-top: 25px;
+}
+.info-box a {
+    color: #FFFFFF;
+    text-decoration: underline;
 }
 .info-box .desc {
   margin-top: 10px;

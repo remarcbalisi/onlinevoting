@@ -78,7 +78,7 @@ def user_home(request):
             return render(request, 'system/index3.html', {'user': user})
 
         else:
-            return HttpResponse("NOT ADMIN!")
+            return render(request, 'system/voter_view.html')
     else:
         return redirect(request, 'system.views.user_login')	
 
@@ -361,6 +361,9 @@ def vote(request):
     positions = Position.objects.all()
     user = get_object_or_404(User, pk=request.user.pk)
     button = True
+    candidate = get_object_or_404(Candidate, pk=12)
+    vote = Vote.objects.filter(candidate_id=candidate).count()
+    print "count: %s" %(vote)
 
     try:
         if len(election) == 1:
@@ -441,6 +444,23 @@ def bulletin_view(request):
         except:
             error = "No existing announcement!"
             return render(request, 'system/view_bulletin.html', {'bulletin': bulletin})
+
+    elif not request.user.is_authenticated:
+        return redirect('system.views.user_login')
+
+def voters_view(request):
+
+    if request.user.is_authenticated() and request.user.is_admin:
+        try:
+            positions = Position.objects.all()
+            colleges = College.objects.all()
+            candidates = Candidate.objects.all()
+            parties = Party.objects.all()
+            return render(request, 'system/voter_view.html', {'positions': positions, 'colleges': colleges,
+                                                                 'candidates': candidates, 'parties': parties})
+
+        except:
+            return redirect('system.views.user_home')
 
     elif not request.user.is_authenticated:
         return redirect('system.views.user_login')

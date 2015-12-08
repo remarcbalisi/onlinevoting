@@ -115,6 +115,17 @@ def user_profile(request, user_pk):
     if not request.user.is_authenticated():
         return redirect('system.views.user_login')
 
+def user_view(request):
+    if request.user.is_authenticated():
+        try:
+            users = User.objects.all()
+            return render(request, 'system/user_view.html', {'users': users})
+        except:
+            error = " No users to display"
+            return render(request, 'system/user_view.html', {'users': users})
+
+    elif not request.user.is_authenticated:
+        return redirect('system.views.user_login')
 
 def position_add(request):
 

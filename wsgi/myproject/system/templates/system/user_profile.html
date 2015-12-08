@@ -1,0 +1,61 @@
+{% extends "system/index3.html" %}
+{% load staticfiles %}
+<!DOCTYPE html>
+
+{% block title %}<title>Online voting | User Profile</title>{% endblock title %}
+
+{% block content %}
+      <!--main content start-->
+      <section id="main-content">
+          <section class="wrapper">
+      <div class="row">
+        <div class="col-lg-12">
+          <h3 class="page-header"><i class="fa fa-files-o"></i> User Profile</h3>
+          <ol class="breadcrumb">
+            <li><i class="fa fa-home"></i><a href="{% url "user_home" %}">Home</a></li>
+          </ol>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-3 col-sm-6"></div>
+                        <div class="col-lg-3 col-sm-6">
+
+            <div class="card hovercard">
+                <div class="cardheader">
+
+                </div>
+                <div class="avatar">
+                    <img alt="" src="http://lorempixel.com/100/100/people/9/">
+                </div>
+                <div class="info">
+                    <div class="title">
+                         {{ user_prof.first_name }} {{ user_prof.middle_name }} {{ user_prof.last_name }}
+                         {{ user_prof.id_number }}
+
+
+                    </div>
+                    <div class="title">
+                         {{ user_prof.course }} {{ user_prof.year }}
+                         {{ user_prof.email }}
+                    </div>
+                    <div class="title">
+                        {{ user_prof.address }}
+                    </div>
+                    
+                </div>
+                <div class="bottom">
+                    <a class="glyphicon glyphicon-pencil" href="https://twitter.com/webmaniac">
+                    Update
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+</div>
+</div>
+</section>
+</section>
+{% endblock content %}
+

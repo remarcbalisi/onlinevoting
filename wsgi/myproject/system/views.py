@@ -18,7 +18,7 @@ def user_add(request):
                 fname = request.POST['first_name']
                 mname = request.POST['middle_name']
                 lname = request.POST['last_name']
-                age = request.POST['age']
+                address = request.POST['address']
                 course = request.POST['course']
                 year = request.POST['year']
                 contact_number = request.POST['contact_number']
@@ -30,10 +30,11 @@ def user_add(request):
                 user2.first_name = fname
                 user2.middle_name = mname
                 user2.last_name = lname
-                user2.age = age
+                user2.address = address
                 user2.course = course
                 user2.year = year
                 user2.contact_number = contact_number
+
                 user2.save()
 
                 success = "User successfully added!"
@@ -88,7 +89,7 @@ def user_home(request):
         else:
             return HttpResponse("NOT ADMIN!")
     else:
-        return redirect(request, 'system.views.user_login')	
+        return redirect(request, 'system.views.user_login') 
 
 def user_logout(request):
 
@@ -98,6 +99,22 @@ def user_logout(request):
 
     else:
         return redirect('system.views.user_login')
+
+def user_profile(request, user_pk):
+
+    if request.user.is_authenticated():
+        user = User.objects.get(pk=request.user.pk)
+        user_prof = User.objects.get(pk= user_pk)
+        
+        if user.is_admin:
+            return render(request, 'system/user_profile.html', {'user': user, 'user_prof': user_prof})
+
+        elif not user.is_admin:
+            users = user.objects.all()
+            return render(request, 'system/user_profile.html', {'user': user, 'user_prof': user_prof, 'users': users})
+    if not request.user.is_authenticated():
+        return redirect('system.views.user_login')
+
 
 def position_add(request):
 
@@ -311,32 +328,49 @@ def candidate_add(request):
         try:
             if request.method == 'POST':
                 form = CandidateForm(request.POST)
-                
-                candidate = form.save()
-                candidate.save()
+                check_candidate = Candidate.objects.filter(user_id=request.POST['user_id'])
 
-                success = "Candidate successfully added!"
-                elections = Election.objects.all()
-                positions = Position.objects.all()
-                colleges = College.objects.all()
-                parties = Party.objects.all()
-                form = CandidateForm()
-                return render(request,'system/candidate_add.html', {'form':form, 'success': success, 'elections' :elections,
-                                                                'positions': positions, 'colleges':colleges, 'parties':parties})
+                if len(check_candidate) == 0:
+                    candidate = form.save()
+                    candidate.save()
+
+                    success = "Candidate successfully added!"
+                    elections = Election.objects.all()
+                    positions = Position.objects.all()
+                    parties = Party.objects.all()
+                    form = CandidateForm()
+                    users = User.objects.all()
+                    return render(request,'system/candidate_add.html', {'form':form, 'success': success, 'elections' :elections,
+                                                                    'positions': positions, 'parties':parties,
+                                                                    'users': users})
+                else:
+                    exist = "Already listed as candidate. Please Try Again!"
+                    elections = Election.objects.all()
+                    positions = Position.objects.all()
+                    parties = Party.objects.all()
+                    form = CandidateForm()
+                    users = User.objects.all()
+                    return render(request,'system/candidate_add.html', {'form':form, 'success': success, 'elections' :elections,
+                                                                    'positions': positions, 'parties':parties,
+                                                                    'users': users}) 
 
             else:
                 elections = Election.objects.all()
                 positions = Position.objects.all()
-                colleges = College.objects.all()
                 parties = Party.objects.all()
                 form = CandidateForm()
+                users = User.objects.all()
                 return render(request,'system/candidate_add.html', {'form':form, 'elections' :elections,
-                                                                'positions': positions, 'colleges':colleges, 'parties':parties})
+                                                                'positions': positions, 'parties':parties,
+                                                                'users': users})
+
 
         except:
-            exist = "Please Try Again!"
+            exist = "Already listed as candidate. Please Try Again!"
             form = CandidateForm()
+            candidates = Candidate.objects.all()
             return render(request,'system/candidate_add.html', {'form':form, 'exist': exist})
+
 
     elif not request.user.is_authenticated:
         return redirect('system.views.user_login')

@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect, HttpResponse
 from django.utils import timezone
 from django.contrib.auth import authenticate, login, logout
 from .forms import UserForm, PositionForm, ElectionForm, PartyForm, CollegeForm, CandidateForm, VoteForm, BulletinForm
-from .models import User, Election, Position, Party, College, Candidate, Vote, Bulletin
+from .models import User, Election, Position, Party, College, Candidate, Vote, Bulletin, Tally
 from django.http import Http404
 
 from django.contrib.auth.decorators import login_required
@@ -483,6 +483,25 @@ def bulletin_view(request):
         except:
             error = "No existing announcement!"
             return render(request, 'system/view_bulletin.html', {'bulletin': bulletin})
+
+    elif not request.user.is_authenticated:
+        return redirect('system.views.user_login')
+
+def count_tally(request):
+
+    if request.user.is_authenticated() and request.user.is_admin:
+        try:
+            election = Election.objects.all().filter(is_active=True)
+            candidates = Candidate.objects.all()
+
+            for candidate in candidates:
+                vote = Vote.objects.filter(candidate_id=candidate).count()
+                save_vote = Tally.objects.create(vote_count=vote, election_id=election[0], candidate_id=candidate)
+                print "%s count: %s" %(candidate, vote)
+            return HttpResponse("successfully counted! Please check your cmd")
+
+        except:
+            return HttpResponse("error!")
 
     elif not request.user.is_authenticated:
         return redirect('system.views.user_login')

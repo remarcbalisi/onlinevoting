@@ -3,7 +3,7 @@ from django.contrib import admin
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
-from .models import User, Position, Election, Party, College, Candidate, Vote, Bulletin
+from .models import User, Position, Election, Party, College, Candidate, Vote, Bulletin, Tally
 
 # DISPLAYING IN DJANGO ADMIN
 ##########################################################################
@@ -96,3 +96,4 @@ admin.site.register(Party)
 admin.site.register(Candidate)
 admin.site.register(Vote)
 admin.site.register(Bulletin)
+admin.site.register(Tally)

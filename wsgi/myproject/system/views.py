@@ -78,7 +78,7 @@ def user_home(request):
             return render(request, 'system/index3.html', {'user': user})
 
         else:
-            return render(request, 'system/voter_view.html')
+            return redirect('system.views.voters_view')
     else:
         return redirect(request, 'system.views.user_login')	
 
@@ -450,14 +450,28 @@ def bulletin_view(request):
 
 def voters_view(request):
 
-    if request.user.is_authenticated() and request.user.is_admin:
+    if request.user.is_authenticated():
         try:
             positions = Position.objects.all()
             colleges = College.objects.all()
             candidates = Candidate.objects.all()
             parties = Party.objects.all()
-            return render(request, 'system/voter_view.html', {'positions': positions, 'colleges': colleges,
+            return render(request, 'system/voter/index.html', {'positions': positions, 'colleges': colleges,
                                                                  'candidates': candidates, 'parties': parties})
+
+        except:
+            return redirect('system.views.user_home')
+
+    elif not request.user.is_authenticated:
+        return redirect('system.views.user_login')
+
+def candidate(request, pk):
+
+    if request.user.is_authenticated():
+        try:
+            colleges = College.objects.all()
+            candidates = Candidate.objects.filter(college_id=pk)
+            return render(request, 'system/voter/candidate.html', {'colleges': colleges, 'candidates': candidates})
 
         except:
             return redirect('system.views.user_home')

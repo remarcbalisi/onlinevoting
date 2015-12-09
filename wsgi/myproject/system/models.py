@@ -129,3 +129,11 @@ class Bulletin(models.Model):
 
     def __str__(self):
         return self.bulletin_info
+
+class Tally(models.Model):
+    vote_count = models.IntegerField()
+    election_id = models.ForeignKey(Election, null=True, blank=True)
+    candidate_id = models.ForeignKey(Candidate, null=True, blank=True)
+
+    def __str__(self):
+        return "%s count: %s" %(self.candidate_id, self.vote_count)

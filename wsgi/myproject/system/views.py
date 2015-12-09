@@ -490,18 +490,25 @@ def bulletin_view(request):
 def count_tally(request):
 
     if request.user.is_authenticated() and request.user.is_admin:
-        try:
-            election = Election.objects.all().filter(is_active=True)
-            candidates = Candidate.objects.all()
+        election = Election.objects.all().filter(is_active=True)
+        candidates = Candidate.objects.all()
 
-            for candidate in candidates:
-                vote = Vote.objects.filter(candidate_id=candidate).count()
-                save_vote = Tally.objects.create(vote_count=vote, election_id=election[0], candidate_id=candidate)
-                print "%s count: %s" %(candidate, vote)
-            return HttpResponse("successfully counted! Please check your cmd")
+        for candidate in candidates:
+            vote = Vote.objects.filter(candidate_id=candidate).count()
+            save_vote = Tally.objects.create(vote_count=vote, election_id=election[0], candidate_id=candidate)
+            print "%s count: %s" %(candidate, vote)
+        return redirect('system.views.view_tally')
 
-        except:
-            return HttpResponse("error!")
+    elif not request.user.is_authenticated:
+        return redirect('system.views.user_login')
+
+def view_tally(request):
+    if request.user.is_authenticated() and request.user.is_admin:
+        election = Election.objects.all().filter(is_active=True)
+        candidates = Candidate.objects.all().filter(election_id=election[0])
+
+        tallies = Tally.objects.all().filter(election_id=election[0])
+        return render(request, 'system/view_tally.html', {'election': election, 'candidates': candidates, 'tallies':tallies})
 
     elif not request.user.is_authenticated:
         return redirect('system.views.user_login')

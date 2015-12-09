@@ -503,12 +503,18 @@ def count_tally(request):
     if request.user.is_authenticated() and request.user.is_admin:
         election = Election.objects.all().filter(is_active=True)
         candidates = Candidate.objects.all()
+        tally = Tally.objects.all().filter(election_id=election[0])
 
-        for candidate in candidates:
-            vote = Vote.objects.filter(candidate_id=candidate).count()
-            save_vote = Tally.objects.create(vote_count=vote, election_id=election[0], candidate_id=candidate)
-            print "%s count: %s" %(candidate, vote)
-        return redirect('system.views.view_tally')
+        if tally[0].is_counted == False or len(tally) == 0:
+            for candidate in candidates:
+                vote = Vote.objects.filter(candidate_id=candidate).count()
+                save_vote = Tally.objects.create(vote_count=vote, election_id=election[0], candidate_id=candidate)
+                save_vote.init()
+                save_vote.save()
+            return redirect('system.views.view_tally')
+
+        elif tally[0].is_counted == True:
+            return redirect('system.views.view_tally')
 
     elif not request.user.is_authenticated:
         return redirect('system.views.user_login')

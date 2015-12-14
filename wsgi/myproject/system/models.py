@@ -44,7 +44,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     address = models.CharField(max_length=30, null=True, blank=True)
     course = models.CharField(max_length=30, null=True, blank=True)
     year = models.IntegerField(null=True, blank=True)
-    college = models.CharField(max_length=40, null=True, blank=True)
+    college_id = models.ForeignKey('College', blank=True, null=True)
     contact_number = models.CharField(max_length=30, null=True, blank=True)
 
     is_active = models.BooleanField(default=False)

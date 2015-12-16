@@ -44,7 +44,7 @@
                                   <td>{{ candidate.user_id.last_name }}</td>
                                   <td>{{ candidate.position_id }}</td>
                                   <td>{{ candidate.election_id }}</td>
-                                  <td><a href="#">Edit</a> <a href="{% url "delete_candidate" candidate_pk=candidate.pk %}">Delete</a></td>
+                                  <td><a class="glyphicon glyphicon-pencil" href="#"></a> <a href="{% url "delete_candidate" candidate_pk=candidate.pk %}">Delete</a></td>
                               {% endfor %}
                               </tbody>
                           </table>

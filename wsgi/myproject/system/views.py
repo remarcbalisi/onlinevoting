@@ -121,6 +121,29 @@ def user_view(request):
 		return render(request, 'system/user_view.html', {'users':users})
 
 @login_required
+def user_update(request):
+
+    if request.user.is_authenticated():
+        user = User.objects.get(pk=request.user.id)
+        colleges = College.objects.all()
+
+        if request.method == 'POST':
+
+            form = UserForm(request.POST, instance=user)
+
+            if form.is_valid():
+            	updated_user = form.save()
+            	updated_user.save()
+            	updated_user.password=request.POST['password']
+                return redirect('system.views.user_home')
+            else:
+                raise Http404
+        else:
+            return render(request, 'system/user_update.html', {'user': user, 'colleges': colleges})
+
+    return redirect('system.views.user_login')
+
+@login_required
 def position_add(request):
 	try:
 		if request.method == 'POST':
@@ -185,6 +208,17 @@ def election_add(request):
 		except:
 			exist = "Election year already exist"
 			return render(request, 'system/election_add.html', {'exist':exist})
+
+@login_required
+def election_view(request):
+	if request.user.is_admin:
+		try:
+			election = Election.objects.all()
+			return render(request, 'system/election_view.html', {'election':election})
+
+		except:
+			error = "No existing election year!"
+			return render(request, 'system/election_view.html', {'election':election})
 
 @login_required
 def party_add(request):
@@ -407,7 +441,7 @@ def vote(request):
 		return render(request, 'system/vote.html', {'candidates':candidates, 'election':election, 'user':user, 'positions':positions, 'button':button})
 
 @login_required
-def bulletin_update(request):
+def bulletin_add(request):
 	if request.user.is_admin:
 		try:
 			if request.method == 'POST':
@@ -417,15 +451,15 @@ def bulletin_update(request):
 					bulletin = form.save()
 					bulletin.save()
 
-					success = "Bulletin successfully updated!"
-					return render(request, 'system/bulletin_update.html', {'success':success})
+					success = "Bulletin successfully added!"
+					return render(request, 'system/bulletin_add.html', {'success':success})
 
 			else:
-				return render(request, 'system/bulletin_update.html')
+				return render(request, 'system/bulletin_add.html')
 
 		except:
 			exist = "Already exist"
-			return render(request, 'system/bulletin_update.html', {'exist':exist})
+			return render(request, 'system/bulletin_add.html', {'exist':exist})
 
 @login_required
 def bulletin_view(request):
@@ -438,6 +472,28 @@ def bulletin_view(request):
 			error = "No existing announcement!"
 			return render(request, 'system/view_bulletin.html', {'bulletin':bulletin})
 
+@login_required
+def bulletin_update(request):
+	bulletin = get_object_or_404(Bulletin)
+
+	if request.user.is_admin:
+		try:
+			if request.method == 'POST':
+				form = BulletinForm(request.POST, instance=bulletin)
+
+				if form.is_valid():
+					this_bulletin = form.save()
+					this_bulletin.save()
+
+					success = "bulletin successfully updated!"
+					return redirect('system.views.bulletin_view')
+
+			else:
+				return render(request, 'system/bulletin_update.html', {'bulletin':bulletin})
+
+		except:
+			pass
+	
 @login_required
 def count_tally(request):
 	if request.user.is_admin:

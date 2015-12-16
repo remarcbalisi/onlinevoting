@@ -44,7 +44,7 @@ def user_add(request):
                 user2.save()
 
                 success = "User successfully added!"
-                return render(request, 'system/user_add.html', {'success': success})
+                return render(request, 'system/user_add.html', {'success': success, 'colleges':colleges})
 
             else:
                 form = UserForm()

@@ -191,24 +191,31 @@ def party_add(request):
 	if request.user.is_admin:
 		try:
 			if request.method == 'POST':
-				form = PartyForm(request.POST)
+				get_election = get_object_or_404(Election, pk=request.POST['election_id'])
+				get_parties = Party.objects.filter(party_name=request.POST['party_name'], election_id=get_election)
 
-				if form.is_valid():
-					party = form.save()
-					party.save()
+				if len(get_parties) == 0:
+					form = PartyForm(request.POST)
 
-					success = "Party successfully added!"
+					if form.is_valid():
+						party = form.save()
+						party.save()
+
+						success = "Party successfully added!"
+						elections = Election.objects.all()
+						return render(request, 'system/party_add.html', {'success':success, 'elections':elections})
+
+				elif len(get_parties) > 0:
+					exist = "Party already exist"
 					elections = Election.objects.all()
-					return render(request, 'system/party_add.html', {'success':success, 'elections':elections})
+					return render(request, 'system/party_add.html', {'exist':exist, 'elections':elections})
 
 			else:
 				elections = Election.objects.all()
 				return render(request, 'system/party_add.html', {'elections':elections})
 
-		except:
-			exist = "Party already exist"
-			elections = Election.objects.all()
-			return render(request, 'system/party_add.html', {'exist':exist, 'elections':elections})
+		except KeyError:
+			return KeyError
 
 @login_required
 def party_update(request, party_pk):

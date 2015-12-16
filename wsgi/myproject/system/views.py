@@ -354,6 +354,13 @@ def candidate_view(request):
 		return render(request, 'system/candidate_view.html', {'candidates':candidates, 'elections':elections, 'positions':positions, 'colleges':colleges, 'parties':parties})
 
 @login_required
+def delete_candidate(request, candidate_pk):
+	candidates = get_object_or_404(Candidate, pk=candidate_pk)
+	candidates.delete()
+
+	return redirect('system.views.candidate_view')
+
+@login_required
 def vote(request):
 	candidates = Candidate.objects.all()
 

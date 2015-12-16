@@ -30,9 +30,15 @@
                               </tr>
                               </thead>
                               <tbody>
+                              {% for bulletin in bulletin %}
+                              <tr>
+                                  <td><center>{{ bulletin.bulletin_info }}
+                                  <a class="glyphicon glyphicon-pencil" href="{% url 'bulletin_update' %}"></a></center></td>
+                              </tr>
+                              {% endfor %}
                               </tbody>
                           </table>
-                      </section>
+                      </section>  
                   </div>
               <!-- page end-->
           </section>

@@ -27,6 +27,7 @@ def user_add(request):
                 contact_number = request.POST['contact_number']
                 email = request.POST['email']
                 password = request.POST['password']
+                college_id = request.POST['college_id']
 
                 user2 = User.objects.create_user(id_number=idnum, password=password)
                 user2.email = email
@@ -36,6 +37,8 @@ def user_add(request):
                 user2.address = address
                 user2.course = course
                 user2.year = year
+                college_instance = get_object_or_404(College, pk=college_id)
+                user2.college_id = college_instance
                 user2.contact_number = contact_number
 
                 user2.save()
@@ -47,9 +50,8 @@ def user_add(request):
                 form = UserForm()
                 return render(request, 'system/user_add.html', {'colleges':colleges})
 
-        except:
-            exist = "User already exist"
-            return render(request, 'system/user_add.html', {'exist':exist, 'colleges':colleges})
+        except KeyError:
+            return KeyError
 
 def user_login(request):
 	if request.method == 'POST':
@@ -119,6 +121,29 @@ def user_view(request):
 		return render(request, 'system/user_view.html', {'users':users})
 
 @login_required
+def user_update(request):
+
+    if request.user.is_authenticated():
+        user = User.objects.get(pk=request.user.id)
+        colleges = College.objects.all()
+
+        if request.method == 'POST':
+
+            form = UserForm(request.POST, instance=user)
+
+            if form.is_valid():
+            	updated_user = form.save()
+            	updated_user.save()
+            	updated_user.password=request.POST['password']
+                return redirect('system.views.user_home')
+            else:
+                raise Http404
+        else:
+            return render(request, 'system/user_update.html', {'user': user, 'colleges': colleges})
+
+    return redirect('system.views.user_login')
+
+@login_required
 def position_add(request):
 	try:
 		if request.method == 'POST':
@@ -183,6 +208,17 @@ def election_add(request):
 		except:
 			exist = "Election year already exist"
 			return render(request, 'system/election_add.html', {'exist':exist})
+
+@login_required
+def election_view(request):
+	if request.user.is_admin:
+		try:
+			election = Election.objects.all()
+			return render(request, 'system/election_view.html', {'election':election})
+
+		except:
+			error = "No existing election year!"
+			return render(request, 'system/election_view.html', {'election':election})
 
 @login_required
 def party_add(request):
@@ -253,6 +289,13 @@ def party_view(request):
 			return render(request, 'system/party_view.html', {'error':error, 'parties':parties})
 
 @login_required
+def delete_party(request, party_pk):
+	party = get_object_or_404(Party, pk=party_pk)
+	party.delete()
+
+	return redirect('system.views.party_view')
+
+@login_required
 def party(request, pk):
 	if request.user.is_admin:
 		try:
@@ -303,7 +346,7 @@ def college(request, pk):
 	if request.user.is_admin:
 		try:
 			positions = Position.objects.all()
-			candidates = Candidate.objects.all.filter(college_id=pk)
+			candidates = Candidate.objects.filter(college_id=pk)
 			return render(request, 'system/college.html', {'positions':positions, 'candidates':candidates})
 
 		except:
@@ -317,28 +360,40 @@ def candidate_add(request):
 		positions = Position.objects.all()
 		parties = Party.objects.all()
 		users = User.objects.all()
+		colleges = College.objects.all()
 		try:
 			if request.method == 'POST':
 				form = CandidateForm(request.POST)
+				get_position = get_object_or_404(Position, pk=request.POST['position_id'])
+				get_party = get_object_or_404(Party, pk=request.POST['party_id'])
 				check_candidate = Candidate.objects.all().filter(user_id=request.POST['user_id'])
+				check_candidate_party = Candidate.objects.all().filter(party_id=get_party, position_id=get_position)
 
 				if len(check_candidate) == 0 and form.is_valid():
-					candidate = form.save()
-					candidate.save()
+					if len(check_candidate_party) < get_position.slot:
+						candidate = form.save()
+						candidate.save()
+						candidate_user_id = get_object_or_404(User, pk=candidate.user_id.pk)
+						candidate.college_id = candidate_user_id.college_id
+						candidate.save()
 
-					success = "Candidate successfully added!"
-					return render(request, 'system/candidate_add.html', {'success':success, 'elections':elections, 'positions':positions, 'parties':parties, 'users':users})
+						success = "Candidate successfully added!"
+						return render(request, 'system/candidate_add.html', {'success':success, 'elections':elections, 'positions':positions, 'parties':parties, 'users':users, 'colleges':colleges})
+
+					else:
+						exist = "This %s party can only have %s %s" %(get_party.party_name, get_position.slot, get_position.position_name)
+						return render(request, 'system/candidate_add.html', {'exist':exist, 'elections':elections, 'positions':positions, 'parties':parties, 'users':users, 'colleges':colleges})
 
 				else:
 					exist = "Already listed as candidate. Please try again!"
-					return render(request, 'system/candidate_add.html', {'exist':exist, 'elections':elections, 'positions':positions, 'parties':parties, 'users':users})
+					return render(request, 'system/candidate_add.html', {'exist':exist, 'elections':elections, 'positions':positions, 'parties':parties, 'users':users, 'colleges':colleges})
 
 			else:
-				return render(request, 'system/candidate_add.html', {'elections':elections, 'positions':positions, 'parties':parties, 'users':users})
+				return render(request, 'system/candidate_add.html', {'elections':elections, 'positions':positions, 'parties':parties, 'users':users, 'colleges':colleges})
 
 		except:
 			exist = "Already listed as candidate. Please try again!"
-			return render(request, 'system/candidate_add.html', {'exist':exist, 'elections':elections, 'positions':positions, 'parties':parties, 'users':users})
+			return render(request, 'system/candidate_add.html', {'exist':exist, 'elections':elections, 'positions':positions, 'parties':parties, 'users':users, 'colleges':colleges})
 
 @login_required
 def candidate_view(request):
@@ -354,6 +409,13 @@ def candidate_view(request):
 	except:
 		error = "No candidates to display"
 		return render(request, 'system/candidate_view.html', {'candidates':candidates, 'elections':elections, 'positions':positions, 'colleges':colleges, 'parties':parties})
+
+@login_required
+def delete_candidate(request, candidate_pk):
+	candidates = get_object_or_404(Candidate, pk=candidate_pk)
+	candidates.delete()
+
+	return redirect('system.views.candidate_view')
 
 @login_required
 def vote(request):
@@ -402,7 +464,7 @@ def vote(request):
 		return render(request, 'system/vote.html', {'candidates':candidates, 'election':election, 'user':user, 'positions':positions, 'button':button})
 
 @login_required
-def bulletin_update(request):
+def bulletin_add(request):
 	if request.user.is_admin:
 		try:
 			if request.method == 'POST':
@@ -412,15 +474,15 @@ def bulletin_update(request):
 					bulletin = form.save()
 					bulletin.save()
 
-					success = "Bulletin successfully updated!"
-					return render(request, 'system/bulletin_update.html', {'success':success})
+					success = "Bulletin successfully added!"
+					return render(request, 'system/bulletin_add.html', {'success':success})
 
 			else:
-				return render(request, 'system/bulletin_update.html')
+				return render(request, 'system/bulletin_add.html')
 
 		except:
 			exist = "Already exist"
-			return render(request, 'system/bulletin_update.html', {'exist':exist})
+			return render(request, 'system/bulletin_add.html', {'exist':exist})
 
 @login_required
 def bulletin_view(request):
@@ -433,6 +495,28 @@ def bulletin_view(request):
 			error = "No existing announcement!"
 			return render(request, 'system/view_bulletin.html', {'bulletin':bulletin})
 
+@login_required
+def bulletin_update(request):
+	bulletin = get_object_or_404(Bulletin)
+
+	if request.user.is_admin:
+		try:
+			if request.method == 'POST':
+				form = BulletinForm(request.POST, instance=bulletin)
+
+				if form.is_valid():
+					this_bulletin = form.save()
+					this_bulletin.save()
+
+					success = "bulletin successfully updated!"
+					return redirect('system.views.bulletin_view')
+
+			else:
+				return render(request, 'system/bulletin_update.html', {'bulletin':bulletin})
+
+		except:
+			pass
+	
 @login_required
 def count_tally(request):
 	if request.user.is_admin:
@@ -466,7 +550,7 @@ def voters_view(request):
     colleges = College.objects.all()
     candidates = Candidate.objects.all()
     parties = Party.objects.all()
-    return render(request, 'system/voter/index.html', {'positions': positions, 'colleges': colleges,
+    return render(request, 'system/voter/landingpage.html', {'positions': positions, 'colleges': colleges,
                                                            'candidates': candidates, 'parties': parties})
 
 @login_required

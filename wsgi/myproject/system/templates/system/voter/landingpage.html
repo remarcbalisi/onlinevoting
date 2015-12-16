@@ -1,0 +1,117 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false);
+	function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!-- //for-mobile-apps -->
+	<link href="{% static "VoterUI/css/bootstrap.css" %}" rel='stylesheet' type='text/css' />
+	<link href='//fonts.googleapis.com/css?family=Raleway:400,100,200,300,500,600,700,800,900' rel='stylesheet' type='text/css'>
+	<link href='//fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" type="text/css" href="{% static "VoterUI/css/style.css" %}">
+	<link rel="stylesheet" href="{% static "VoterUI/css/flexslider.css" %}" type="text/css" media="screen" />
+	<link rel="stylesheet" href="{% static "vegas/vegas.min.css" %}" />
+<!---strat-slider-->
+	
+<!---//-slider-->
+    <link rel="shortcut icon" href="{% static "UIver3/img/logo-big.png" %}">
+
+    {% block title %}<title>Online voting | Home</title>{% endblock title %}
+  </head>
+
+  <body>
+  <script type="text/javascript" src="{% static "VoterUI/js/jquery-1.11.1.min.js" %}"></script>
+  <script src="{% static "vegas/vegas.min.js" %}"></script>
+  <script>
+$("#example, body").vegas({
+    slides: [
+        { src: "{% static "images/1.jpg" %}", cover: true },
+        { src: "{% static "images/2.jpg" %}", cover: true },
+        { src: "{% static "images/3.png" %}", cover: true },
+        { src: "{% static "images/4.png" %}", cover: true },
+    ]
+});
+</script>
+{% block header %}
+<!-- header -->
+	<div class="header_bg">
+	<!-- start -->
+		<div class="container">
+			<div class="header">
+				<div class="logo">
+					<a href="index.html"><img src="{% static "VoterUI/images/logo1.png" %}" alt=" " /></a>
+				</div>
+				<nav class="navbar navbar-default">
+					<!-- Brand and toggle get grouped for better mobile display -->
+					<div class="navbar-header">
+					  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					  </button>
+					</div>
+
+					<!-- Collect the nav links, forms, and other content for toggling -->
+					<div class="collapse navbar-collapse nav-wil" id="bs-example-navbar-collapse-1">
+						<ul class="nav navbar-nav">
+							<li class="act"><a href="{% url "voters_view" %}">Home</a></li>
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">View Candidate<b class="caret"></b></a>
+								<ul class="dropdown-menu multi-column columns-3">
+									<div class="row">
+										<div class="party">
+											<ul class="multi-column-dropdown">
+												<li><a href="#">All</a></li>
+												<li class="divider"></li>
+												{% for c in colleges %}
+												<li><a href="{% url "candidate" pk=c.pk %}">{{ c }}</a></li>
+												<li class="divider"></li>
+												{% endfor %}
+											</ul>
+										</div>
+									</div>
+								</ul>
+							</li>
+							<li><a href="#">Results</a></li>
+							<li><a href="#">Campaigns</a></li>
+							<li><a href="{% url "vote" %}">Vote</a></li>
+							<li class="dropdown">
+							    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span>{{ user.first_name }} {{ user.last_name }}</span><b class="caret"></b></a>
+								<ul class="dropdown-menu multi-column columns-3">
+									<div class="row">
+										<div class="party">
+											<ul class="multi-column-dropdown">
+											<li><a href="{% url "user_logout" %}">Logout</a></li>
+											</ul>
+										</div>
+									</div>
+								</ul>
+							</li>			
+						</ul>
+					</div><!-- /.navbar-collapse -->	
+					
+				</nav>
+			</div>
+		</div>
+	</div>
+	<div class="header_bottom">
+	</div>
+<!-- //end-header -->
+{% endblock header %}
+<div class="container" style="padding-top: 8px">
+	{% block content %}
+
+    {% endblock %}
+</div>
+
+{% block javascripts %}
+    <!-- javascripts -->
+{% endblock javascripts %}
+<!-- for bootstrap working -->
+	 <script type="text/javascript" src="{% static "VoterUI/js/bootstrap-3.1.1.min.js" %}"></script>
+<!-- //for bootstrap working -->
+  </body>
+</html>

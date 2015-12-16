@@ -85,6 +85,7 @@ class Candidate(models.Model):
     life_quote = models.TextField(blank=True, null=True)
     position_id = models.ForeignKey('Position', blank=True, null=True)
     election_id = models.ForeignKey('Election', blank=True, null=True)
+    college_id = models.ForeignKey('College', blank=True, null=True)
     party_id = models.ForeignKey('Party', blank=True, null=True)
 
     def __str__(self):

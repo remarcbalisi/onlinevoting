@@ -24,14 +24,6 @@
   <body>
   <script type="text/javascript" src="{% static "VoterUI/js/jquery-1.11.1.min.js" %}"></script>
   <script src="{% static "vegas/vegas.min.js" %}"></script>
-  <script>
-$("#example, body").vegas({
-    slides: [
-        { src: "{% static "images/1.jpg" %}", cover: true },
-        { src: "{% static "images/3.png" %}", cover: true }
-    ]
-});
-</script>
 {% block header %}
 <!-- header -->
 	<div class="header_bg">
@@ -99,7 +91,7 @@ $("#example, body").vegas({
 	</div>
 <!-- //end-header -->
 {% endblock header %}
-<div class="container" style="padding-top: 8px">
+<div class="container" style="padding-top: 3cm">
 	{% block content %}
 
     {% endblock %}

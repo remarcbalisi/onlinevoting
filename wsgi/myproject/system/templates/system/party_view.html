@@ -40,6 +40,7 @@
                                           {{ party.party_name }}
                                         </a>
                                         <a class="glyphicon glyphicon-pencil" href="{% url 'party_update' party_pk=party.pk %}"></a>
+                                        <a href="{% url "delete_party" party_pk=party.pk %}">Delete</a>
                                       </li>
                                     </center></td>
                               </tr>

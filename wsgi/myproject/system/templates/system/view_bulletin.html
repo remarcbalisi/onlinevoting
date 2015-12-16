@@ -33,7 +33,9 @@
                               {% for bulletin in bulletin %}
                               <tr>
                                   <td><center>{{ bulletin.bulletin_info }}
-                                  <a class="glyphicon glyphicon-pencil" href="{% url 'bulletin_update' %}"></a></center></td>
+                                  <a class="glyphicon glyphicon-pencil" href="{% url "bulletin_update" %}"></a>
+                                  <a href="{% url "delete_bulletin" bulletin_pk=bulletin.pk %}">Delete</a>
+                                  </center></td>
                               </tr>
                               {% endfor %}
                               </tbody>

@@ -479,13 +479,14 @@ def bulletin_update(request):
 					this_bulletin.save()
 
 					success = "bulletin successfully updated!"
-					return redirect('system.views.bulletin_view')
+					return render(request, 'system/bulletin_update.html', {'success':success, 'bulletin':bulletin})
 
 			else:
 				return render(request, 'system/bulletin_update.html', {'bulletin':bulletin})
 
 		except:
-			pass
+			exist = "Bulletin already updated!"
+			return render(request, 'system/bulletin_update.html', {'success':success, 'bulletin':bulletin})
 	
 @login_required
 def count_tally(request):

@@ -32,7 +32,8 @@
                               <tbody>
                               {% for election in election %}
                               <tr>
-                                  <td><center>{{ election.year }}</center></td>
+                                  <td><center>{{ election.year }}
+                                    <a class="glyphicon glyphicon-pencil" href="{% url 'election_update' %}"></a></center></td>
                               </tr>
                               {% endfor %}
                               </tbody>

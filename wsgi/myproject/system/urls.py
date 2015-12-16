@@ -7,6 +7,7 @@ urlpatterns = [
     url(r'^onlinevoting/logout/$', views.user_logout, name='user_logout'),
     url(r'^onlinevoting/updateuser/$', views.user_update, name='user_update'),
     url(r'^onlinevoting/addposition/$', views.position_add, name='position_add'),
+    url(r'^onlinevoting/deleteposition/(?P<position_pk>[0-9]+)/$', views.position_delete, name='position_delete'),
     url(r'^onlinevoting/viewposition/$', views.position_view, name='position_view'),
     url(r'^onlinevoting/addelection/$', views.election_add, name='election_add'),
     url(r'^onlinevoting/viewelection/$', views.election_view, name='election_view'),

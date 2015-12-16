@@ -466,6 +466,28 @@ def bulletin_view(request):
 			return render(request, 'system/view_bulletin.html', {'bulletin':bulletin})
 
 @login_required
+def bulletin_update(request):
+	bulletin = get_object_or_404(Bulletin)
+
+	if request.user.is_admin:
+		try:
+			if request.method == 'POST':
+				form = BulletinForm(request.POST, instance=bulletin)
+
+				if form.is_valid():
+					this_bulletin = form.save()
+					this_bulletin.save()
+
+					success = "bulletin successfully updated!"
+					return redirect('system.views.bulletin_view')
+
+			else:
+				return render(request, 'system/bulletin_update.html', {'bulletin':bulletin})
+
+		except:
+			pass
+	
+@login_required
 def count_tally(request):
 	if request.user.is_admin:
 		election = Election.objects.all().filter(is_active=True)

@@ -459,7 +459,7 @@ def voters_view(request):
     colleges = College.objects.all()
     candidates = Candidate.objects.all()
     parties = Party.objects.all()
-    return render(request, 'system/voter/index.html', {'positions': positions, 'colleges': colleges,
+    return render(request, 'system/voter/landingpage.html', {'positions': positions, 'colleges': colleges,
                                                            'candidates': candidates, 'parties': parties})
 
 @login_required

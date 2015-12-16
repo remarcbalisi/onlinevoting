@@ -24,6 +24,16 @@
   <body>
   <script type="text/javascript" src="{% static "VoterUI/js/jquery-1.11.1.min.js" %}"></script>
   <script src="{% static "vegas/vegas.min.js" %}"></script>
+  <script>
+$("#example, body").vegas({
+    slides: [
+        { src: "{% static "images/1.jpg" %}", cover: true },
+        { src: "{% static "images/2.jpg" %}", cover: true },
+        { src: "{% static "images/3.png" %}", cover: true },
+        { src: "{% static "images/4.png" %}", cover: true },
+    ]
+});
+</script>
 {% block header %}
 <!-- header -->
 	<div class="header_bg">

@@ -5,6 +5,7 @@ urlpatterns = [
     url(r'^onlinevoting/$', views.user_login, name='user_login'),
     url(r'^onlinevoting/register/$', views.user_add, name='user_add'),
     url(r'^onlinevoting/logout/$', views.user_logout, name='user_logout'),
+    url(r'^onlinevoting/updateuser/$', views.user_update, name='user_update'),
     url(r'^onlinevoting/addposition/$', views.position_add, name='position_add'),
     url(r'^onlinevoting/viewposition/$', views.position_view, name='position_view'),
     url(r'^onlinevoting/addelection/$', views.election_add, name='election_add'),

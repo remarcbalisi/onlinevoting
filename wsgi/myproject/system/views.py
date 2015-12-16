@@ -420,11 +420,12 @@ def delete_candidate(request, candidate_pk):
 
 @login_required
 def vote(request):
-	candidates = Candidate.objects.all()
 
 	#select 1 election that is active
 	election = Election.objects.filter(is_active=True)
 	positions = Position.objects.all()
+	candidates = Candidate.objects.all().filter(election_id=election[0
+		])
 	user = get_object_or_404(User, pk=request.user.pk)
 	button = True
 

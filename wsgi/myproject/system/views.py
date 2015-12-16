@@ -170,7 +170,7 @@ def position_delete(request, position_pk):
 	position.delete()
 
 	return redirect('system.views.position_view')
-	
+
 @login_required
 def position_view(request):
 	if request.user.is_admin:
@@ -227,6 +227,29 @@ def election_view(request):
 		except:
 			error = "No existing election year!"
 			return render(request, 'system/election_view.html', {'election':election})
+
+@login_required
+def election_update(request):
+	election = get_object_or_404(Election)
+
+	if request.user.is_admin:
+		try:
+			if request.method == 'POST':
+				form = ElectionForm(request.POST, instance=election)
+
+				if form.is_valid():
+					this_election = form.save()
+					this_election.save()
+
+					success = "election year successfully updated!"
+					return render(request, 'system/election_update.html', {'success':success, 'election':election})
+
+			else:
+				return render(request, 'system/election_update.html', {'election':election})
+
+		except:
+			exist = "Election Year already updated!"
+			return render(request, 'system/election_update.html', {'success':success, 'election':election})
 
 @login_required
 def party_add(request):

@@ -39,7 +39,12 @@ class User(AbstractBaseUser, PermissionsMixin):
     id_number = models.CharField(max_length=10, unique=True)
     email = models.EmailField()
     first_name = models.CharField(max_length=30, null=True, blank=True)
+    middle_name = models.CharField(max_length=30, null=True, blank=True)
     last_name = models.CharField(max_length=30, null=True, blank=True)
+    address = models.CharField(max_length=30, null=True, blank=True)
+    course = models.CharField(max_length=30, null=True, blank=True)
+    year = models.IntegerField(null=True, blank=True)
+    college_id = models.ForeignKey('College', blank=True, null=True)
     contact_number = models.CharField(max_length=30, null=True, blank=True)
 
     is_active = models.BooleanField(default=False)
@@ -74,17 +79,16 @@ class Vote(models.Model):
         # expiry = models.DateTimeField(default=datetime.now + timedelta(days=30))
 
 class Candidate(models.Model):
-    first_name = models.CharField(max_length=50, null=True)
-    middle_name = models.CharField(max_length=50, null=True)
-    last_name = models.CharField(max_length=50, null=True)
+    user_id= models.ForeignKey('User', blank=True, null=True)
+    platform = models.TextField(blank=True, null=True)
+    achievements = models.TextField(blank=True, null=True)
+    life_quote = models.TextField(blank=True, null=True)
     position_id = models.ForeignKey('Position', blank=True, null=True)
     election_id = models.ForeignKey('Election', blank=True, null=True)
-    college_id = models.ForeignKey('College', blank=True, null=True)
     party_id = models.ForeignKey('Party', blank=True, null=True)
 
-
     def __str__(self):
-        return "%s %s %s" % (self.first_name, self.middle_name, self.last_name)
+        return "%s" % (self.user_id)
 
 class Party(models.Model):
 
@@ -125,3 +129,11 @@ class Bulletin(models.Model):
 
     def __str__(self):
         return self.bulletin_info
+
+class Tally(models.Model):
+    vote_count = models.IntegerField()
+    election_id = models.ForeignKey(Election, null=True, blank=True)
+    candidate_id = models.ForeignKey(Candidate, null=True, blank=True)
+
+    def __str__(self):
+        return "%s count: %s" %(self.candidate_id, self.vote_count)

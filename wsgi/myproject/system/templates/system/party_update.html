@@ -2,7 +2,7 @@
 {% load staticfiles %}
 <!DOCTYPE html>
 
-{% block title %}<title>Online voting | Add Candidate</title>{% endblock title %}
+{% block title %}<title>Online voting | Add Party</title>{% endblock title %}
 
 {% block content %}
       <!--main content start-->
@@ -10,12 +10,11 @@
           <section class="wrapper">
       <div class="row">
         <div class="col-lg-12">
-          <h3 class="page-header"><i class="fa fa-files-o"></i> Manage Data</h3>
+          <h3 class="page-header"><i class="fa fa-files-o"></i> Add Party</h3>
           <ol class="breadcrumb">
             <li><i class="fa fa-home"></i><a href="{% url "user_home" %}">Home</a></li>
-            <li><i class="icon_document_alt"></i>Manage Data</li>
-            <li><i class="fa fa-files-o"></i>Election Form</li>
-            <li><i class="fa fa-files-o"></i>Candidate Form</li>
+            <li><i class="icon_document_alt"></i>Add Party</li>
+            <li><i class="fa fa-files-o"></i>Party Form</li>
           </ol>
         </div>
       </div>
@@ -24,7 +23,7 @@
                   <div class="col-lg-12">
                       <section class="panel">
                           <header class="panel-heading">
-                              Candidate Form
+                              Form validations
                           </header>
                           <div class="panel-body">
                               <div class="form">
@@ -45,49 +44,25 @@
                                   {% endif %}
 
                                   {% csrf_token %}
-                                  <div class="form-group ">
-                                          <label for="cname" class="control-label col-lg-2"> Student ID Number <span class="required">*</span></label>
-                                      <div class="col-lg-3">
-                                              <select name="user_id">
-                                              {% for user in users %}
-                                                  <option value = "{{ user.pk }}">{{user.id_number}}</option>
-                                              {% endfor %}
-                                              </select>
+                                      <div class="form-group ">
+                                          <label for="cname" class="control-label col-lg-2">Party<span class="required">*</span></label>
+                                          <div class="col-lg-3">
+                                              <input class="form-control" name="party_name" type="text" value="{{ party.party_name }}" required />
+                                          </div>
                                       </div>
-                                  </div>
-                                  <div class="form-group ">
+                                      <div class="form-group ">
                                           <label for="cname" class="control-label col-lg-2">Election year<span class="required">*</span></label>
                                           <div class="col-lg-3">
                                               <select name="election_id">
+                                                  <option selected="selected">{{default_election}}</option>
                                               {% for election in elections %}
-
+                                                  {% if election != default_election %}
                                                   <option value = "{{ election.pk }}">{{election.year}}</option>
+                                                  {% endif %}
                                               {% endfor %}
                                               </select>
                                           </div>
-                                  </div>
-                                  <div class="form-group ">
-                                          <label for="cname" class="control-label col-lg-2">Party<span class="required">*</span></label>
-                                          <div class="col-lg-3">
-                                              <select name="party_id">
-                                              {% for party in parties %}
-
-                                                  <option value = "{{ party.pk }}">{{party.party_name}}</option>
-                                              {% endfor %}
-                                              </select>
-                                          </div>
-                                  </div>
-                                  <div class="form-group ">
-                                          <label for="cname" class="control-label col-lg-2"> Position <span class="required">*</span></label>
-                                          <div class="col-lg-3">
-                                              <select name="position_id">
-                                              {% for position in positions %}
-
-                                                  <option value = "{{ position.pk }}">{{position.position_name}}</option>
-                                              {% endfor %}
-                                              </select>
-                                          </div>
-                                  </div>
+                                      </div>
                                               <button class="btn btn-primary" type="submit">Save</button>
                                               <button class="btn btn-default" type="button">Cancel</button>
                                           </div>

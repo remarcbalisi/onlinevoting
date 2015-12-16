@@ -2,52 +2,52 @@
 {% load staticfiles %}
 <!DOCTYPE html>
 
-{% block title %}<title>Online voting | View Candidate</title>{% endblock title %}
+{% block title %}<title>Online voting | View Tally</title>{% endblock title %}
 
 {% block content %}
 <section id="main-content">
           <section class="wrapper">
       <div class="row">
         <div class="col-lg-12">
-          <h3 class="page-header"><i class="fa fa-table"></i> Table</h3>
+          <h3 class="page-header"><i class="fa fa-table"></i> View Tally</h3>
           <ol class="breadcrumb">
             <li><i class="fa fa-home"></i><a href="{% url "user_home" %}">Home</a></li>
             <li><i class="fa fa-table"></i>Table</li>
-            <li><i class="fa fa-th-list"></i>Candidates</li>
+            <li><i class="fa fa-th-list"></i>Tally</li>
           </ol>
         </div>
       </div>
-              <!-- page start-->
-              <div class="row">
+
+      <div class="row">
                   <div class="col-sm-12">
                       <section class="panel">
                           <header class="panel-heading">
-                              Election Candidates
+                              Tally
                           </header>
                           <table class="table">
                               <thead>
                               <tr>
-                                  <th>First Name</th>
-                                  <th>Middle Name</th>
-                                  <th>Last Name</th>
-                                  <th>Position</th>
-                                  <th>Election Year</th>
+                                  <th><center>Tally</center></th>
                               </tr>
                               </thead>
                               <tbody>
                               {% for candidate in candidates %}
-                             
                               <tr>
-                                  <td>{{ candidate.user_id.first_name }}</td>
-                                  <td>{{ candidate.user_id.middle_name }}</td>
-                                  <td>{{ candidate.user_id.last_name }}</td>
-                                  <td>{{ candidate.position_id }}</td>
-                                  <td>{{ candidate.election_id }}</td>
+                                  <td><center><li>{{ candidate.user_id.first_name }}</li></center></td>
+                                  {% for tally in tallies %}
+                                      {% if tally.candidate_id.pk == candidate.pk %}
+                                      <td><center><li>{{ tally.vote_count }}</li></center></td>
+                                      {% endif %}
+                                  {% endfor %}
+                              </tr>
                               {% endfor %}
                               </tbody>
                           </table>
                       </section>
                   </div>
+              <!-- page end-->
+          </section>
+      </section>
 {% endblock content %}
   </section>
   <!-- container section end -->

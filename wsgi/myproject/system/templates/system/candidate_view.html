@@ -32,6 +32,7 @@
                                   <th>Last Name</th>
                                   <th>Position</th>
                                   <th>Election Year</th>
+                                  <th></th>
                               </tr>
                               </thead>
                               <tbody>
@@ -43,6 +44,7 @@
                                   <td>{{ candidate.user_id.last_name }}</td>
                                   <td>{{ candidate.position_id }}</td>
                                   <td>{{ candidate.election_id }}</td>
+                                  <td><a href="#">Edit</a> <a href="{% url "delete_candidate" candidate_pk=candidate.pk %}">Delete</a></td>
                               {% endfor %}
                               </tbody>
                           </table>

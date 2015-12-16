@@ -12,7 +12,6 @@
           <h3 class="page-header"><i class="fa fa-table"></i> View Bulletin</h3>
           <ol class="breadcrumb">
             <li><i class="fa fa-home"></i><a href="{% url "user_home" %}">Home</a></li>
-            <li><i class="fa fa-table"></i>Table</li>
             <li><i class="fa fa-th-list"></i>Bulletin</li>
           </ol>
         </div>
@@ -33,7 +32,8 @@
                               <tbody>
                               {% for bulletin in bulletin %}
                               <tr>
-                                  <td><center>{{ bulletin.bulletin_info }}</center></td>
+                                  <td><center>{{ bulletin.bulletin_info }}
+                                  <a class="glyphicon glyphicon-pencil" href="{% url 'bulletin_update' %}"></a></center></td>
                               </tr>
                               {% endfor %}
                               </tbody>

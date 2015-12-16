@@ -27,6 +27,7 @@ def user_add(request):
                 contact_number = request.POST['contact_number']
                 email = request.POST['email']
                 password = request.POST['password']
+                college_id = request.POST['college_id']
 
                 user2 = User.objects.create_user(id_number=idnum, password=password)
                 user2.email = email
@@ -36,6 +37,8 @@ def user_add(request):
                 user2.address = address
                 user2.course = course
                 user2.year = year
+                college_instance = get_object_or_404(College, pk=college_id)
+                user2.college_id = college_instance
                 user2.contact_number = contact_number
 
                 user2.save()
@@ -47,9 +50,8 @@ def user_add(request):
                 form = UserForm()
                 return render(request, 'system/user_add.html', {'colleges':colleges})
 
-        except:
-            exist = "User already exist"
-            return render(request, 'system/user_add.html', {'exist':exist, 'colleges':colleges})
+        except KeyError:
+            return KeyError
 
 def user_login(request):
 	if request.method == 'POST':
@@ -340,6 +342,9 @@ def candidate_add(request):
 
 				if len(check_candidate) == 0 and form.is_valid():
 					candidate = form.save()
+					candidate.save()
+					candidate_user_id = get_object_or_404(User, pk=candidate.user_id.pk)
+					candidate.college_id = candidate_user_id.college_id
 					candidate.save()
 
 					success = "Candidate successfully added!"

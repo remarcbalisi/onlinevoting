@@ -298,7 +298,7 @@ def college(request, pk):
 	if request.user.is_admin:
 		try:
 			positions = Position.objects.all()
-			candidates = Candidate.objects.all.filter(college_id=pk)
+			candidates = Candidate.objects.filter(college_id=pk)
 			return render(request, 'system/college.html', {'positions':positions, 'candidates':candidates})
 
 		except:

@@ -248,6 +248,13 @@ def party_view(request):
 			return render(request, 'system/party_view.html', {'error':error, 'parties':parties})
 
 @login_required
+def delete_party(request, party_pk):
+	party = get_object_or_404(Party, pk=party_pk)
+	party.delete()
+
+	return redirect('system.views.party_view')
+
+@login_required
 def party(request, pk):
 	if request.user.is_admin:
 		try:
@@ -312,6 +319,7 @@ def candidate_add(request):
 		positions = Position.objects.all()
 		parties = Party.objects.all()
 		users = User.objects.all()
+		colleges = College.objects.all()
 		try:
 			if request.method == 'POST':
 				form = CandidateForm(request.POST)
@@ -325,18 +333,18 @@ def candidate_add(request):
 					candidate.save()
 
 					success = "Candidate successfully added!"
-					return render(request, 'system/candidate_add.html', {'success':success, 'elections':elections, 'positions':positions, 'parties':parties, 'users':users})
+					return render(request, 'system/candidate_add.html', {'success':success, 'elections':elections, 'positions':positions, 'parties':parties, 'users':users, 'colleges':colleges})
 
 				else:
 					exist = "Already listed as candidate. Please try again!"
-					return render(request, 'system/candidate_add.html', {'exist':exist, 'elections':elections, 'positions':positions, 'parties':parties, 'users':users})
+					return render(request, 'system/candidate_add.html', {'exist':exist, 'elections':elections, 'positions':positions, 'parties':parties, 'users':users, 'colleges':colleges})
 
 			else:
-				return render(request, 'system/candidate_add.html', {'elections':elections, 'positions':positions, 'parties':parties, 'users':users})
+				return render(request, 'system/candidate_add.html', {'elections':elections, 'positions':positions, 'parties':parties, 'users':users, 'colleges':colleges})
 
 		except:
 			exist = "Already listed as candidate. Please try again!"
-			return render(request, 'system/candidate_add.html', {'exist':exist, 'elections':elections, 'positions':positions, 'parties':parties, 'users':users})
+			return render(request, 'system/candidate_add.html', {'exist':exist, 'elections':elections, 'positions':positions, 'parties':parties, 'users':users, 'colleges':colleges})
 
 @login_required
 def candidate_view(request):

@@ -33,9 +33,15 @@
                               <tbody>
                               {% for party in parties %}
                               <tr>
-                                  <td><center><li><a href="{% url "party" pk=party.pk %}">{{ party.party_name }}</a></li></center></td>
-
-
+                                  <td>
+                                    <center>
+                                      <li>
+                                        <a href="{% url "party" pk=party.pk %}">
+                                          {{ party.party_name }}
+                                        </a>
+                                        <a class="glyphicon glyphicon-pencil" href="{% url 'party_update' party_pk=party.pk %}"></a>
+                                      </li>
+                                    </center></td>
                               </tr>
                               {% endfor %}
                               </tbody>

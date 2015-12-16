@@ -124,7 +124,7 @@
                       </a>
                       <ul class="sub">
                           <li><a class="" href="{% url "candidate_view" %}">View Candidate</a></li>
-                          <li><a class="" href="#">View Tally</a></li>
+                          <li><a class="" href="{% url "view_tally" %}">View Tally</a></li>
                           <li><a class="" href="{% url "party_view" %}">View Party</a></li>
                           <li><a class="" href="{% url "position_view" %}">View Position</a></li>
                           <li><a class="" href="{% url "election_view" %}">View Election Year</a></li>
@@ -137,6 +137,12 @@
                       <a class="" href="{% url "vote" %}">
                           <i class="icon_check"></i>
                           <span>Vote</span>
+                      </a>
+                  </li>
+                  <li>
+                      <a class="" href="{% url "count_tally" %}">
+                          <i class="icon_check"></i>
+                          <span>Count Tally</span>
                       </a>
                   </li>
               </ul>

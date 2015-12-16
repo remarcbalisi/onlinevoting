@@ -20,7 +20,7 @@
                               {% for c in candidates %}
                               <tr>
                                   <td><center>
-                                      {{ c.first_name }} {{ c.last_name }}
+                                      {{ c.user_id.first_name }} {{ c.user_id.last_name }}
                                   </center></td>
                               </tr>
                               {% endfor %}

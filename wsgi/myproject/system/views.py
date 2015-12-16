@@ -249,7 +249,14 @@ def election_update(request):
 
 		except:
 			exist = "Election Year already updated!"
-			return render(request, 'system/election_update.html', {'success':success, 'election':election})
+			return render(request, 'system/election_update.html', {'exist':exist, 'election':election})
+
+@login_required
+def election_delete(request):
+	election = get_object_or_404(Election)
+	election.delete()
+
+	return redirect('system.views.election_view')
 
 @login_required
 def party_add(request):
@@ -517,7 +524,7 @@ def bulletin_update(request):
 
 		except:
 			exist = "Bulletin already updated!"
-			return render(request, 'system/bulletin_update.html', {'success':success, 'bulletin':bulletin})
+			return render(request, 'system/bulletin_update.html', {'exist':exist, 'bulletin':bulletin})
 	
 @login_required
 def count_tally(request):

@@ -92,7 +92,7 @@ class Candidate(models.Model):
 
 class Party(models.Model):
 
-    party_name = models.CharField(max_length=50, null=True, unique=True)
+    party_name = models.CharField(max_length=50, null=True, unique=False)
     election_id = models.ForeignKey('Election', blank=True, null=True)
 
     def __str__(self):

@@ -518,7 +518,29 @@ def bulletin_update(request):
 
 		except:
 			pass
-	
+
+@login_required
+def position_update(request, position_pk):
+	position = get_object_or_404(Position, pk=position_pk)
+
+	if request.user.is_admin:
+		try:
+			if request.method == 'POST':
+				form = PositionForm(request.POST, instance=position)
+
+				if form.is_valid():
+					this_position = form.save()
+					this_position.save()
+
+					success = "Position successfully updated!"
+					return redirect('system.views.position_view')
+			
+			else:
+				return render(request, 'system/position_update.html', {'position':position})
+
+		except:
+			pass
+
 @login_required
 def count_tally(request):
 	if request.user.is_admin:

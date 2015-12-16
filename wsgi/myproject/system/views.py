@@ -366,8 +366,9 @@ def candidate_add(request):
 				form = CandidateForm(request.POST)
 				get_position = get_object_or_404(Position, pk=request.POST['position_id'])
 				get_party = get_object_or_404(Party, pk=request.POST['party_id'])
-				check_candidate = Candidate.objects.all().filter(user_id=request.POST['user_id'])
-				check_candidate_party = Candidate.objects.all().filter(party_id=get_party, position_id=get_position)
+				get_election = get_object_or_404(Election, pk=request.POST['election_id'])
+				check_candidate = Candidate.objects.all().filter(user_id=request.POST['user_id'], election_id=get_election)
+				check_candidate_party = Candidate.objects.all().filter(party_id=get_party, position_id=get_position, election_id=get_election)
 
 				if len(check_candidate) == 0 and form.is_valid():
 					if len(check_candidate_party) < get_position.slot:
@@ -381,7 +382,7 @@ def candidate_add(request):
 						return render(request, 'system/candidate_add.html', {'success':success, 'elections':elections, 'positions':positions, 'parties':parties, 'users':users, 'colleges':colleges})
 
 					else:
-						exist = "This %s party can only have %s %s" %(get_party.party_name, get_position.slot, get_position.position_name)
+						exist = "Election %s: This %s party can only have %s %s" %(get_election, get_party.party_name, get_position.slot, get_position.position_name)
 						return render(request, 'system/candidate_add.html', {'exist':exist, 'elections':elections, 'positions':positions, 'parties':parties, 'users':users, 'colleges':colleges})
 
 				else:

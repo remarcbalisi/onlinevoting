@@ -70,10 +70,10 @@ def user_login(request):
 			failed = "login Failed!"
 			return render(request, 'system/user_login.html', {'failed': failed})
 
-	elif request.user.is_autheticated():
+	elif request.user.is_authenticated():
 		return redirect('system.views.user_home')
 
-	elif not request.user.is_autheticated():
+	elif not request.user.is_authenticated():
 		return render(request, 'system/user_login.html')
 
 @login_required
@@ -207,6 +207,31 @@ def party_add(request):
 			exist = "Party already exist"
 			elections = Election.objects.all()
 			return render(request, 'system/party_add.html', {'exist':exist, 'elections':elections})
+
+@login_required
+def party_update(request, party_pk):
+    party = get_object_or_404(Party, pk=party_pk)
+    elections = Election.objects.all()
+
+    if request.user.is_admin:
+        try:
+            if request.method == 'POST':
+                form = PartyForm(request.POST, instance=party)
+
+                if form.is_valid():
+                    this_party = form.save()
+                    this_party.save()
+
+                    default_election = this_party.election_id
+                    success = "party successfully updated!"
+                    return render(request, 'system/party_update.html', {'success':success, 'elections':elections, 'party':party, 'default_election':default_election})
+
+            else:
+            	default_election = party.election_id
+            	return render(request, 'system/party_update.html', {'party':party, 'elections':elections, 'default_election':default_election})
+
+        except:
+        	pass
 
 @login_required
 def party_view(request):

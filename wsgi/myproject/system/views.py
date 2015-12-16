@@ -119,6 +119,29 @@ def user_view(request):
 		return render(request, 'system/user_view.html', {'users':users})
 
 @login_required
+def user_update(request):
+
+    if request.user.is_authenticated():
+        user = User.objects.get(pk=request.user.id)
+        colleges = College.objects.all()
+
+        if request.method == 'POST':
+
+            form = UserForm(request.POST, instance=user)
+
+            if form.is_valid():
+            	updated_user = form.save()
+            	updated_user.save()
+            	updated_user.password=request.POST['password']
+                return redirect('system.views.user_home')
+            else:
+                raise Http404
+        else:
+            return render(request, 'system/user_update.html', {'user': user, 'colleges': colleges})
+
+    return redirect('system.views.user_login')
+
+@login_required
 def position_add(request):
 	try:
 		if request.method == 'POST':

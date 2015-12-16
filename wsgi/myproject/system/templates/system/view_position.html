@@ -33,7 +33,17 @@
                               <tbody>
                               {% for position in positions %}
                               <tr>
-                                  <td><center><li><a href="{% url "position" pk=position.pk %}">{{ position.position_name }}</a> <a class="glyphicon glyphicon-pencil" href="{% url "position_update" position_pk=position.pk %}"></a></li></center></td>
+                                  <td>
+                                    <center>
+                                      <li>
+                                        <a href="{% url "position" pk=position.pk %}">{{ position.position_name }}
+                                        </a>
+                                        <a class="glyphicon glyphicon-pencil" href="{% url "position_update" position_pk=position.pk %}">
+                                        </a>
+                                        <a href="{% url 'position_delete' position_pk=position.pk %}">Delete
+                                        </a>
+                                      </li>
+                                  </center></td>
                               </tr>
                               {% endfor %}
                               </tbody>

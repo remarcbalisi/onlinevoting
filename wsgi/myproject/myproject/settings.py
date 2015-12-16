@@ -90,7 +90,7 @@ WSGI_APPLICATION = 'myproject.wsgi.application'
 DATABASES = {
     'default': {
     'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    'NAME': 'onlinevotingdb3',
+    'NAME': 'onlinevotingdb4',
     'USER': 'postgres',
     'PASSWORD': 'remarc@15',
     'HOST': 'localhost',

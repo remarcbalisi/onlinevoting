@@ -28,13 +28,13 @@
                               <thead>
                               <tr>
                                   <th><center>College</center></th>
+
                               </tr>
                               </thead>
                               <tbody>
                               {% for college in colleges %}
                               <tr>
-                                  <td><center>{{ college.college_name }}
-                                  <a class="glyphicon glyphicon-pencil" href="{% url 'college_update' college_pk=college.pk %}"></a></center></td>
+                                  <td><center><li><a href="{% url "college" pk=college.pk %}">{{ college.college_name }}</a> <a href="{% url 'college_update' college_pk=college.pk %}">Edit</a> <a href="{% url 'college_delete' college_pk=college.pk %}">Delete</a></li></center></td>
                               </tr>
                               {% endfor %}
                               </tbody>

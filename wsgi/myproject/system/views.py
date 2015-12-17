@@ -630,7 +630,7 @@ def count_tally(request):
 				save_vote.save()
 			return redirect('system.views.view_tally')
 
-		elif len(tally) == 1:
+		elif len(tally) >= 1:
 			return redirect('system.views.view_tally')
 
 @login_required

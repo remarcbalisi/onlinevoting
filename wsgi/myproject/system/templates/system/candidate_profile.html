@@ -1,0 +1,174 @@
+{% extends "system/index3.html" %}
+{% load staticfiles %}
+<!DOCTYPE html>
+
+{% block title %}<title>Online voting | Candidate Profile</title>{% endblock title %}
+
+{% block content %}
+  <!-- container section start -->
+      
+      <!--main content start-->
+      <section id="main-content">
+          <section class="wrapper">
+      <div class="row">
+        <div class="col-lg-12">
+          <h3 class="page-header"><i class="fa fa-user-md"></i> Profile</h3>
+          <ol class="breadcrumb">
+            <li><i class="fa fa-home"></i><a href="index.html">Home</a></li>
+            <li><i class="icon_documents_alt"></i>Pages</li>
+            <li><i class="fa fa-user-md"></i>Profile</li>
+          </ol>
+        </div>
+      </div>
+              <div class="row">
+                <!-- profile-widget -->
+                <div class="col-lg-12">
+                    <div class="profile-widget profile-widget-info">
+                          <div class="panel-body">
+                            <div class="col-lg-2 col-sm-2">
+                              <h5>{{ cand.user_id.id_number }}</h5>
+                              <h5>{{ cand.user_id.first_name }} {{ cand.user_id.middle_name }} {{ cand.user_id.last_name }}</h5>               
+                              <div class="follow-ava">
+                                  <img src="{% static "UIver3/img/gwapa.jpg" %}" alt="">
+                              </div>
+                              <h6>Candidate for {{cand.position_id}}</h6>
+                              <h6>{{cand.party_id}} PARTY</h6>
+                            </div>
+                            <div class="col-lg-4 col-sm-4 follow-info">
+                                <p>Hello I’m {{ cand.user_id.first_name }} {{ cand.user_id.middle_name }} {{ cand.user_id.last_name }}, a {{ cand.college_id}} student, taking up {{ cand.user_id.course }} {{ cand.user_id.year }} .I came from {{ cand.user_id.address }}.</p>
+                                <p>{{ cand.user_id.email }}</p>
+                                <p>{{ cand.user_id.contact_number }}</p>
+                
+                                
+                            </div>
+
+                          </div>
+                    </div>
+                </div>
+              </div>
+              <!-- page start-->
+              <div class="row">
+                 <div class="col-lg-12">
+                    <section class="panel">
+                          <header class="panel-heading tab-bg-info">
+                              <ul class="nav nav-tabs">
+                                  <li class="active">
+                                      <a data-toggle="tab" href="#platform">
+                                          <i class="icon-home"></i>
+                                          PLATFORM
+                                      </a>
+                                  </li>
+                                  <li>
+                                      <a data-toggle="tab" href="#achievements">
+                                          <i class="fa fa-graduate"></i>
+                                          Achievements
+                                      </a>
+                                  </li>
+                                  <li class="">
+                                      <a data-toggle="tab" href="#edit_profile">
+                                          <i class="icon-envelope"></i>
+                                          Update Profile
+                                      </a>
+                                  </li>
+                              </ul>
+                          </header>
+                          <div class="panel-body">
+                              <div class="tab-content">
+                                  <div id="platform" class="tab-pane active">
+                                      <div class="bio-graph-heading">                                          
+                                          <p>{{ cand.platform }}</p>
+
+                                      </div>
+                                  </div>
+                                  <!-- profile -->
+                                  <div id="achievements" class="tab-pane">
+                                    <section class="panel">
+                                      <div class="bio-graph-heading">
+                                                {{cand.achievements}}
+                                      </div>
+                                    </section>
+                                      <section>
+                                          <div class="row">                                              
+                                          </div>
+                                      </section>
+                                  </div>
+                                  <!-- edit-profile -->
+                                  <div id="edit_profile" class="tab-pane">
+                                    <section class="panel">                                          
+                                          <div class="panel-body bio-graph-info">
+                                              <h1> Update Profile Candidate</h1>
+                                              <form class="form-horizontal" role="form">                                                  
+                                                  <div class="form-group">
+                                                      <label class="col-lg-2 control-label">First Name</label>
+                                                      <div class="col-lg-6">
+                                                          <input type="text" class="form-control" name="first_name" placeholder=" ">
+                                                      </div>
+                                                  </div>
+                                                  <div class="form-group">
+                                                      <label class="col-lg-2 control-label">Middle Name</label>
+                                                      <div class="col-lg-6">
+                                                          <input type="text" class="form-control" name="middle_name" placeholder=" ">
+                                                      </div>
+                                                  </div>
+                                                  <div class="form-group">
+                                                      <label class="col-lg-2 control-label">Last Name</label>
+                                                      <div class="col-lg-6">
+                                                          <input type="text" class="form-control" name="last_name" placeholder=" ">
+                                                      </div>
+                                                  </div>
+                                                   <div class="form-group">
+                                                      <label class="col-lg-2 control-label">College</label>
+                                                      <div class="col-lg-6">
+                                                          <input type="text" class="form-control" name="college" placeholder=" ">
+                                                      </div>
+                                                  </div>
+                                                  <div class="form-group">
+                                                      <label class="col-lg-2 control-label">Course</label>
+                                                      <div class="col-lg-6">
+                                                          <input type="text" class="form-control" name="course" placeholder=" ">
+                                                      </div>
+                                                  </div>
+                                                  
+                                                  <div class="form-group">
+                                                      <label class="col-lg-2 control-label">Year</label>
+                                                      <div class="col-lg-6">
+                                                          <input type="number" class="form-control" name="year" placeholder=" ">
+                                                      </div>
+                                                  </div>
+                                                  <div class="form-group">
+                                                      <label class="col-lg-2 control-label">Email</label>
+                                                      <div class="col-lg-6">
+                                                          <input type="text" class="form-control" id="email" placeholder=" ">
+                                                      </div>
+                                                  </div>
+                                                  <div class="form-group">
+                                                      <label class="col-lg-2 control-label"> Contact Number</label>
+                                                      <div class="col-lg-6">
+                                                          <input type="number" class="form-control" name="contact_number" placeholder=" ">
+                                                      </div>
+                                                  </div>
+                                                  
+
+                                                  <div class="form-group">
+                                                      <div class="col-lg-offset-2 col-lg-10">
+                                                          <button type="submit" class="btn btn-primary">Save</button>
+                                                          <button type="button" class="btn btn-danger">Cancel</button>
+                                                      </div>
+                                                  </div>
+                                              </form>
+                                          </div>
+                                      </section>
+                                  </div>
+                              </div>
+                          </div>
+                      </section>
+                 </div>
+              </div>
+
+              <!-- page end-->
+          </section>
+      </section>
+      <!--main content end-->
+  <!-- container section end -->
+{% endblock content %}
+

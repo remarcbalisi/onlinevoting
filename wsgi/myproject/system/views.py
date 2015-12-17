@@ -209,6 +209,10 @@ def election_add(request):
 					election.save()
 					success = "Election successfully added!"
 					return render(request, 'system/election_add.html', {'success':success})
+					
+				else:
+					exist = "Election year already exist"
+					return render(request, 'system/election_add.html', {'exist':exist})
 
 			else:
 				return render(request, 'system/election_add.html')
@@ -461,7 +465,7 @@ def vote(request):
 
 	#select 1 election that is active
 	election = Election.objects.filter(is_active=True)
-	positions = Position.objects.all()
+	positions = Position.objects.all().order_by('id')
 	candidates = Candidate.objects.all().filter(election_id=election[0
 		])
 	user = get_object_or_404(User, pk=request.user.pk)

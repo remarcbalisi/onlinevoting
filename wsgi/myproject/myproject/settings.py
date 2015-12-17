@@ -90,9 +90,9 @@ WSGI_APPLICATION = 'myproject.wsgi.application'
 DATABASES = {
     'default': {
     'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    'NAME': 'onlinevotingdb',
+    'NAME': 'onlinevotingdb3',
     'USER': 'postgres',
-    'PASSWORD': 'dreamracers',
+    'PASSWORD': 'kristel110496',
     'HOST': 'localhost',
     'PORT': '5432',
     }

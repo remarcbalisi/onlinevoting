@@ -105,6 +105,11 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='candidate',
+            name='college_id',
+            field=models.ForeignKey(blank=True, to='system.College', null=True),
+        ),
+        migrations.AddField(
+            model_name='candidate',
             name='election_id',
             field=models.ForeignKey(blank=True, to='system.Election', null=True),
         ),

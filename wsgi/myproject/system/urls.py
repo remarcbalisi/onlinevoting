@@ -28,4 +28,6 @@ urlpatterns = [
     url(r'^onlinevoting/viewuser/$', views.user_view, name='user_view'),
     url(r'^onlinevoting/tally/$', views.count_tally, name='count_tally'),
     url(r'^onlinevoting/viewtally/$', views.view_tally, name='view_tally'),
+    url(r'^onlinevoting/viewcandidate/candidateprofile/(?P<candidate_pk>[0-9]+)/$', views.candidate_profile, name='candidate_profile'),
+    url(r'^onlinevoting/viewcandidate/profile/(?P<profile_pk>[0-9]+)/$', views.profile, name='profile'),
 ]

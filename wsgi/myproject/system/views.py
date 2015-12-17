@@ -165,6 +165,28 @@ def position_add(request):
 		return render(request, 'system/position_add.html', {'exist':exist})
 
 @login_required
+def position_update(request, position_pk):
+	position = get_object_or_404(Position, pk=position_pk)
+
+	if request.user.is_admin:
+		try:
+			if request.method == 'POST':
+				form = PositionForm(request.POST, instance=position)
+
+				if form.is_valid():
+					this_position = form.save()
+					this_position.save()
+
+					success = "Position successfully updated!"
+					return redirect('system.views.position_view')
+			
+			else:
+				return render(request, 'system/position_update.html', {'position':position})
+
+		except:
+			pass
+
+@login_required
 def position_delete(request, position_pk):
 	position = get_object_or_404(Position, pk=position_pk)
 	position.delete()
@@ -339,7 +361,7 @@ def delete_party(request, party_pk):
 
 @login_required
 def party(request, pk):
-	if request.user.is_admin:
+	if request.user.is_admin: 
 		try:
 			parties = Party.objects.all()
 			candidate = Candidate.objects.all().filter(party_id=pk)
@@ -553,7 +575,7 @@ def bulletin_update(request):
 					this_bulletin.save()
 
 					success = "bulletin successfully updated!"
-					return render(request, 'system/bulletin_update.html', {'success':success, 'bulletin':bulletin})
+					return redirect('system.views.bulletin_view')
 
 			else:
 				return render(request, 'system/bulletin_update.html', {'bulletin':bulletin})
@@ -563,26 +585,11 @@ def bulletin_update(request):
 			return render(request, 'system/bulletin_update.html', {'exist':exist, 'bulletin':bulletin})
 
 @login_required
-def position_update(request, position_pk):
-	position = get_object_or_404(Position, pk=position_pk)
+def delete_bulletin(request, bulletin_pk):
+	bulletin = get_object_or_404(Bulletin, pk=bulletin_pk)
+	bulletin.delete()
 
-	if request.user.is_admin:
-		try:
-			if request.method == 'POST':
-				form = PositionForm(request.POST, instance=position)
-
-				if form.is_valid():
-					this_position = form.save()
-					this_position.save()
-
-					success = "Position successfully updated!"
-					return redirect('system.views.position_view')
-			
-			else:
-				return render(request, 'system/position_update.html', {'position':position})
-
-		except:
-			pass
+	return redirect('system.views.bulletin_view')
 
 @login_required
 def count_tally(request):

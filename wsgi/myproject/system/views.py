@@ -393,6 +393,36 @@ def college_add(request):
 			return render(request, 'system/college_add.html')
 
 @login_required
+def college_update(request, college_pk):
+    college = get_object_or_404(College, pk=college_pk)
+    positions = Position.objects.all()
+    colleges = College.objects.all()
+    candidates = Candidate.objects.all()
+    parties = Party.objects.all()
+
+    if request.user.is_admin:
+        try:
+            if request.method =='POST':
+                form = CollegeForm(request.POST, instance=college)
+
+                if form.is_valid():
+                    this_college = form.save()
+                    this_college.save()
+
+                    success = "college successfully updated!"
+                    default_position = this_college.position_id
+                    default_college = this_college.college_id
+                    default_candidate = this_college.candidate_id
+                    default_party = this_college.party_id
+                    return render(request, 'system/college_update.html', {'success':success, 'colleges':colleges, 'positions':positions, 'candidates':candidates, 'parties':parties,
+                        'default_position':default_position, 'default_college':default_college, 'default_candidate':default_candidate, 'default_party':default_party,'college':college })
+
+            else:
+                return render(request, 'system/college_update.html',{'positions':positions, 'candidates':candidates, 'parties':parties,'colleges':colleges, 'college':college})
+
+        except:
+             exist = "college already updated!"
+             return render(request, 'system/college_update.html',{'positions':positions, 'candidates':candidates, 'parties':parties,'colleges':colleges, 'college':college})@login_required
 def college_view(request):
 	try:
 		positions = Position.objects.all()

@@ -422,7 +422,7 @@ def college_update(request, college_pk):
 
         except:
              exist = "college already updated!"
-             return render(request, 'system/college_update.html',{'positions':positions, 'candidates':candidates, 'parties':parties,'colleges':colleges, 'college':college})@login_required
+             return render(request, 'system/college_update.html',{'positions':positions, 'candidates':candidates, 'parties':parties,'colleges':colleges, 'college':college})
 def college_view(request):
 	try:
 		positions = Position.objects.all()

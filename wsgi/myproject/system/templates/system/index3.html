@@ -33,18 +33,6 @@
       <script src="js/respond.min.js"></script>
       <script src="js/lte-ie7.js"></script>
     <![endif]-->
-    <script>
-      function checkLen(box, limit) {
-         var boxes=document.my_form.candidate_id,len=candidate_id.length,i,count=0;
-         var limit;
-         for(i=0;i<len;i++) {
-            count+=(candidate_id[i].checked) ? 1 : 0;
-            if(count>limit) {
-               box.checked=false;
-            }
-         }
-      }
-   </script>
   </head>
 
   <body>

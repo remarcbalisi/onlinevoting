@@ -282,6 +282,13 @@ def election_update(request):
 			return render(request, 'system/election_update.html', {'exist':exist, 'election':election})
 
 @login_required
+def college_delete(request, college_pk):
+	college = get_object_or_404(College, pk=college_pk)
+	college.delete()
+
+	return redirect('system.views.college_view')
+
+@login_required
 def election_delete(request):
 	election = get_object_or_404(Election)
 	election.delete()
@@ -396,6 +403,29 @@ def college_add(request):
 			exist = "College already exist!"
 			return render(request, 'system/college_add.html')
 
+@login_required
+def college_update(request, college_pk):
+    college = get_object_or_404(College, pk=college_pk)
+
+    if request.user.is_admin:
+        try:
+            if request.method =='POST':
+                form = CollegeForm(request.POST, instance=college)
+
+                if form.is_valid():
+                    this_college = form.save()
+                    this_college.save()
+
+                    success = "College is succesfully updated!"
+                    return render(request, 'system/college_update.html', {'success':success,'college':college })
+
+            else:
+                return render(request, 'system/college_update.html',{'college':college})
+
+        except:
+             exist = "College already Exist!"
+             return render(request, 'system/college_update.html',{'college':college})
+             
 @login_required
 def college_view(request):
 	try:

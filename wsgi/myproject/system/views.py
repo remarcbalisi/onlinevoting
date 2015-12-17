@@ -547,6 +547,10 @@ def bulletin_add(request):
 					success = "Bulletin successfully added!"
 					return render(request, 'system/bulletin_add.html', {'success':success})
 
+				else:
+					exist = "Already exist"
+					return render(request, 'system/bulletin_add.html', {'exist':exist})
+
 			else:
 				return render(request, 'system/bulletin_add.html')
 

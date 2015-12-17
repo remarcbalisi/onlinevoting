@@ -282,6 +282,13 @@ def election_update(request):
 			return render(request, 'system/election_update.html', {'exist':exist, 'election':election})
 
 @login_required
+def college_delete(request, college_pk):
+	college = get_object_or_404(College, pk=college_pk)
+	college.delete()
+
+	return redirect('system.views.college_view')
+
+@login_required
 def election_delete(request):
 	election = get_object_or_404(Election)
 	election.delete()
@@ -399,10 +406,6 @@ def college_add(request):
 @login_required
 def college_update(request, college_pk):
     college = get_object_or_404(College, pk=college_pk)
-    positions = Position.objects.all()
-    colleges = College.objects.all()
-    candidates = Candidate.objects.all()
-    parties = Party.objects.all()
 
     if request.user.is_admin:
         try:
@@ -414,14 +417,14 @@ def college_update(request, college_pk):
                     this_college.save()
 
                     success = "College is succesfully updated!"
-                    return render(request, 'system/college_update.html', {'success':success, 'colleges':colleges, 'positions':positions, 'candidates':candidates, 'parties':parties, 'college':college })
+                    return render(request, 'system/college_update.html', {'success':success,'college':college })
 
             else:
-                return render(request, 'system/college_update.html',{'positions':positions, 'candidates':candidates, 'parties':parties,'colleges':colleges, 'college':college})
+                return render(request, 'system/college_update.html',{'college':college})
 
         except:
-             exist = "College already updated!"
-             return render(request, 'system/college_update.html',{'success':success, 'positions':positions, 'candidates':candidates, 'parties':parties,'colleges':colleges, 'college':college})
+             exist = "College already Exist!"
+             return render(request, 'system/college_update.html',{'college':college})
              
 @login_required
 def college_view(request):

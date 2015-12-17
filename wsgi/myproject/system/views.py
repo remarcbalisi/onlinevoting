@@ -629,3 +629,48 @@ def candidate(request, pk):
     colleges = College.objects.all()
     candidates = Candidate.objects.filter(college_id=pk)
     return render(request, 'system/voter/candidate.html', {'colleges': colleges, 'candidates': candidates})
+
+@login_required
+def voters_vote(request):
+
+	election = Election.objects.filter(is_active=True)
+	positions = Position.objects.all()
+	candidates = Candidate.objects.all().filter(election_id=election[0])
+	user = get_object_or_404(User, pk=request.user.pk)
+	button = True
+
+	try:
+		if len(election) == 1:
+			if user.is_voted == False:
+				if request.method == 'POST':
+					form = VoteForm(request.POST)
+
+					if form.is_valid():
+						vote = form.save()
+						vote.save()
+						vote.election_id = election[0]
+						vote.user_id = user
+						vote.vote_init()
+						vote.save()
+						user.is_voted=True
+						user.save()
+
+						success = "successfully voted!"
+						button = False
+						return render(request, 'system/voter/vote.html', {'success':success, 'button':button})
+
+				else:
+					return render(request, 'system/voter/vote.html', {'candidates':candidates, 'election':election, 'user':user, 'positions':positions, 'button':button})
+
+			elif user.is_voted == True:
+				exist = "You already voted!"
+				button = False
+				return render(request, 'system/voter/vote.html', {'exist':exist})
+
+		elif len(election) == 0:
+			exist = "Election is not active!"
+			return render(request, 'system/voter/vote.html', {'exist':exist})
+
+	except:
+		exist = "error"
+		return render(request, 'system/voter/vote.html', {'candidates':candidates, 'election':election, 'user':user, 'positions':positions, 'button':button})

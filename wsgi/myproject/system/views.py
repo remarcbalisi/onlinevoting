@@ -157,6 +157,10 @@ def position_add(request):
 				success = "Position successfully added!"
 				return render(request, 'system/position_add.html', {'success': success})
 
+			else:
+				exist = "Position already exist"
+				return render(request, 'system/position_add.html', {'exist':exist})
+
 		else:
 			return render(request, 'system/position_add.html')
 

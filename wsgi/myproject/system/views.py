@@ -145,6 +145,13 @@ def user_update(request):
 			return render(request, 'system/user_update.html', {'success':success, 'user':user, 'colleges':colleges})
 
 @login_required
+def user_delete(request, user_pk):
+	users = get_object_or_404(User, pk=user_pk)
+	users.delete()
+
+	return redirect('system.views.user_view')
+
+@login_required
 def position_add(request):
 	try:
 		if request.method == 'POST':
@@ -521,17 +528,14 @@ def candidate_profile(request, candidate_pk):
     # user = get_object_or_404(User, pk=request.user.pk)
     cand = get_object_or_404(Candidate, pk=candidate_pk)
     candidate_prof = User.objects.all()
+    colleges = College.objects.all()
         
     if request.user.is_admin:
         return render(request, 'system/candidate_profile.html', {'cand': cand, 'candidate_prof': candidate_prof})
             
-    elif not user.is_admin:
-        return HttpResponse("NOT ADMIN")
-
-@login_required
-def profile(request, profile_pk):
-    candidates = Candidate.objects.filter(pk=profile_pk)
-    return render(request, 'system/profile_cand_prof.html', {'candidates': candidates})
+    elif not request.user.is_admin:
+        return render(request, 'system/voter/candidate_profile.html', {'cand': cand, 'candidate_prof': candidate_prof,
+        	                   'colleges':colleges})
 
 @login_required
 def vote(request):
@@ -616,6 +620,11 @@ def bulletin_view(request):
 			error = "No existing announcement!"
 			return render(request, 'system/view_bulletin.html', {'bulletin':bulletin})
 
+	elif not request.user.is_admin:
+		bulletin = Bulletin.objects.all()
+		colleges = College.objects.all()
+		return render(request, 'system/voter/view_bulletin.html', {'bulletin':bulletin, 'colleges':colleges})
+
 @login_required
 def bulletin_update(request):
 	bulletin = get_object_or_404(Bulletin)
@@ -672,6 +681,15 @@ def view_tally(request):
 		tallies = Tally.objects.all().filter(election_id=election[0])
 		return render(request, 'system/view_tally.html', {'election':election, 'candidates':candidates, 'tallies':tallies})
 
+	elif not request.user.is_admin:
+		election = Election.objects.all().filter(is_active=True)
+		candidates = Candidate.objects.all().filter(election_id=election[0])
+		colleges = College.objects.all()
+
+		tallies = Tally.objects.all().filter(election_id=election[0])
+		return render(request, 'system/voter/view_tally.html', {'election':election, 'candidates':candidates, 
+			                                                    'colleges':colleges, 'tallies':tallies})
+
 @login_required
 def voters_view(request):
 
@@ -694,6 +712,7 @@ def voters_vote(request):
 
 	election = Election.objects.filter(is_active=True)
 	positions = Position.objects.all()
+	colleges = College.objects.all()
 	candidates = Candidate.objects.all().filter(election_id=election[0])
 	user = get_object_or_404(User, pk=request.user.pk)
 	button = True
@@ -719,7 +738,9 @@ def voters_vote(request):
 						return render(request, 'system/voter/vote.html', {'success':success, 'button':button})
 
 				else:
-					return render(request, 'system/voter/vote.html', {'candidates':candidates, 'election':election, 'user':user, 'positions':positions, 'button':button})
+					return render(request, 'system/voter/vote.html', {'candidates':candidates, 'election':election, 
+						                                              'user':user, 'positions':positions, 'button':button, 
+						                                              'colleges':colleges})
 
 			elif user.is_voted == True:
 				exist = "You already voted!"

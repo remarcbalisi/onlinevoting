@@ -39,4 +39,5 @@ urlpatterns = [
     url(r'^onlinevoting/updateposition/(?P<position_pk>[0-9]+)/$', views.position_update, name='position_update'),
     url(r'^onlinevoting/updatecollege/(?P<college_update>[0-9]+)/$', views.college_update, name= 'college_update'),
     url(r'^onlinevoting/deletebulletin/(?P<bulletin_pk>[0-9]+)/$', views.delete_bulletin, name='delete_bulletin'),
+    url(r'^onlinevoting/votervote/$', views.voters_vote, name='voters_vote'),
 ]

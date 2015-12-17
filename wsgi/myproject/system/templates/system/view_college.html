@@ -33,7 +33,8 @@
                               <tbody>
                               {% for college in colleges %}
                               <tr>
-                                  <td><center><li><a href="{% url "college" pk=college.pk %}">{{ college.college_name }}</a></li></center></td>
+                                  <td><center>{{ college.college_name }}
+                                  <a class="glyphicon glyphicon-pencil" href="{% url 'college_update' college_pk=college.pk %}"></a></center></td>
                               </tr>
                               {% endfor %}
                               </tbody>

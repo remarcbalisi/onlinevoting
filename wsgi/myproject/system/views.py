@@ -584,22 +584,28 @@ def vote(request):
 def bulletin_add(request):
 	if request.user.is_admin:
 		try:
-			if request.method == 'POST':
-				form = BulletinForm(request.POST)
+			bulletin = Bulletin.objects.all()
 
-				if form.is_valid():
-					bulletin = form.save()
-					bulletin.save()
+			if len(bulletin) == 0:
+				if request.method == 'POST':
+					form = BulletinForm(request.POST)
 
-					success = "Bulletin successfully added!"
-					return render(request, 'system/bulletin_add.html', {'success':success})
+					if form.is_valid():
+						bulletin = form.save()
+						bulletin.save()
+
+						success = "Bulletin successfully added!"
+						return render(request, 'system/bulletin_add.html', {'success':success})
+
+					else:
+						exist = "Already exist"
+						return render(request, 'system/bulletin_add.html', {'exist':exist})
 
 				else:
-					exist = "Already exist"
-					return render(request, 'system/bulletin_add.html', {'exist':exist})
+					return render(request, 'system/bulletin_add.html')
 
-			else:
-				return render(request, 'system/bulletin_add.html')
+			elif len(bulletin) > 0:
+				return redirect('bulletin_update')
 
 		except:
 			exist = "Already exist"

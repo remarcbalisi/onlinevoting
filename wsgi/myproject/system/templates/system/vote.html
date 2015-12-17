@@ -27,7 +27,7 @@
                           </header>
                           <div class="panel-body">
                               <div class="form">
-                                  <form method="POST" class="form-horizontal" name="candi" id="candi">
+                                  <form method="POST" class="form-horizontal" role="form" id="candi">
 
                                   {% if success %}
                                     <div class="alert alert-success">
@@ -43,11 +43,7 @@
                                   </div>
                                   {% endif %}
 
-
-                                  {% csrf_token %}
-                                      <div class="form-group ">
-                                      {% for position in positions %}
-                                      <!-- this script is used to limit the number of checkbox to be chedcked
+<!-- this script is used to limit the number of checkbox to be chedcked
 -->
 <script type="text/javascript">
 function checkboxlimit(checkgroup, limit){
@@ -66,22 +62,42 @@ function checkboxlimit(checkgroup, limit){
     }
 }
 </script>
-                                          <label for="cname" class="control-label col-lg-2">{{ position.position_name }}<span class="required">*</span></label>
 
-                                          {% for candidate in candidates %}
-                                            {% if position.pk == candidate.position_id.pk %}
-                                              <div class="col-lg-3">
-                                                  <input id="{{candidate.position_id.position_name}}" type="checkbox" name="candidate_id" value="{{ candidate.pk }}">{{ candidate }}<br>
+
+                                  {% csrf_token %}
+                                      <div class="form-group ">
+                                      {% for position in positions %}
+                                          <label for="cname" class="control-label col-lg-2">{{ position }}<span class="required">*</span></label>
+
+                                          {% if position.slot == 1 %}
+                                            <select name="candidate_id">
+                                              {% for candidate in candidates %}
+                                                {% if position.pk == candidate.position_id.pk %}
+                                                  <option value="{{candidate.pk}}">
+                                                    {{candidate}}
+                                                  </option>
+
+                                                {% endif %}
+                                              {% endfor %}
+                                            </select>
+                                          {% endif %}
+
+                                          {% if position.slot > 1 %}
+                                              {% for candidate in candidates %}
+                                                {% if position.pk == candidate.position_id.pk %}
+                                                  <div class="col-lg-3">
+                                                  <input id="checkbox" type="checkbox" name="candidate_id" value="{{ candidate.pk }}">{{ candidate }}<br>
                                               </div>
-                                            {% endif %}
-                                          {% endfor %}
+                                                  <!-- send the limit value for current checkbox -->
+                                                  <script type="text/javascript">checkboxlimit(document.forms.candi.checkbox, {{ position.slot }})
+                                                  </script>
 
-                                          <!-- send the limit value for current checkbox -->
-                                              <script type="text/javascript">checkboxlimit(document.forms.candi.{{position.position_name}}, {{ position.slot }})
-                                              </script>
-                                           
-                                      {% endfor %}
+                                                {% endif %}
+                                              {% endfor %}
+                                          {% endif %}
+
                                       </div>
+                                      {% endfor %}
 
                                             {% if button == True %}
                                               <button class="btn btn-primary" type="submit">Save</button>

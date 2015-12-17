@@ -282,6 +282,13 @@ def election_update(request):
 			return render(request, 'system/election_update.html', {'exist':exist, 'election':election})
 
 @login_required
+def college_delete(request, college_pk):
+	college = get_object_or_404(College, pk=college_pk)
+	college.delete()
+
+	return redirect('system.views.college_view')
+
+@login_required
 def election_delete(request):
 	election = get_object_or_404(Election)
 	election.delete()
@@ -397,6 +404,29 @@ def college_add(request):
 			return render(request, 'system/college_add.html')
 
 @login_required
+def college_update(request, college_pk):
+    college = get_object_or_404(College, pk=college_pk)
+
+    if request.user.is_admin:
+        try:
+            if request.method =='POST':
+                form = CollegeForm(request.POST, instance=college)
+
+                if form.is_valid():
+                    this_college = form.save()
+                    this_college.save()
+
+                    success = "College is succesfully updated!"
+                    return render(request, 'system/college_update.html', {'success':success,'college':college })
+
+            else:
+                return render(request, 'system/college_update.html',{'college':college})
+
+        except:
+             exist = "College already Exist!"
+             return render(request, 'system/college_update.html',{'college':college})
+             
+@login_required
 def college_view(request):
 	try:
 		positions = Position.objects.all()
@@ -486,6 +516,23 @@ def delete_candidate(request, candidate_pk):
 
 	return redirect('system.views.candidate_view')
 
+def candidate_profile(request, candidate_pk):
+
+    # user = get_object_or_404(User, pk=request.user.pk)
+    cand = get_object_or_404(Candidate, pk=candidate_pk)
+    candidate_prof = User.objects.all()
+        
+    if request.user.is_admin:
+        return render(request, 'system/candidate_profile.html', {'cand': cand, 'candidate_prof': candidate_prof})
+            
+    elif not user.is_admin:
+        return HttpResponse("NOT ADMIN")
+
+@login_required
+def profile(request, profile_pk):
+    candidates = Candidate.objects.filter(pk=profile_pk)
+    return render(request, 'system/profile_cand_prof.html', {'candidates': candidates})
+
 @login_required
 def vote(request):
 
@@ -537,22 +584,28 @@ def vote(request):
 def bulletin_add(request):
 	if request.user.is_admin:
 		try:
-			if request.method == 'POST':
-				form = BulletinForm(request.POST)
+			bulletin = Bulletin.objects.all()
 
-				if form.is_valid():
-					bulletin = form.save()
-					bulletin.save()
+			if len(bulletin) == 0:
+				if request.method == 'POST':
+					form = BulletinForm(request.POST)
 
-					success = "Bulletin successfully added!"
-					return render(request, 'system/bulletin_add.html', {'success':success})
+					if form.is_valid():
+						bulletin = form.save()
+						bulletin.save()
+
+						success = "Bulletin successfully added!"
+						return render(request, 'system/bulletin_add.html', {'success':success})
+
+					else:
+						exist = "Already exist"
+						return render(request, 'system/bulletin_add.html', {'exist':exist})
 
 				else:
-					exist = "Already exist"
-					return render(request, 'system/bulletin_add.html', {'exist':exist})
+					return render(request, 'system/bulletin_add.html')
 
-			else:
-				return render(request, 'system/bulletin_add.html')
+			elif len(bulletin) > 0:
+				return redirect('bulletin_update')
 
 		except:
 			exist = "Already exist"
@@ -613,7 +666,7 @@ def count_tally(request):
 				save_vote.save()
 			return redirect('system.views.view_tally')
 
-		elif len(tally) == 1:
+		elif len(tally) >= 1:
 			return redirect('system.views.view_tally')
 
 @login_required

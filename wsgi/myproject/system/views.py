@@ -465,6 +465,33 @@ def candidate_add(request):
 			return render(request, 'system/candidate_add.html', {'exist':exist, 'elections':elections, 'positions':positions, 'parties':parties, 'users':users, 'colleges':colleges})
 
 @login_required
+def candidate_update(request, candidate_pk):
+	candidate = get_object_or_404(Candidate, pk=candidate_pk)
+	get_user = get_object_or_404(User, pk=candidate.user_id.pk)
+
+	if request.user.is_admin:
+		try:
+			if request.method == 'POST':
+				form = CandidateForm(request.POST, instance=candidate)
+
+				if form.is_valid():
+					this_candidate = form.save()
+					this_candidate.save()
+					this_candidate.user_id = get_user
+					this_candidate.save()
+
+					success = "Candidate successfully updated!"
+					return redirect('system.views.candidate_view')
+			
+			else:
+				return render(request, 'system/candidate_update.html', {'candidate':candidate})
+
+		except:
+			pass
+
+
+
+@login_required
 def candidate_view(request):
 	candidates = Candidate.objects.all()
 	elections = Election.objects.all()
@@ -499,6 +526,8 @@ def candidate_profile(request, candidate_pk):
         return HttpResponse("NOT ADMIN")
 
 @login_required
+	
+@login_required
 def profile(request, profile_pk):
     candidates = Candidate.objects.filter(pk=profile_pk)
     return render(request, 'system/profile_cand_prof.html', {'candidates': candidates})
@@ -509,8 +538,7 @@ def vote(request):
 	#select 1 election that is active
 	election = Election.objects.filter(is_active=True)
 	positions = Position.objects.all().order_by('id')
-	candidates = Candidate.objects.all().filter(election_id=election[0
-		])
+	candidates = Candidate.objects.all().filter(election_id=election[0])
 	user = get_object_or_404(User, pk=request.user.pk)
 	button = True
 

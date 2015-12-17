@@ -354,6 +354,24 @@ def candidate_view(request):
 		return render(request, 'system/candidate_view.html', {'candidates':candidates, 'elections':elections, 'positions':positions, 'colleges':colleges, 'parties':parties})
 
 @login_required
+def candidate_profile(request, candidate_pk):
+
+    # user = get_object_or_404(User, pk=request.user.pk)
+    cand = get_object_or_404(Candidate, pk=candidate_pk)
+    candidate_prof = User.objects.all()
+        
+    if request.user.is_admin:
+        return render(request, 'system/candidate_profile.html', {'cand': cand, 'candidate_prof': candidate_prof})
+            
+    elif not user.is_admin:
+        return HttpResponse("NOT ADMIN")
+
+@login_required
+def profile(request, profile_pk):
+    candidates = Candidate.objects.filter(pk=profile_pk)
+    return render(request, 'system/profile_cand_prof.html', {'candidates': candidates})
+
+@login_required
 def vote(request):
 	candidates = Candidate.objects.all()
 

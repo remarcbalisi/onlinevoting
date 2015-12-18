@@ -51,53 +51,43 @@
                                       <div class="form-group ">
                                           <label for="cemail" class="control-label col-lg-2">E-Mail <span class="required">*</span></label>
                                           <div class="col-lg-5">
-                                            <input name="email" type="email" class="form-control" placeholder=" email" id="mail" onkeyup="checkMail(); return false;" required><span id="confirmMail" class="confirmMessage"></span>
+                                            <input value="{{user.email}}" name="email" type="email" class="form-control" placeholder=" email" id="mail" onkeyup="checkMail(); return false;" required><span id="confirmMail" class="confirmMessage"></span>
                                           </div>
                                       </div>
                                       <div class="form-group ">
                                           <label class="control-label col-lg-2">First Name <span class="required">*</span></label>
                                           <div class="col-lg-3">
-                                              <input class="form-control" name="first_name" type="text" required />
+                                              <input value="{{user.first_name}}" class="form-control" name="first_name" type="text" required />
                                           </div>
                                       </div>
                                       <div class="form-group ">
                                           <label for="cname" class="control-label col-lg-2">Middle Name <span class="required">*</span></label>
                                           <div class="col-lg-3">
-                                              <input class="form-control" name="middle_name" type="text" required />
+                                              <input value="{{user.middle_name}}" class="form-control" name="middle_name" type="text" required />
                                           </div>
                                       </div>
                                       <div class="form-group ">
                                           <label for="cname" class="control-label col-lg-2">Last Name <span class="required">*</span></label>
                                           <div class="col-lg-3">
-                                              <input class="form-control" name="last_name" type="text" required />
+                                              <input value="{{user.last_name}}" class="form-control" name="last_name" type="text" required />
                                           </div>
                                       </div>
                                       <div class="form-group ">
                                           <label for="cname" class="control-label col-lg-2">Address<span class="required">*</span></label>
                                           <div class="col-lg-3">
-                                              <input class="form-control" name="address" required />
+                                              <input value="{{user.address}}" class="form-control" name="address" required />
                                           </div>
                                       </div>
                                       <div class="form-group ">
                                           <label for="cname" class="control-label col-lg-2">Course<span class="required">*</span></label>
                                           <div class="col-lg-3">
-                                              <input class="form-control" name="course" type="text" required />
+                                              <input value="{{user.course}}" class="form-control" name="course" type="text" required />
                                           </div>
                                       </div>
                                       <div class="form-group ">
                                           <label for="cname" class="control-label col-lg-2">Year<span class="required">*</span></label>
                                           <div class="col-lg-3">
-                                              <input class="form-control" name="year" type="number" required />
-                                          </div>
-                                      </div>
-                                      <div class="form-group ">
-                                          <label for="cname" class="control-label col-lg-2">College<span class="required">*</span></label>
-                                          <div class="col-lg-3">
-                                              <select name="college_id">
-                                                {% for college in colleges %}
-                                                  <option value="{{ college.pk }}">{{college.college_name}}</option>
-                                                {% endfor %}
-                                              </select>
+                                              <input value="{{user.year}}" class="form-control" name="year" type="number" required />
                                           </div>
                                       </div>
                                       <div class="form-group ">
@@ -116,7 +106,7 @@
                                       <div class="form-group ">
                                           <label class="control-label col-lg-2">Contact Number <span class="required">*</span></label>
                                           <div class="col-lg-3">
-                                              <input class="form-control" name="contact_number" type="text" required />
+                                              <input value="{{user.contact_number}}" class="form-control" name="contact_number" type="text" required />
                                           </div>
                                       </div>
                                       <div class="form-group">

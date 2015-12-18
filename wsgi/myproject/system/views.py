@@ -122,27 +122,46 @@ def user_view(request):
 
 @login_required
 def user_update(request):
-	user = get_object_or_404(Bulletin)
-	colleges = College.objects.all()
 
-	if request.user.is_admin:
-		try:
-			if request.method == 'POST':
-				form = UserForm(request.POST, instance=user)
+	if request.user.is_authenticated():
+		user = User.objects.get(pk=request.user.id)
 
-				if form.is_valid():
-					this_user = form.save()
-					this_user.save()
+		if request.method == 'POST':
 
-					success = "user profile successfully updated!"
-					return render(request, 'system/user_update.html', {'success':success, 'colleges':colleges, 'user':user})
+			form = UserForm(request.POST, instance=user)
 
+			idnum = request.POST['id_number']
+			fname = request.POST['first_name']
+			mname = request.POST['middle_name']
+			lname = request.POST['last_name']
+			address = request.POST['address']
+			course = request.POST['course']
+			year = request.POST['year']
+			contact_number = request.POST['contact_number']
+			email = request.POST['email']
+			password = request.POST['password']
+
+			if form.is_valid():
+				user.email = email
+				user.first_name = fname
+				user.middle_name = mname
+				user.last_name = lname
+				user.address = address
+				user.course = course
+				user.year = year
+				user.contact_number = contact_number
+				user.id_number = idnum
+				user.set_password(password)
+				user.save()
+				return redirect('system.views.user_home')
 			else:
-				return render(request, 'system/user_update.html', {'user':user, 'colleges':colleges})
+				raise Http404
 
-		except:
-			exist = "User Profile already updated!"
-			return render(request, 'system/user_update.html', {'success':success, 'user':user, 'colleges':colleges})
+		else:
+			form = UserForm(instance=user)
+			return render(request, 'system/user_update.html', {'user': user})
+
+	return redirect('system.views.user_login')
 
 @login_required
 def position_add(request):

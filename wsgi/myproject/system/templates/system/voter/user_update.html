@@ -1,0 +1,157 @@
+{% extends "system/voter/index.html" %}
+{% load staticfiles %}
+<!DOCTYPE html>
+
+{% block title %}<title>Online voting | Update User</title>{% endblock title %}
+
+{% block content %}
+      <!--main content start-->             
+              <div class="row">
+                  <div class="col-lg-12">
+                      <section class="panel">
+                          <header class="panel-heading">
+                              Form validations
+                          </header>
+                          <div class="panel-body">
+                              <div class="form">
+                                  <form method="POST" class="form-horizontal" role="form">
+                                  {% csrf_token %}
+                                  {% if success %}
+                                    <div class="alert alert-success">
+                                      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                      <strong>Success!</strong> {{ success }}
+                                    </div>
+                                  {% endif %}
+
+                                  {% if exist %}
+                                  <div class="alert alert-warning">
+                                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                    <strong>Warning!</strong> {{ exist }}
+                                  </div>
+                                  {% endif %}
+                                      <div class="form-group ">
+                                          <label for="cemail" class="control-label col-lg-2">E-Mail <span class="required">*</span></label>
+                                          <div class="col-lg-5">
+                                            <input value="{{user.email}}" name="email" type="email" class="form-control" placeholder=" email" id="mail" onkeyup="checkMail(); return false;" required><span id="confirmMail" class="confirmMessage"></span>
+                                          </div>
+                                      </div>
+                                      <div class="form-group ">
+                                          <label class="control-label col-lg-2">First Name <span class="required">*</span></label>
+                                          <div class="col-lg-3">
+                                              <input value="{{user.first_name}}" class="form-control" name="first_name" type="text" required />
+                                          </div>
+                                      </div>
+                                      <div class="form-group ">
+                                          <label for="cname" class="control-label col-lg-2">Middle Name <span class="required">*</span></label>
+                                          <div class="col-lg-3">
+                                              <input value="{{user.middle_name}}" class="form-control" name="middle_name" type="text" required />
+                                          </div>
+                                      </div>
+                                      <div class="form-group ">
+                                          <label for="cname" class="control-label col-lg-2">Last Name <span class="required">*</span></label>
+                                          <div class="col-lg-3">
+                                              <input value="{{user.last_name}}" class="form-control" name="last_name" type="text" required />
+                                          </div>
+                                      </div>
+                                      <div class="form-group ">
+                                          <label for="cname" class="control-label col-lg-2">Address<span class="required">*</span></label>
+                                          <div class="col-lg-3">
+                                              <input value="{{user.address}}" class="form-control" name="address" required />
+                                          </div>
+                                      </div>
+                                      <div class="form-group ">
+                                          <label for="cname" class="control-label col-lg-2">Course<span class="required">*</span></label>
+                                          <div class="col-lg-3">
+                                              <input value="{{user.course}}" class="form-control" name="course" type="text" required />
+                                          </div>
+                                      </div>
+                                      <div class="form-group ">
+                                          <label for="cname" class="control-label col-lg-2">Year<span class="required">*</span></label>
+                                          <div class="col-lg-3">
+                                              <input value="{{user.year}}" class="form-control" name="year" type="number" required />
+                                          </div>
+                                      </div>
+                                      <div class="form-group ">
+                                          <label for="cname" class="control-label col-lg-2">Password <span class="required">*</span></label>
+                                          <div class="col-lg-3">
+                                              <input name="password" type="password" class="form-control" placeholder=" password" id="pass1" required>
+                                          </div>
+                                      </div>
+                                      <div class="form-group ">
+                                          <label for="cname" class="control-label col-lg-2">Re-type Password <span class="required">*</span></label>
+                                          <div class="col-lg-3">
+                                              <input name="password" type="password" class="form-control" placeholder=" re-enter password" id="pass2" onkeyup="checkPass(); return false;" required><span id="confirmMessage" class="confirmMessage"></span>
+                                          </div>
+                                      </div>
+                                      
+                                      <div class="form-group ">
+                                          <label class="control-label col-lg-2">Contact Number <span class="required">*</span></label>
+                                          <div class="col-lg-3">
+                                              <input value="{{user.contact_number}}" class="form-control" name="contact_number" type="text" required />
+                                          </div>
+                                      </div>
+                                      <div class="form-group">
+                                          <div class="col-lg-offset-2 col-lg-10">
+                                              <button class="btn btn-primary" type="submit">Register</button>
+                                              <button class="btn btn-default" type="button">Cancel</button>
+                                          </div>
+                                      </div>
+                                  </form>
+                                  <script type="text/javascript">
+                                    function checkPass(){
+                                      var pass1 = document.getElementById('pass1');
+                                      var pass2 = document.getElementById('pass2');
+                                      var message = document.getElementById('confirmMessage');
+                                      var goodColor = "#b6ffc7";
+                                      var goodColor_font = "#66cc66"
+                                      var badColor = "#ffdada";
+                                      var badColor_font = "#ff3f3f";
+                                      if(pass1.value == pass2.value){
+                                          pass2.style.backgroundColor = goodColor;
+                                          message.style.color = goodColor_font;
+                                          message.innerHTML = "Passwords Match!"
+                                          document.getElementById("submit_button").disabled = false;
+                                      }
+
+                                      else{
+                                          pass2.style.backgroundColor = badColor;
+                                          message.style.color = badColor_font;
+                                          message.innerHTML = "Passwords Do Not Match!"
+                                          document.getElementById("submit_button").disabled = true;
+                                      }
+                                    }
+
+                                    function checkMail(){
+                                      var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+                                      var mail = document.getElementById('mail');
+                                      var message_mail = document.getElementById('confirmMail');
+
+                                      var goodColor = "#b6ffc7";
+                                      var goodColor_font = "#66cc66"
+                                      var badColor = "#ffdada";
+                                      var badColor_font = "#ff3f3f";
+
+                                      if(mail.value.match(mailformat)){
+                                        message_mail.innerHTML = "valid mail!"
+                                        mail.style.backgroundColor = goodColor;
+                                        message_mail.style.color = goodColor_font;
+                                      }  
+                                      else{
+                                        message_mail.innerHTML = "Invalid mail (valid mail: mymail@example.com)"
+                                        mail.style.backgroundColor = badColor;
+                                        message_mail.style.color = badColor_font;
+                                      }
+                                    }
+
+                                    </script>
+                              </div>
+
+                          </div>
+                      </section>
+                  </div>
+              </div>
+              <!-- page end-->
+          </section>
+      </section>
+      <!--main content end-->
+{% endblock content %}

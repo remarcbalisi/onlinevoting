@@ -38,7 +38,13 @@
                                     <a href="{% url 'election_delete' %}">Delete</a></li></center>
                                   </td>
                                   <td><center>IS ACTIVE: {{election.is_active}}
+                                  {% if election.is_active == False %}
                                     <a href="{% url 'election_activate' election_pk=election.pk %}">|Activate</a></li></center>
+                                  {% endif %}
+
+                                  {% if election.is_active == True %}
+                                    <a href="{% url 'election_deactivate' election_pk=election.pk %}">|Deactivate</a></li></center>
+                                  {% endif %}
                                   </td>
                               </tr>
                               {% endfor %}

@@ -277,6 +277,18 @@ def election_activate(request, election_pk):
 			error = "No existing election year!"
 			return render(request, 'system/election_view.html', {'election':election})
 
+def election_deactivate(request, election_pk):
+	if request.user.is_admin:
+		try:
+			election = get_object_or_404(Election, pk=election_pk)
+			election.is_active = False
+			election.save()
+			return redirect('election_view')
+
+		except:
+			error = "No existing election year!"
+			return render(request, 'system/election_view.html', {'election':election})
+
 @login_required
 def election_update(request):
 	election = get_object_or_404(Election)
@@ -563,7 +575,8 @@ def vote(request):
 		user = get_object_or_404(User, pk=request.user.pk)
 		button = True
 	except:
-		return HttpResponse("Unable vote yet! Please return to home")
+		exist = "Election is not active!"
+		return render(request, 'system/vote.html', {'exist':exist})
 
 	try:
 		if len(election) == 1:

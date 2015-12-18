@@ -43,6 +43,25 @@
                                   </div>
                                   {% endif %}
 
+<!-- this script is used to limit the number of checkbox to be chedcked
+-->
+<script type="text/javascript">
+function checkboxlimit(checkgroup, limit){
+    var checkgroup=checkgroup
+    var limit=limit
+    for (var i=0; i<checkgroup.length; i++){
+        checkgroup[i].onclick=function(){
+        var checkedcount=0
+        for (var i=0; i<checkgroup.length; i++)
+            checkedcount+=(checkgroup[i].checked)? 1 : 0
+        if (checkedcount>limit){
+            alert("You can only select a maximum of "+limit+" checkboxes")
+            this.checked=false
+            }
+        }
+    }
+}
+</script>
 
 
                                   {% csrf_token %}
@@ -67,7 +86,7 @@
                                               {% for candidate in candidates %}
                                                 {% if position.pk == candidate.position_id.pk %}
                                                   <div class="col-lg-3">
-                                                  <input id="checkbox" type="checkbox" name="candidate_id" value="{{ candidate.pk }}">{{ candidate }}
+                                                  <input id="checkbox" type="checkbox" name="candidate_id" value="{{ candidate.pk }}">{{ candidate }}<br>
                                               </div>
                                                   <!-- send the limit value for current checkbox -->
                                                   <script type="text/javascript">checkboxlimit(document.forms.candi.checkbox, {{ position.slot }})
@@ -79,7 +98,7 @@
 
                                       </div>
                                       {% endfor %}
-                                        
+
                                             {% if button == True %}
                                               <button class="btn btn-primary" type="submit">Save</button>
                                               <button class="btn btn-default" type="button">Cancel</button>

@@ -1,0 +1,35 @@
+{% extends "system/voter/index.html" %}
+{% load staticfiles %}
+<!DOCTYPE html>
+
+{% block title %}<title>Online Voting | Results</title>{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-sm-12">
+        <section class="panel">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th><center>Tally</center></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for candidate in candidates %}
+                        <tr>
+                            <td><center><li>{{ candidate.user_id.first_name }}</li></center></td>
+                                {% for tally in tallies %}
+                                    {% if tally.candidate_id.pk == candidate.pk %}
+                                      <td><center><li>{{ tally.vote_count }}</li></center></td>
+                                    {% endif %}
+                                {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+    </div>
+</div>
+
+{% endblock %}

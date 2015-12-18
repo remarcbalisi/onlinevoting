@@ -37,6 +37,7 @@
                                   <th>Address</th>
                                   <th>Contact Number</th>
                                   <th>Email</th>
+                                  <th> </th>
                               </tr>
                               </thead>
                               <tbody>
@@ -47,13 +48,13 @@
                                   <td>{{ user.first_name }}</td>
                                   <td>{{ user.middle_name }}</td>
                                   <td>{{ user.last_name }}</td>
-                                  <td>{{ user.college }}</td>
+                                  <td>{{ user.college_id }}</td>
                                   <td>{{ user.course }}</td>
                                   <td>{{ user.year }}</td>
                                   <td>{{ user.address }}</td>
                                   <td>{{ user.contact_number }}</td>
                                   <td>{{ user.email }}</td>
-                                  
+                                  <td><a href="{% url "user_delete" user_pk=user.pk %}"> Delete</a></td>
                               {% endfor %}
                               </tbody>
                           </table>

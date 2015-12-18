@@ -18,7 +18,7 @@
 <!---//-slider-->
     <link rel="shortcut icon" href="{% static "UIver3/img/logo-big.png" %}">
 
-    {% block title %}<title>Online voting | Home</title>{% endblock title %}
+    {% block title %}<title>Online voting | Landing Page</title>{% endblock title %}
   </head>
 
   <body>
@@ -31,7 +31,6 @@ $("#example, body").vegas({
         { src: "{% static "images/2.jpg" %}", cover: true },
         { src: "{% static "images/3.png" %}", cover: true },
         { src: "{% static "images/4.png" %}", cover: true },
-        { src: "{% static "images/5.jpg" %}", cover: true },
     ]
 });
 </script>
@@ -65,8 +64,6 @@ $("#example, body").vegas({
 									<div class="row">
 										<div class="party">
 											<ul class="multi-column-dropdown">
-												<li><a href="#">All</a></li>
-												<li class="divider"></li>
 												{% for c in colleges %}
 												<li><a href="{% url "candidate" pk=c.pk %}">{{ c }}</a></li>
 												<li class="divider"></li>
@@ -76,8 +73,8 @@ $("#example, body").vegas({
 									</div>
 								</ul>
 							</li>
-							<li><a href="#">Results</a></li>
-							<li><a href="#">Campaigns</a></li>
+							<li><a href="{% url "view_tally" %}">Results</a></li>
+							<li><a href="{% url "bulletin_view" %}">Bulletin</a></li>
 							<li><a href="{% url "voters_vote" %}">Vote</a></li>
 							<li class="dropdown">
 							    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span>{{ user.first_name }} {{ user.last_name }}</span><b class="caret"></b></a>

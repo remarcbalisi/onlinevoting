@@ -6,28 +6,28 @@
 
 {% block content %}
 <div class="row">
-                  <div class="col-sm-12">
-                      <section class="panel">
-                          <table class="table">
-                              <thead>
-                              <tr>
-                                  <th><center>
-                                    Candidates
-                                  </center></th>
-                              </tr>
-                              </thead>
-                              <tbody>
-                              {% for c in candidates %}
-                              <tr>
-                                  <td><center>
-                                      {{ c.user_id.first_name }} {{ c.user_id.last_name }}
-                                  </center></td>
-                              </tr>
-                              {% endfor %}
-                              </tbody>
-                          </table>
-                      </section>
-                  </div>
+    <div class="col-sm-12">
+        <section class="panel">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th><center>
+                      Candidates
+                    </center></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for c in candidates %}
+                <tr>
+                    <td><center>
+                        <a href="{% url "candidate_profile" candidate_pk=c.pk %}">{{ c.user_id.first_name }} {{ c.user_id.last_name }}</a>
+                    </center></td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </section>
+    </div>
 </div>
 {% endblock %}
 

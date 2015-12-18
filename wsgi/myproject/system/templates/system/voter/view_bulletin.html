@@ -1,0 +1,31 @@
+{% extends "system/voter/index.html" %}
+{% load staticfiles %}
+<!DOCTYPE html>
+
+{% block title %}<title>Online Voting | Bulletin</title>{% endblock %}
+
+{% block content %}
+
+<div class="row">
+  <div class="col-sm-12">
+      <section class="panel">
+          <table class="table">
+              <thead>
+              <tr>
+                  <th><center>Announcement</center></th>
+              </tr>
+              </thead>
+              <tbody>
+              {% for bulletin in bulletin %}
+              <tr>
+                  <td><center>{{ bulletin.bulletin_info }}
+                  </center></td>
+              </tr>
+              {% endfor %}
+              </tbody>
+          </table>
+      </section>  
+  </div>
+</div>
+
+{% endblock %}

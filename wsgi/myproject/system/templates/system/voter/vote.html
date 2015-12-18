@@ -5,24 +5,75 @@
 {% block title %}<title>Online Voting | Vote</title>{% endblock %}
 
 {% block content %}
-      <!--main content start-->
-                          <div class="panel-body">
-                              <div class="form">
-                                  <form method="POST" class="form-horizontal" role="form" id="candi">
+<!--main content start-->
+      <section id="main-content">
+          <section class="wrapper">
+                <div class="panel-body">
+                    <div class="form">
+                        <form method="POST" class="form-horizontal" role="form" id="candi">
 
-                                  {% if success %}
-                                    <div class="alert alert-success">
-                                      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                                      <strong>Success!</strong> {{ success }}
-                                    </div>
-                                  {% endif %}
+                            {% if success %}
+                              <div class="alert alert-success">
+                              <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                              <strong>Success!</strong> {{ success }}
+                              </div>
+                            {% endif %}
 
-                                  {% if exist %}
-                                  <div class="alert alert-warning">
-                                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                                    <strong>Warning!</strong> {{ exist }}
-                                  </div>
-                                  {% endif %}
+                            {% if exist %}
+                              <div class="alert alert-warning">
+                              <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                              <strong>Warning!</strong> {{ exist }}
+                              </div>
+                            {% endif %}
+
+                            {% csrf_token %}
+                              <div class="jumbotron">
+                                {% for position in positions %}
+                                   {% if position.slot == 1 %}
+                                      <div class="col-sm-12">
+                                         <label for="cname" class="control-label col-sm-3">{{ position }}<span class="required">*</span></label>
+                                          <select name="candidate_id">
+                                            {% for candidate in candidates %}
+                                              {% if position.pk == candidate.position_id.pk %}
+                                                <option value="{{candidate.pk}}">
+                                                  {{ candidate.user_id.first_name }} {{ candidate.user_id.last_name }}
+                                                </option>
+                                             {% endif %}
+                                            {% endfor %}
+                                         </select>
+                                      </div>
+                                    {% endif %}
+
+                                    {% if position.slot > 1 %}
+                                      <div class="col-sm-3">
+                                        <label for="cname" class="control-label col-sm-3">{{ position }}<span class="required">*</span></label>
+                                          {% for candidate in candidates %}
+                                            {% if position.pk == candidate.position_id.pk %}
+                                              <div class="col-sm-12">
+                                                <input id="checkbox" type="checkbox" name="candidate_id" value="{{ candidate.pk}}">{{ candidate.user_id.first_name }} {{ candidate.user_id.last_name }}<br>
+                                              </div>
+                                                <script type="text/javascript">checkboxlimit(document.forms.candi.checkbox, {{ position.slot }})
+                                                </script>
+                                            {% endif %}
+                                          {% endfor %}
+                                      </div>
+                                    {% endif %}
+                                {% endfor %}
+                              </div>
+
+                                            <div class="col-sm-12">
+                                            {% if button == True %}
+                                              <button class="btn btn-primary" type="submit">Save</button>
+                                              <button class="btn btn-default" type="button">Cancel</button>
+                                            {% endif %}
+                                            </div>
+                            </form>
+                  </div>
+              </div>
+              <!-- page end-->
+          </section>
+      </section>
+      <!--main content end-->
 
 <!-- this script is used to limit the number of checkbox to be chedcked
 -->
@@ -44,42 +95,4 @@ function checkboxlimit(checkgroup, limit){
 }
 </script>
 
-
-                                  {% csrf_token %}
-                                      <div class="form-group ">
-                                      {% for position in positions %}
-                                          <label for="cname" class="control-label col-lg-2">{{ position }}<span class="required">*</span></label>
-
-                                          {% for candidate in candidates %}
-                                            {% if position.pk == candidate.position_id.pk %}
-                                              <div class="col-lg-3">
-                                                  <input id="{{ position }}" type="checkbox" name="candidate_id" value="{{ candidate.pk }}">{{ candidate }} {{ candidate.user_id.first_name }} {{ candidate.user_id.last_name }}<br>
-                                              </div>
-                                              
-                                              <!-- send the limit value for current checkbox -->
-                                              <script type="text/javascript">checkboxlimit(document.forms.candi.{{ position }}, {{ position.slot }})
-                                              </script>
-
-                                            {% endif %}
-                                          {% endfor %}
-                                      </div>
-                                      {% endfor %}
-
-                                            {% if button == True %}
-                                              <button class="btn btn-primary" type="submit">Save</button>
-                                              <button class="btn btn-default" type="button">Cancel</button>
-                                            {% endif %}
-                                          </div>
-                                      </div>
-                                  </form>
-                              </div>
-
-                          </div>
-                      </section>
-                  </div>
-              </div>
-              <!-- page end-->
-          </section>
-      </section>
-      <!--main content end-->
 {% endblock content %}

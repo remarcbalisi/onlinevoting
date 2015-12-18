@@ -251,8 +251,27 @@ def election_add(request):
 def election_view(request):
 	if request.user.is_admin:
 		try:
-			election = Election.objects.all()
+			election = Election.objects.all().order_by('year')
 			return render(request, 'system/election_view.html', {'election':election})
+
+		except:
+			error = "No existing election year!"
+			return render(request, 'system/election_view.html', {'election':election})
+
+@login_required
+def election_activate(request, election_pk):
+	if request.user.is_admin:
+		try:
+			check_elections = Election.objects.all().filter(is_active=True)
+
+			if len(check_elections) == 0:
+				election = get_object_or_404(Election, pk=election_pk)
+				election.is_active = True
+				election.save()
+				return redirect('election_view')
+
+			elif len(check_elections) > 0:
+				return HttpResponse("Cannot activate more than 1 election! Please return to home")
 
 		except:
 			error = "No existing election year!"
@@ -536,13 +555,15 @@ def profile(request, profile_pk):
 @login_required
 def vote(request):
 
-	#select 1 election that is active
-	election = Election.objects.filter(is_active=True)
-	positions = Position.objects.all().order_by('id')
-	candidates = Candidate.objects.all().filter(election_id=election[0
-		])
-	user = get_object_or_404(User, pk=request.user.pk)
-	button = True
+	try:
+		#select 1 election that is active
+		election = Election.objects.filter(is_active=True)
+		positions = Position.objects.all().order_by('id')
+		candidates = Candidate.objects.all().filter(election_id=election[0])
+		user = get_object_or_404(User, pk=request.user.pk)
+		button = True
+	except:
+		return HttpResponse("Unable vote yet! Please return to home")
 
 	try:
 		if len(election) == 1:

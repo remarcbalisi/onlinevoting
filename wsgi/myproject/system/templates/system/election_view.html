@@ -27,6 +27,7 @@
                               <thead>
                               <tr>
                                   <th><center>Election Year</center></th>
+                                  <th><center>Status</center></th>
                               </tr>
                               </thead>
                               <tbody>
@@ -34,7 +35,11 @@
                               <tr>
                                   <td><center>{{ election.year }}
                                     <a class="glyphicon glyphicon-pencil" href="{% url 'election_update' %}"></a>
-                                    <a href="{% url 'election_delete' %}">Delete</a></li></center></td>
+                                    <a href="{% url 'election_delete' %}">Delete</a></li></center>
+                                  </td>
+                                  <td><center>IS ACTIVE: {{election.is_active}}
+                                    <a href="{% url 'election_activate' election_pk=election.pk %}">|Activate</a></li></center>
+                                  </td>
                               </tr>
                               {% endfor %}
                               </tbody>

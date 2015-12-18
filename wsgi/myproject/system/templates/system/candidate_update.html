@@ -1,0 +1,99 @@
+{% extends "system/index3.html" %}
+{% load staticfiles %}
+<!DOCTYPE html>
+
+{% block title %}<title>Online voting | Candidate</title>{% endblock title %}
+
+{% block content %}
+      <!--main content start-->
+      <section id="main-content">
+          <section class="wrapper">
+      <div class="row">
+        <div class="col-lg-12">
+          <h3 class="page-header"><i class="fa fa-files-o"></i> Add Candidate</h3>
+          <ol class="breadcrumb">
+            <li><i class="fa fa-home"></i><a href="{% url "user_home" %}">Home</a></li>
+            <li><i class="icon_document_alt"></i>Manage Data</li>
+            <li><i class="fa fa-files-o"></i>Candidate Form</li>
+          </ol>
+        </div>
+      </div>
+              <!-- Form validations -->              
+              <div class="row">
+                  <div class="col-lg-12">
+                      <section class="panel">
+                          <header class="panel-heading">
+                              Form validations
+                          </header>
+                          <div class="panel-body">
+                              <div class="form">
+                                  <form method="POST" class="form-horizontal" role="form">
+
+                                  {% if success %}
+                                    <div class="alert alert-success">
+                                      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                      <strong>Success!</strong> {{ success }}
+                                    </div>
+                                  {% endif %}
+
+                                  {% if exist %}
+                                  <div class="alert alert-warning">
+                                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                    <strong>Warning!</strong> {{ exist }}
+                                  </div>
+                                  {% endif %}
+
+                                  {% csrf_token %}
+                                      <div class="form-group ">
+                                          <label for="cname" class="control-label col-lg-2">Candidate Platform<span class="required">*</span></label>
+                                          <div class="col-lg-3">
+                                              <input class="form-control" name="platform" type="text" value="{{ candidate.platform}}" required />
+                                          </div>
+                                      </div>
+                                      <div class="form-group ">
+                                          <label for="cname" class="control-label col-lg-2">Candidate Achievement<span class="required">*</span></label>
+                                          <div class="col-lg-3">
+                                              <input class="form-control" name="achievements" type="text" value="{{ candidate.achievements}}" required />
+                                          </div>
+                                      </div>
+                                      <div class="form-group ">
+                                          <label for="cname" class="control-label col-lg-2">Candidate Life Quote<span class="required">*</span></label>
+                                          <div class="col-lg-3">
+                                              <input class="form-control" name="life_quote" type="text" value="{{ candidate.life_quote}}" required />
+                                          </div>
+                                      </div>
+
+                                             <button class="btn btn-primary" type="submit">Save</button>
+                                              <button class="btn btn-default" type="button">Cancel</button>
+                                          </div>
+                                      </div>
+                                  </form>
+                              </div>
+
+                          </div>
+                      </section>
+                  </div>
+              </div>
+              <!-- page end-->
+          </section>
+      </section>
+      <!--main content end-->
+{% endblock content %}
+  </section>
+  <!-- container section end -->
+
+    <!-- javascripts -->
+    <script src="{% static "UIver3/js/jquery.js" }"></script>
+    <script src="{% static "UIver3/js/bootstrap.min.js" }"></script>
+    <!-- nice scroll -->
+    <script src="{% static "UIver3/js/jquery.scrollTo.min.js" }"></script>
+    <script src="{% static "UIver3/js/jquery.nicescroll.js" }" type="text/javascript"></script>
+    <!-- jquery validate js -->
+    <script type="text/javascript" src="{% static "UIver3/js/jquery.validate.min.js" }"></script>
+
+    <!-- custom form validation script for this page-->
+    <script src="{% static "UIver3/js/form-validation-script.js" }"></script>
+    <!--custome script for all page-->
+    <script src="{% static "UIver3/js/scripts.js" }"></script>
+
+</html>

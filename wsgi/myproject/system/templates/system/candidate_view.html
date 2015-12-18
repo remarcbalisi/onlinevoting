@@ -36,8 +36,9 @@
                               {% for candidate in candidates %}
                              
                               <tr>
-                                <td>{{ candidate.user_id}}</td>
-                                <td>{{ candidate.user_id.first_name}} {{ candidate.user_id.last_name}} <a href="{% url "candidate_profile" candidate_pk=candidate.pk %}"> <button type="view" class="btn btn-primary"> View Profile</button> <a href="{% url "delete_candidate" candidate_pk=candidate.pk %}">Delete</a></a></td>
+                                <td>{{ candidate.user_id}}</td> <td>{{ candidate.user_id.first_name}} {{ candidate.user_id.last_name}} <td> <a href="{% url "candidate_profile" candidate_pk=candidate.pk %}">View Profile</a></td>
+                                <td><a href="{% url "candidate_update" candidate_pk=candidate.pk %}"> Update Candidate</a></td>
+                                <td><a href="{% url "delete_candidate" candidate_pk=candidate.pk %}">Delete</a></td>
                               {% endfor %}
                               </tbody>
                           </table>

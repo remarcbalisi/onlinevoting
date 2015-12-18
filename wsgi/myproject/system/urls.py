@@ -11,6 +11,7 @@ urlpatterns = [
     url(r'^onlinevoting/viewposition/$', views.position_view, name='position_view'),
     url(r'^onlinevoting/addelection/$', views.election_add, name='election_add'),
     url(r'^onlinevoting/updateelection/$', views.election_update, name='election_update'),
+    url(r'^onlinevoting/activateelection/(?P<election_pk>[0-9]+)/$', views.election_activate, name='election_activate'),
     url(r'^onlinevoting/deleteelection/$', views.election_delete, name='election_delete'),
     url(r'^onlinevoting/viewelection/$', views.election_view, name='election_view'),
     url(r'^onlinevoting/addparty/$', views.party_add, name='party_add'),

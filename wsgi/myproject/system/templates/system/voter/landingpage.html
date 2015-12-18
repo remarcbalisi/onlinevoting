@@ -82,6 +82,8 @@ $("#example, body").vegas({
 									<div class="row">
 										<div class="party">
 											<ul class="multi-column-dropdown">
+											<li><a href="{% url "user_profile" user_pk=user.pk %}">User Profile</a></li>
+											<li class="divider"></li>
 											<li><a href="{% url "user_logout" %}">Logout</a></li>
 											</ul>
 										</div>

@@ -102,12 +102,13 @@ def user_profile(request, user_pk):
 	if request.user.is_authenticated():
 		user = User.objects.get(pk=request.user.pk)
 		user_prof = User.objects.get(pk=user_pk)
+		colleges = College.objects.all()
 
 		if user.is_admin:
 			return render(request, 'system/user_profile.html', {'user':user, 'user_prof': user_prof})
 
 		elif not user.is_admin:
-			return render(request, 'system/user_profile.html', {'user':user, 'user_prof':user_prof})
+			return render(request, 'system/voter/user_profile.html', {'user':user, 'user_prof':user_prof, 'colleges':colleges})
 
 @login_required
 def user_view(request):
@@ -126,7 +127,7 @@ def user_update(request):
 	if request.user.is_authenticated():
 		user = User.objects.get(pk=request.user.id)
 
-		if request.method == 'POST':
+		if request.method == 'POST' and user.is_admin:
 
 			form = UserForm(request.POST, instance=user)
 
@@ -157,9 +158,41 @@ def user_update(request):
 			else:
 				raise Http404
 
-		else:
+		if request.method == 'POST' and not user.is_admin:
+
+			form = UserForm(request.POST, instance=user)
+
+			idnum = user.id_number
+			fname = request.POST['first_name']
+			mname = request.POST['middle_name']
+			lname = request.POST['last_name']
+			address = request.POST['address']
+			course = request.POST['course']
+			year = request.POST['year']
+			contact_number = request.POST['contact_number']
+			email = request.POST['email']
+			password = request.POST['password']
+
+			
+			user.email = email
+			user.first_name = fname
+			user.middle_name = mname
+			user.last_name = lname
+			user.address = address
+			user.course = course
+			user.year = year
+			user.contact_number = contact_number
+			user.id_number = idnum
+			user.set_password(password)
+			user.save()
+			return redirect('system.views.user_home')
+
+		elif request.user.is_admin:
 			form = UserForm(instance=user)
 			return render(request, 'system/user_update.html', {'user': user})
+
+		elif not request.user.is_admin:
+			return render(request, 'system/voter/user_update.html')
 
 	return redirect('system.views.user_login')
 

@@ -86,7 +86,7 @@ function checkboxlimit(checkgroup, limit){
                                               {% for candidate in candidates %}
                                                 {% if position.pk == candidate.position_id.pk %}
                                                   <div class="col-lg-3">
-                                                  <input id="checkbox" type="checkbox" name="candidate_id" value="{{ candidate.pk }}">{{ candidate }}<br>
+                                                  <input id="checkbox" type="checkbox" name="candidate_id" value="{{ candidate.pk }}">{{ candidate }}
                                               </div>
                                                   <!-- send the limit value for current checkbox -->
                                                   <script type="text/javascript">checkboxlimit(document.forms.candi.checkbox, {{ position.slot }})
@@ -98,7 +98,7 @@ function checkboxlimit(checkgroup, limit){
 
                                       </div>
                                       {% endfor %}
-
+                                        
                                             {% if button == True %}
                                               <button class="btn btn-primary" type="submit">Save</button>
                                               <button class="btn btn-default" type="button">Cancel</button>

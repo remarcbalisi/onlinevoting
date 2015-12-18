@@ -31,11 +31,11 @@
                               </tr>
                               </thead>
                               <tbody>
-                              {% for election in election %}
+                              {% for election in elections %}
                               <tr>
                                   <td><center>{{ election.year }}
                                     <a class="glyphicon glyphicon-pencil" href="{% url 'election_update' %}"></a>
-                                    <a href="{% url 'election_delete' %}">Delete</a></li></center>
+                                    <a href="{% url 'election_delete' election_pk=election.pk %}">Delete</a></li></center>
                                   </td>
                                   <td><center>IS ACTIVE: {{election.is_active}}
                                   {% if election.is_active == False %}

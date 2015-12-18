@@ -277,12 +277,13 @@ def election_add(request):
 def election_view(request):
 	if request.user.is_admin:
 		try:
-			election = Election.objects.all().order_by('year')
-			return render(request, 'system/election_view.html', {'election':election})
+			elections = Election.objects.all().order_by('year')
+			return render(request, 'system/election_view.html', {'elections':elections})
 
 		except:
 			error = "No existing election year!"
-			return render(request, 'system/election_view.html', {'election':election})
+			elections = Election.objects.all().order_by('year')
+			return render(request, 'system/election_view.html', {'elections':elections})
 
 @login_required
 def election_activate(request, election_pk):
@@ -346,8 +347,8 @@ def college_delete(request, college_pk):
 	return redirect('system.views.college_view')
 
 @login_required
-def election_delete(request):
-	election = get_object_or_404(Election)
+def election_delete(request, election_pk):
+	election = get_object_or_404(Election, pk=election_pk)
 	election.delete()
 
 	return redirect('system.views.election_view')
